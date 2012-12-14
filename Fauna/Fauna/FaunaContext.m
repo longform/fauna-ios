@@ -9,6 +9,7 @@
 #import "FaunaContext.h"
 #import "FaunaClientKey.h"
 #import "FaunaPublisherKey.h"
+#import "FaunaAFNetworking.h"
 
 @implementation FaunaContext
 

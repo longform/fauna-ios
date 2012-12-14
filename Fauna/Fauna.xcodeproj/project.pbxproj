@@ -24,6 +24,11 @@
 		07B60616167A609900CD6604 /* FaunaClientKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60615167A609900CD6604 /* FaunaClientKey.m */; };
 		07B60617167A624300CD6604 /* FaunaKey.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B60610167A5CFA00CD6604 /* FaunaKey.h */; };
 		07B60618167A624300CD6604 /* FaunaClientKey.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B60614167A609900CD6604 /* FaunaClientKey.h */; };
+		07B60625167AD39100CD6604 /* FaunaAFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B6061C167AD39100CD6604 /* FaunaAFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		07B60626167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B6061E167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		07B60627167AD39100CD6604 /* FaunaAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60620167AD39100CD6604 /* FaunaAFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		07B60628167AD39100CD6604 /* FaunaAFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60622167AD39100CD6604 /* FaunaAFHTTPClient.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		07B60629167AD39100CD6604 /* FaunaAFJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60624167AD39100CD6604 /* FaunaAFJSONUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +71,17 @@
 		07B60611167A5CFA00CD6604 /* FaunaKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaKey.m; sourceTree = "<group>"; };
 		07B60614167A609900CD6604 /* FaunaClientKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaClientKey.h; sourceTree = "<group>"; };
 		07B60615167A609900CD6604 /* FaunaClientKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaClientKey.m; sourceTree = "<group>"; };
+		07B6061A167AD39100CD6604 /* FaunaAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFNetworking.h; sourceTree = "<group>"; };
+		07B6061B167AD39100CD6604 /* FaunaAFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFURLConnectionOperation.h; sourceTree = "<group>"; };
+		07B6061C167AD39100CD6604 /* FaunaAFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FaunaAFURLConnectionOperation.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		07B6061D167AD39100CD6604 /* FaunaAFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		07B6061E167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaAFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		07B6061F167AD39100CD6604 /* FaunaAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFJSONRequestOperation.h; sourceTree = "<group>"; };
+		07B60620167AD39100CD6604 /* FaunaAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FaunaAFJSONRequestOperation.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		07B60621167AD39100CD6604 /* FaunaAFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FaunaAFHTTPClient.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		07B60622167AD39100CD6604 /* FaunaAFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FaunaAFHTTPClient.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		07B60623167AD39100CD6604 /* FaunaAFJSONUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFJSONUtilities.h; sourceTree = "<group>"; };
+		07B60624167AD39100CD6604 /* FaunaAFJSONUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaAFJSONUtilities.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +124,7 @@
 		074CF7951678713F00686606 /* Fauna */ = {
 			isa = PBXGroup;
 			children = (
+				07B60619167AD36000CD6604 /* AFNetworking */,
 				074CF7981678713F00686606 /* Fauna.h */,
 				074CF79A1678713F00686606 /* Fauna.m */,
 				074CF7A11678715600686606 /* FaunaResource.h */,
@@ -135,6 +152,24 @@
 				074CF7971678713F00686606 /* Fauna-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		07B60619167AD36000CD6604 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				07B6061A167AD39100CD6604 /* FaunaAFNetworking.h */,
+				07B6061B167AD39100CD6604 /* FaunaAFURLConnectionOperation.h */,
+				07B6061C167AD39100CD6604 /* FaunaAFURLConnectionOperation.m */,
+				07B6061D167AD39100CD6604 /* FaunaAFHTTPRequestOperation.h */,
+				07B6061E167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m */,
+				07B6061F167AD39100CD6604 /* FaunaAFJSONRequestOperation.h */,
+				07B60620167AD39100CD6604 /* FaunaAFJSONRequestOperation.m */,
+				07B60621167AD39100CD6604 /* FaunaAFHTTPClient.h */,
+				07B60622167AD39100CD6604 /* FaunaAFHTTPClient.m */,
+				07B60623167AD39100CD6604 /* FaunaAFJSONUtilities.h */,
+				07B60624167AD39100CD6604 /* FaunaAFJSONUtilities.m */,
+			);
+			path = AFNetworking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +231,11 @@
 				074CF7B41678803300686606 /* FaunaUserToken.m in Sources */,
 				07B60612167A5CFA00CD6604 /* FaunaKey.m in Sources */,
 				07B60616167A609900CD6604 /* FaunaClientKey.m in Sources */,
+				07B60625167AD39100CD6604 /* FaunaAFURLConnectionOperation.m in Sources */,
+				07B60626167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m in Sources */,
+				07B60627167AD39100CD6604 /* FaunaAFJSONRequestOperation.m in Sources */,
+				07B60628167AD39100CD6604 /* FaunaAFHTTPClient.m in Sources */,
+				07B60629167AD39100CD6604 /* FaunaAFJSONUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
