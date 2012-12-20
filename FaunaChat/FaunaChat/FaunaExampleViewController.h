@@ -10,4 +10,6 @@
 
 @interface FaunaExampleViewController : UIViewController
 
+-(IBAction)signupAction:(id)sender;
+
 @end

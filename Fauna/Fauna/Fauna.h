@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaContext.h"
 #import "FaunaResource.h"
 #import "FaunaToken.h"
+
+@class FaunaContext;
 
 /*!
  Fauna
