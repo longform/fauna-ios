@@ -31,19 +31,19 @@
  Initialize the Resource in the given Context.
  @param context The Fauna Context to use.
  */
-- (id)initInContext:(FaunaContext*)context;
+- (id)initWithContext:(FaunaContext*)context;
 
 /*!
  Initialize the Resource in the given Context and using the given dictionary.
  @param context The Fauna Context to use.
  @param dictionary Dictionary with values to initialize this resource.
  */
-- (id)initInContext:(FaunaContext*)context andDictionary:(NSMutableDictionary*)dictionary;
+- (id)initWithContext:(FaunaContext*)context andDictionary:(NSMutableDictionary*)dictionary;
 
 /*! 
  (ref) Reference Id of this Resource.
  */
-@property (nonatomic, strong) NSString *reference;
+@property (nonatomic, strong, readonly) NSString *reference;
 
 /*!
  (ts) Last time this resource was updated.

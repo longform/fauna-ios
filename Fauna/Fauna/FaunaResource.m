@@ -21,23 +21,19 @@
 }
 
 - (id)initWithDictionary:(NSMutableDictionary*)dictionary {
-  return [self initInContext:[Fauna current] andDictionary:dictionary];
+  return [self initWithContext:[Fauna current] andDictionary:dictionary];
 }
 
-- (id)initInContext:(FaunaContext*)context {
-  return [self initInContext:context andDictionary:[[NSMutableDictionary alloc] init]];
+- (id)initWithContext:(FaunaContext*)context {
+  return [self initWithContext:context andDictionary:[[NSMutableDictionary alloc] init]];
 }
 
-- (id)initInContext:(FaunaContext*)context andDictionary:(NSMutableDictionary*)dictionary {
+- (id)initWithContext:(FaunaContext*)context andDictionary:(NSMutableDictionary*)dictionary {
   if(self = [super init]) {
     self.context = context;
     _resourceDictionary = dictionary;
   }
   return self;
-}
-
-- (void)setReference:(NSString*)refId {
-  [self.resourceDictionary setValue:refId forKey:kRefIdKey];
 }
 
 - (NSString*)reference {
