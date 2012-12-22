@@ -7,6 +7,7 @@
 //
 
 #import "FaunaExampleViewController.h"
+#import "FaunaExampleSignupViewController.h"
 
 @interface FaunaExampleViewController ()
 
@@ -25,5 +26,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)signupAction:(id)sender {
+  FaunaExampleSignupViewController * controller = [[FaunaExampleSignupViewController alloc] initWithNibName:@"FaunaExampleSignupViewController" bundle:nil];
+  [self.navigationController pushViewController:controller animated:YES];
+}
+
 
 @end

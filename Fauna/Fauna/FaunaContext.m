@@ -16,7 +16,11 @@
 - (id)init {
   self = [super init];
   if(self) {
-    // nop
+    _client = [[FaunaAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://rest.fauna.org"]];
+    [self.client setDefaultHeader:@"Accept" value:@"application/json"];
+    [self.client registerHTTPOperationClass:[FaunaAFJSONRequestOperation class]];
+    self.client.stringEncoding = NSUnicodeStringEncoding;
+    self.client.parameterEncoding = FaunaAFJSONParameterEncoding;
   }
   return self;
 }
@@ -26,6 +30,10 @@
   self = [self init];
   if(self) {
     self.key = key;
+    if([self.key isKindOfClass:[FaunaKey class]]) {
+      // set authorization header
+      [self.client setAuthorizationHeaderWithUsername:self.key.keyString password:nil];
+    }
   }
   return self;
 }

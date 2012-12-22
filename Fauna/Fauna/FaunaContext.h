@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaPublisherKey.h"
-#import "FaunaClientKey.h"
-#import "FaunaUserToken.h"
+#import "FaunaAFNetworking.h"
+
+@class FaunaUserToken;
+@class FaunaClientKey;
+@class FaunaPublisherKey;
+@class FaunaKey;
 
 @interface FaunaContext : NSObject
 
@@ -46,5 +49,10 @@
  See FaunaUserToken.
  */
 @property (nonatomic, strong) FaunaUserToken *userToken;
+
+/*!
+ Returns the HTTP Client related to this Context.
+ */
+@property (nonatomic, strong, readonly) FaunaAFHTTPClient *client;
 
 @end
