@@ -23,9 +23,7 @@
 		074CF7AD1678719B00686606 /* FaunaToken.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7A31678715600686606 /* FaunaToken.h */; };
 		074CF7AE1678719B00686606 /* FaunaContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7A51678715600686606 /* FaunaContext.h */; };
 		074CF7B116787EA800686606 /* FaunaPublisherKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF7B016787EA800686606 /* FaunaPublisherKey.m */; };
-		074CF7B41678803300686606 /* FaunaUserToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF7B31678803300686606 /* FaunaUserToken.m */; };
 		074CF7B5167880C800686606 /* FaunaPublisherKey.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7AF16787EA700686606 /* FaunaPublisherKey.h */; };
-		074CF7B6167880C800686606 /* FaunaUserToken.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7B21678803300686606 /* FaunaUserToken.h */; };
 		077E22831682B3E800FB0B30 /* FaunaUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22821682B3E800FB0B30 /* FaunaUser.m */; };
 		077E229E1682CAA700FB0B30 /* FaunaUser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 077E22811682B3E800FB0B30 /* FaunaUser.h */; };
 		077E22A61682D4FB00FB0B30 /* FaunaResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22A51682D4FB00FB0B30 /* FaunaResponse.m */; };
@@ -61,7 +59,6 @@
 				07B60617167A624300CD6604 /* FaunaKey.h in CopyFiles */,
 				07B60618167A624300CD6604 /* FaunaClientKey.h in CopyFiles */,
 				074CF7B5167880C800686606 /* FaunaPublisherKey.h in CopyFiles */,
-				074CF7B6167880C800686606 /* FaunaUserToken.h in CopyFiles */,
 				074CF7AC1678719B00686606 /* FaunaResource.h in CopyFiles */,
 				074CF7AD1678719B00686606 /* FaunaToken.h in CopyFiles */,
 				074CF7AE1678719B00686606 /* FaunaContext.h in CopyFiles */,
@@ -85,8 +82,6 @@
 		074CF7A61678715600686606 /* FaunaContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaContext.m; sourceTree = "<group>"; };
 		074CF7AF16787EA700686606 /* FaunaPublisherKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaPublisherKey.h; sourceTree = "<group>"; };
 		074CF7B016787EA800686606 /* FaunaPublisherKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaPublisherKey.m; sourceTree = "<group>"; };
-		074CF7B21678803300686606 /* FaunaUserToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaUserToken.h; sourceTree = "<group>"; };
-		074CF7B31678803300686606 /* FaunaUserToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaUserToken.m; sourceTree = "<group>"; };
 		077E22811682B3E800FB0B30 /* FaunaUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaUser.h; sourceTree = "<group>"; };
 		077E22821682B3E800FB0B30 /* FaunaUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaUser.m; sourceTree = "<group>"; };
 		077E22A41682D4FB00FB0B30 /* FaunaResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResponse.h; sourceTree = "<group>"; };
@@ -161,8 +156,6 @@
 				074CF7961678713F00686606 /* Supporting Files */,
 				074CF7AF16787EA700686606 /* FaunaPublisherKey.h */,
 				074CF7B016787EA800686606 /* FaunaPublisherKey.m */,
-				074CF7B21678803300686606 /* FaunaUserToken.h */,
-				074CF7B31678803300686606 /* FaunaUserToken.m */,
 				07B60610167A5CFA00CD6604 /* FaunaKey.h */,
 				07B60611167A5CFA00CD6604 /* FaunaKey.m */,
 				07B60614167A609900CD6604 /* FaunaClientKey.h */,
@@ -258,7 +251,6 @@
 				074CF7A81678715600686606 /* FaunaToken.m in Sources */,
 				074CF7A91678715600686606 /* FaunaContext.m in Sources */,
 				074CF7B116787EA800686606 /* FaunaPublisherKey.m in Sources */,
-				074CF7B41678803300686606 /* FaunaUserToken.m in Sources */,
 				07B60612167A5CFA00CD6604 /* FaunaKey.m in Sources */,
 				07B60616167A609900CD6604 /* FaunaClientKey.m in Sources */,
 				07B60625167AD39100CD6604 /* FaunaAFURLConnectionOperation.m in Sources */,

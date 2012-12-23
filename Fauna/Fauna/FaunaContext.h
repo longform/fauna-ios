@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FaunaAFNetworking.h"
 
-@class FaunaUserToken;
+@class FaunaToken;
 @class FaunaClientKey;
 @class FaunaPublisherKey;
 @class FaunaKey;
@@ -46,9 +46,9 @@
 /*!
  User Token currently associated with this context.
  
- See FaunaUserToken.
+ See FaunaToken.
  */
-@property (nonatomic, strong) FaunaUserToken *userToken;
+@property (nonatomic, strong) FaunaToken *userToken;
 
 /*!
  Returns the HTTP Client related to this Context.
