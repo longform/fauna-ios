@@ -8,6 +8,7 @@
 
 #import "FaunaExampleViewController.h"
 #import "FaunaExampleSignupViewController.h"
+#import "FaunaExampleLoginViewController.h"
 
 @interface FaunaExampleViewController ()
 
@@ -29,6 +30,11 @@
 
 - (IBAction)signupAction:(id)sender {
   FaunaExampleSignupViewController * controller = [[FaunaExampleSignupViewController alloc] initWithNibName:@"FaunaExampleSignupViewController" bundle:nil];
+  [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (IBAction)loginAction:(id)sender {
+  FaunaExampleLoginViewController * controller = [[FaunaExampleLoginViewController alloc] initWithNibName:@"FaunaExampleLoginViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
