@@ -16,6 +16,18 @@
 
 @implementation FaunaToken
 
++ (id)tokenWithTokenString:(NSString*)tokenString {
+  return [FaunaToken tokenWithContext:Fauna.current andTokenString:tokenString];
+}
+
++ (id)tokenWithContext:(FaunaContext*)context andTokenString:(NSString*)tokenString {
+  NSAssert(tokenString, @"tokenString is required");
+  NSAssert(context, @"context is required");
+  FaunaToken *token = [[FaunaToken alloc] initWithContext:context];
+  token.token = tokenString;
+  return token;
+}
+
 - (void)setToken:(NSString *)token {
   [self.resourceDictionary setValue:token forKey:kTokenKey];
 }
@@ -39,12 +51,12 @@
 + (void)tokenWithEmail:(NSString *)email password:(NSString *)password context:(FaunaContext *)context block:(FaunaResponseResultBlock)block {
   NSDictionary *sendParams = @{kPasswordKey : password, kEmailKey: email};
   NSString * path = [NSString stringWithFormat:@"/%@/tokens", FaunaAPIVersion];
-  [context.client postPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
+  [context.keyClient postPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
     
     FaunaResponse *response = [[FaunaResponse alloc] initWithContext:context response:responseObject andRootResourceClass:[FaunaToken class]];
     
     FaunaToken * token = (FaunaToken*)response.resource;
-    context.userToken = token;
+    context.userToken = token.token;
     
     block(response, nil);
   } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
@@ -59,16 +71,26 @@
 + (void)tokenWithExternalId:(NSString*)externalId password:(NSString*)password context:(FaunaContext*)context block:(FaunaResponseResultBlock)block {
   NSDictionary *sendParams = @{kPasswordKey : password, kExternalIdKey:externalId};
   NSString * path = [NSString stringWithFormat:@"/%@/tokens", FaunaAPIVersion];
-  [context.client postPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
+  [context.keyClient postPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
     
     FaunaResponse *response = [[FaunaResponse alloc] initWithContext:context response:responseObject andRootResourceClass:[FaunaToken class]];
     
     FaunaToken * token = (FaunaToken*)response.resource;
-    context.userToken = token;
+    context.userToken = token.token;
     
     block(response, nil);
   } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
     block(nil, error);
   }];
 }
+
++ (FaunaToken*)persistedLocalUserToken {
+  
+  return nil;
+}
+
+- (void)persistLocal {
+ 
+}
+
 @end

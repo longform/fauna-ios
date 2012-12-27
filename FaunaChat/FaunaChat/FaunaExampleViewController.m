@@ -9,6 +9,7 @@
 #import "FaunaExampleViewController.h"
 #import "FaunaExampleSignupViewController.h"
 #import "FaunaExampleLoginViewController.h"
+#import "FaunaExampleRoomViewController.h"
 
 @interface FaunaExampleViewController ()
 
@@ -38,5 +39,9 @@
   [self.navigationController pushViewController:controller animated:YES];
 }
 
+-(IBAction)chatRoomAction:(id)sender {
+  FaunaExampleRoomViewController * controller = [[FaunaExampleRoomViewController alloc] initWithNibName:@"FaunaExampleRoomViewController" bundle:nil];
+  [self.navigationController pushViewController:controller animated:YES];
+}
 
 @end

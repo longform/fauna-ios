@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0711CA1B168BEAD400CEEAA1 /* FaunaInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA1A168BEAD300CEEAA1 /* FaunaInstance.m */; };
+		0711CA1D168BEFE900CEEAA1 /* FaunaInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0711CA19168BEAD300CEEAA1 /* FaunaInstance.h */; };
 		0722A2661682228000EEB025 /* FaunaAFNetworking.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B6061A167AD39100CD6604 /* FaunaAFNetworking.h */; };
 		0722A2671682228000EEB025 /* FaunaAFURLConnectionOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B6061B167AD39100CD6604 /* FaunaAFURLConnectionOperation.h */; };
 		0722A2681682228000EEB025 /* FaunaAFHTTPRequestOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B6061D167AD39100CD6604 /* FaunaAFHTTPRequestOperation.h */; };
@@ -47,6 +49,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				0711CA1D168BEFE900CEEAA1 /* FaunaInstance.h in CopyFiles */,
 				077E22A81682D5D200FB0B30 /* FaunaResponse.h in CopyFiles */,
 				077E22A91682D5D200FB0B30 /* FaunaConstants.h in CopyFiles */,
 				077E229E1682CAA700FB0B30 /* FaunaUser.h in CopyFiles */,
@@ -69,6 +72,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0711CA19168BEAD300CEEAA1 /* FaunaInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaInstance.h; sourceTree = "<group>"; };
+		0711CA1A168BEAD300CEEAA1 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
 		074CF7901678713F00686606 /* libFauna.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFauna.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		074CF7931678713F00686606 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		074CF7971678713F00686606 /* Fauna-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fauna-Prefix.pch"; sourceTree = "<group>"; };
@@ -165,6 +170,8 @@
 				077E22A41682D4FB00FB0B30 /* FaunaResponse.h */,
 				077E22A51682D4FB00FB0B30 /* FaunaResponse.m */,
 				077E22A71682D57800FB0B30 /* FaunaConstants.h */,
+				0711CA19168BEAD300CEEAA1 /* FaunaInstance.h */,
+				0711CA1A168BEAD300CEEAA1 /* FaunaInstance.m */,
 			);
 			path = Fauna;
 			sourceTree = "<group>";
@@ -260,6 +267,7 @@
 				07B60629167AD39100CD6604 /* FaunaAFJSONUtilities.m in Sources */,
 				077E22831682B3E800FB0B30 /* FaunaUser.m in Sources */,
 				077E22A61682D4FB00FB0B30 /* FaunaResponse.m in Sources */,
+				0711CA1B168BEAD400CEEAA1 /* FaunaInstance.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

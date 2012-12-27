@@ -18,7 +18,7 @@
     self.context = context;
     id res = [rootResourceClass alloc];
     self.resource = [res initWithDictionary:[responseDictionary objectForKey:kResourceKey]];
-    //TODO: Inspect Resources
+    
   }
   return self;
 }
