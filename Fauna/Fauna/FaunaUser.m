@@ -18,7 +18,7 @@
 - (void)save:(FaunaResponseResultBlock)block {
   NSMutableDictionary *sendParams = [self resourceDictionary];
   NSString * path = [NSString stringWithFormat:@"/%@/users", FaunaAPIVersion];
-  [self.context.client postPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
+  [self.context.keyClient postPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
     FaunaResponse *response = [[FaunaResponse alloc] initWithContext:self.context response:responseObject andRootResourceClass:[FaunaUser class]];
     block(response, nil);
   } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {

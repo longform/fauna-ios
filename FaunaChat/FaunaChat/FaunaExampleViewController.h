@@ -14,4 +14,6 @@
 
 -(IBAction)loginAction:(id)sender;
 
+-(IBAction)chatRoomAction:(id)sender;
+
 @end

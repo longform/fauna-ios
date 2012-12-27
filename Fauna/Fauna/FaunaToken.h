@@ -18,6 +18,19 @@
 @interface FaunaToken : FaunaResource
 
 /*!
+ Creates a FaunaToken with the given tokenString and current context.
+ @param tokenString token string already given by the Fauna API.
+ */
++ (id)tokenWithTokenString:(NSString*)tokenString;
+
+/*!
+ Creates a FaunaToken with the given tokenString and context.
+ @param tokenString Token string already provided by the Fauna API.
+ @param context Instance of FaunaContext what this FaunaToken will use.
+ */
++ (id)tokenWithContext:(FaunaContext*)context andTokenString:(NSString*)tokenString;
+
+/*!
  (token) The Actual Token.
  */
 @property (nonatomic, strong) NSString *token;

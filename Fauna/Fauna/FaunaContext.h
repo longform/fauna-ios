@@ -45,14 +45,17 @@
 
 /*!
  User Token currently associated with this context.
- 
- See FaunaToken.
  */
-@property (nonatomic, strong) FaunaToken *userToken;
+@property (nonatomic, strong) NSString *userToken;
 
 /*!
- Returns the HTTP Client related to this Context.
+ Returns the HTTP Client enabled with Client Key.
  */
-@property (nonatomic, strong, readonly) FaunaAFHTTPClient *client;
+@property (nonatomic, strong, readonly) FaunaAFHTTPClient *keyClient;
+
+/*!
+ Returns the HTTP Client enabled with the current User Token.
+ */
+@property (nonatomic, strong, readonly) FaunaAFHTTPClient *userClient;
 
 @end
