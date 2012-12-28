@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Fauna/FaunaTimeline.h>
 
 @interface FaunaExampleRoomViewController : UITableViewController
+
+@property (nonatomic, strong) FaunaTimeline* timeline;
+@property (nonatomic, strong) FaunaResponse* currentTimelineResponse;
+@property (nonatomic, strong) FaunaTimelinePage* currentPage;
+
+- (void)reloadTimeline;
 
 @end

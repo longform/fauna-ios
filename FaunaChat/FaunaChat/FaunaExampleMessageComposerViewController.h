@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Fauna/FaunaTimeline.h>
 
-@interface FaunaExampleNewMessageViewController : UIViewController
+@interface FaunaExampleMessageComposerViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UITextField *messageField;
+
+@property (nonatomic, strong) FaunaTimeline* timeline;
 
 @end

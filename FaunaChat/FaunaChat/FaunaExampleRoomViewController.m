@@ -7,18 +7,38 @@
 //
 
 #import "FaunaExampleRoomViewController.h"
-#import "FaunaExampleNewMessageViewController.h"
+#import "FaunaExampleMessageComposerViewController.h"
 
 @interface FaunaExampleRoomViewController ()
 
 @end
 
 @implementation FaunaExampleRoomViewController
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  self.timeline = [FaunaTimeline timelineForReference:@"classes/message/timelines/chat"];
   self.title = @"Room";
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Post" style:UIBarStyleBlackTranslucent target:self action:@selector(postAction:)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  [self reloadTimeline];
+}
+
+- (void)reloadTimeline {
+  [self.timeline pageWithCount:10 callback:^(FaunaResponse *response, NSError *error) {
+    if(error) {
+      NSLog(@"Error retrieving timeline: %@", error);
+    } else {
+      self.currentTimelineResponse = response;
+      self.currentPage = (FaunaTimelinePage*)response.resource;
+      NSLog(@"Timeline page");
+      [self.tableView reloadData];
+    }
+  }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -30,16 +50,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-  // Return the number of sections.
-  return 0;
+  return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-  // Return the number of rows in the section.
-  return 0;
+  return self.currentPage.events.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -50,7 +66,14 @@
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   }
   
-  // Configure the cell...
+  //HACK: These magic numbers and blind parsing are temporary, FaunaResponse should be smarter than this.
+  // https://fauna.org/API#timelines
+  NSArray* eventArray = self.currentPage.events[indexPath.row];
+  NSString* ref = (NSString*)eventArray[2];
+  FaunaResource* messageInstance = (FaunaInstance*)[self.currentTimelineResponse.references objectForKey:ref];
+  NSDictionary* messageData = [messageInstance.resourceDictionary objectForKey:@"data"];
+  NSString* messageBody = (NSString*)[messageData objectForKey:@"body"];
+  cell.textLabel.text = messageBody;
   
   return cell;
 }
@@ -110,7 +133,8 @@
 #pragma mark - Post
 
 - (void)postAction:(id)sender {
-  FaunaExampleNewMessageViewController * controller = [[FaunaExampleNewMessageViewController alloc] initWithNibName:@"FaunaExampleNewMessageViewController" bundle:nil];
+  FaunaExampleMessageComposerViewController * controller = [[FaunaExampleMessageComposerViewController alloc] initWithNibName:@"FaunaExampleNewMessageViewController" bundle:nil];
+  controller.timeline = self.timeline;
   UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:controller];
   [self presentModalViewController:navController animated:YES];
 }

@@ -7,6 +7,8 @@
 //
 
 #import "FaunaInstance.h"
+#import "FaunaTimeline.h"
+
 #define kExternalIdKey @"external_id"
 #define kClassKey @"class"
 #define kReferencesKey @"references"
