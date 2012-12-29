@@ -33,6 +33,7 @@
       NSLog(@"Error: %@", error);
     } else {
       FaunaToken *token = (FaunaToken*)response.resource;
+      NSLog(@"Token: %@", token.token);
       UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"HI %@", token.token] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];
     }

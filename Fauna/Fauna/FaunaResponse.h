@@ -24,7 +24,7 @@
 @property (nonatomic, strong) FaunaResource *resource;
 
 /*!
- Returns the references related to the resource that were retrieved from the server.
+ Returns a dictionary with FaunaResource instances related to the resource retrieved from the server.
  */
 @property (nonatomic, strong) NSMutableDictionary *references;
 

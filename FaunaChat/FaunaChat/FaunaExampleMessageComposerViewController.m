@@ -6,10 +6,11 @@
 //  Copyright (c) 2012 Fauna. All rights reserved.
 //
 
-#import "FaunaExampleNewMessageViewController.h"
+#import "FaunaExampleMessageComposerViewController.h"
 #import <Fauna/FaunaInstance.h>
+#import <Fauna/FaunaTimeline.h>
 
-@implementation FaunaExampleNewMessageViewController
+@implementation FaunaExampleMessageComposerViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,7 +34,6 @@
 }
 
 - (void)sendAction:(id)sender {
-  // TODO: Send Message
   FaunaInstance *instance = [[FaunaInstance alloc] init];
   instance.className = @"message";
   instance.data = @{@"body" : self.messageField.text};
@@ -41,8 +41,18 @@
     if(error) {
       NSLog(@"Instance save error: %@", error);
     } else {
-      NSLog(@"Instance saved successfully");
-      [self.navigationController dismissModalViewControllerAnimated:YES];
+      FaunaInstance * instance = (FaunaInstance*)response.resource;
+      NSString * instanceReference = instance.reference;
+      NSLog(@"Instance saved successfully: %@", instanceReference);
+      [self.timeline add:instance callback:^(FaunaResponse *response, NSError *error) {
+        if(error) {
+          NSLog(@"Timeline add error: %@", error);
+        } else {
+          FaunaTimeline *timeline = (FaunaTimeline*)response.resource;
+          NSLog(@"Added to timeline successfully: %@", timeline.reference);
+          [self.navigationController dismissModalViewControllerAnimated:YES];
+        }
+      }];
     }
   }];
 }
