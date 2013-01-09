@@ -8,40 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "FaunaAFNetworking.h"
-
-@class FaunaToken;
-@class FaunaClientKey;
-@class FaunaPublisherKey;
-@class FaunaKey;
+#import "FaunaTimelines.h"
+#import "FaunaUsers.h"
+#import "FaunaTokens.h"
+#import "FaunaInstances.h"
 
 @interface FaunaContext : NSObject
 
 - (id)init;
 
-/** @name API Key */
-
-/*!
- API Key currently associated with this context. Known instances are FaunaPublisherKey and FaunaClientKey.
- */
-@property (nonatomic, strong) FaunaKey *key;
-
-/*!
- Initializes this context with a key.
- @param key instance to use. Use FaunaPublisherKey or FaunaClientKey instances. Required.
- */
-- (id)initWithKey:(FaunaKey*)key;
-
-/*!
- Initializes this context with a FaunaPublisherKey instance.
- @param publisher key string. Required.
- */
-- (id)initWithPublisherKey:(NSString*)keyString;
-
 /*!
  Initializes this context with a FaunaClientKey instance.
- @param publisher key string. Required.
+ @param keyString Client key string. Required.
  */
-- (id)initWithClientKey:(NSString*)keyString;
+- (id)initWithClientKeyString:(NSString *)keyString;
 
 /*!
  User Token currently associated with this context.
@@ -57,5 +37,25 @@
  Returns the HTTP Client enabled with the current User Token.
  */
 @property (nonatomic, strong, readonly) FaunaAFHTTPClient *userClient;
+
+/*!
+ Manage Fauna Timelines
+ */
+@property (nonatomic, strong, readonly) FaunaTimelines * timelines;
+
+/*!
+ Manage Fauna Users
+ */
+@property (nonatomic, strong, readonly) FaunaUsers * users;
+
+/*!
+ Manage Fauna Tokens
+ */
+@property (nonatomic, strong, readonly) FaunaTokens * tokens;
+
+/*!
+ Manage Fauna Instances
+ */
+@property (nonatomic, strong, readonly) FaunaInstances * instances;
 
 @end

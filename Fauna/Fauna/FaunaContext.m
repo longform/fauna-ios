@@ -7,8 +7,6 @@
 //
 
 #import "FaunaContext.h"
-#import "FaunaClientKey.h"
-#import "FaunaPublisherKey.h"
 #import "FaunaAFNetworking.h"
 #define kFaunaTokenUserKey @"FaunaContextUserToken"
 
@@ -29,6 +27,19 @@
     // Load persisted user token
     NSString *persistedTokenString = [[NSUserDefaults standardUserDefaults] objectForKey:kFaunaTokenUserKey];
     self.userToken = persistedTokenString;
+    
+    _timelines = [[FaunaTimelines alloc] init];
+    [_timelines performSelector:@selector(setClient:) withObject:_userClient];
+    
+    _users = [[FaunaUsers alloc] init];
+    [_users performSelector:@selector(setClient:) withObject:_keyClient];
+    
+    _tokens = [[FaunaTokens alloc] init];
+    [_tokens performSelector:@selector(setClient:) withObject:_keyClient];
+    
+    _instances = [[FaunaInstances alloc] init];
+    [_instances performSelector:@selector(setClient:) withObject:_keyClient];
+    
   }
   return self;
 }
@@ -42,25 +53,16 @@
   return client;
 }
 
-- (id)initWithKey:(FaunaKey *)key {
-  NSAssert(key, @"Key instance must be provided");
+- (id)initWithClientKeyString:(NSString *)keyString {
+  NSAssert(keyString, @"keyString instance must be provided");
   self = [self init];
   if(self) {
-    self.key = key;
-    if(key) {
+    if(keyString) {
       // set authorization header
-      [self.keyClient setAuthorizationHeaderWithUsername:self.key.keyString password:nil];
+      [self.keyClient setAuthorizationHeaderWithUsername:keyString password:nil];
     }
   }
   return self;
-}
-
-- (id)initWithPublisherKey:(NSString*)keyString {
-  return [self initWithKey:[FaunaPublisherKey keyFromKeyString:keyString]];
-}
-
-- (id)initWithClientKey:(NSString*)keyString {
-  return [self initWithKey:[FaunaClientKey keyFromKeyString:keyString]];
 }
 
 - (void)setUserToken:(NSString *)userToken {

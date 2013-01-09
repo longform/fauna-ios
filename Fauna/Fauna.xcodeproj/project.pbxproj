@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0711CA1B168BEAD400CEEAA1 /* FaunaInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA1A168BEAD300CEEAA1 /* FaunaInstance.m */; };
-		0711CA1D168BEFE900CEEAA1 /* FaunaInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0711CA19168BEAD300CEEAA1 /* FaunaInstance.h */; };
+		07115BE6169D136F001420E7 /* FaunaInstances.m in Sources */ = {isa = PBXBuildFile; fileRef = 07115BDE169D136F001420E7 /* FaunaInstances.m */; };
+		07115BE7169D136F001420E7 /* FaunaTimelines.m in Sources */ = {isa = PBXBuildFile; fileRef = 07115BE0169D136F001420E7 /* FaunaTimelines.m */; };
+		07115BE8169D136F001420E7 /* FaunaTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 07115BE2169D136F001420E7 /* FaunaTokens.m */; };
+		07115BE9169D136F001420E7 /* FaunaUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 07115BE4169D136F001420E7 /* FaunaUsers.m */; };
+		07115C02169D17F9001420E7 /* FaunaCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 07115C01169D17F9001420E7 /* FaunaCommand.m */; };
 		0722A2661682228000EEB025 /* FaunaAFNetworking.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B6061A167AD39100CD6604 /* FaunaAFNetworking.h */; };
 		0722A2671682228000EEB025 /* FaunaAFURLConnectionOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B6061B167AD39100CD6604 /* FaunaAFURLConnectionOperation.h */; };
 		0722A2681682228000EEB025 /* FaunaAFHTTPRequestOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B6061D167AD39100CD6604 /* FaunaAFHTTPRequestOperation.h */; };
@@ -18,28 +21,11 @@
 		074CF7941678713F00686606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7931678713F00686606 /* Foundation.framework */; };
 		074CF7991678713F00686606 /* Fauna.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7981678713F00686606 /* Fauna.h */; };
 		074CF79B1678713F00686606 /* Fauna.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF79A1678713F00686606 /* Fauna.m */; };
-		074CF7A71678715600686606 /* FaunaResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF7A21678715600686606 /* FaunaResource.m */; };
-		074CF7A81678715600686606 /* FaunaToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF7A41678715600686606 /* FaunaToken.m */; };
 		074CF7A91678715600686606 /* FaunaContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF7A61678715600686606 /* FaunaContext.m */; };
-		074CF7AC1678719B00686606 /* FaunaResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7A11678715600686606 /* FaunaResource.h */; };
-		074CF7AD1678719B00686606 /* FaunaToken.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7A31678715600686606 /* FaunaToken.h */; };
 		074CF7AE1678719B00686606 /* FaunaContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7A51678715600686606 /* FaunaContext.h */; };
-		074CF7B116787EA800686606 /* FaunaPublisherKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF7B016787EA800686606 /* FaunaPublisherKey.m */; };
-		074CF7B5167880C800686606 /* FaunaPublisherKey.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7AF16787EA700686606 /* FaunaPublisherKey.h */; };
-		07570C001690AEDC00C4B94A /* FaunaCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 07570BFF1690AEDC00C4B94A /* FaunaCommand.m */; };
-		077E22831682B3E800FB0B30 /* FaunaUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22821682B3E800FB0B30 /* FaunaUser.m */; };
-		077E229E1682CAA700FB0B30 /* FaunaUser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 077E22811682B3E800FB0B30 /* FaunaUser.h */; };
 		077E22A61682D4FB00FB0B30 /* FaunaResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22A51682D4FB00FB0B30 /* FaunaResponse.m */; };
 		077E22A81682D5D200FB0B30 /* FaunaResponse.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 077E22A41682D4FB00FB0B30 /* FaunaResponse.h */; };
 		077E22A91682D5D200FB0B30 /* FaunaConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 077E22A71682D57800FB0B30 /* FaunaConstants.h */; };
-		07949DD4168D021600A5B6FE /* FaunaTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 07949DD3168D021600A5B6FE /* FaunaTimeline.m */; };
-		07949DD6168D092300A5B6FE /* FaunaTimeline.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07949DD2168D021600A5B6FE /* FaunaTimeline.h */; };
-		07949DDA168D1A5800A5B6FE /* FaunaTimelinePage.m in Sources */ = {isa = PBXBuildFile; fileRef = 07949DD9168D1A5800A5B6FE /* FaunaTimelinePage.m */; };
-		07949DDB168D20AC00A5B6FE /* FaunaTimelinePage.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07949DD8168D1A5800A5B6FE /* FaunaTimelinePage.h */; };
-		07B60612167A5CFA00CD6604 /* FaunaKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60611167A5CFA00CD6604 /* FaunaKey.m */; };
-		07B60616167A609900CD6604 /* FaunaClientKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60615167A609900CD6604 /* FaunaClientKey.m */; };
-		07B60617167A624300CD6604 /* FaunaKey.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B60610167A5CFA00CD6604 /* FaunaKey.h */; };
-		07B60618167A624300CD6604 /* FaunaClientKey.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07B60614167A609900CD6604 /* FaunaClientKey.h */; };
 		07B60625167AD39100CD6604 /* FaunaAFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B6061C167AD39100CD6604 /* FaunaAFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		07B60626167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B6061E167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		07B60627167AD39100CD6604 /* FaunaAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60620167AD39100CD6604 /* FaunaAFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -54,23 +40,14 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
-				07949DDB168D20AC00A5B6FE /* FaunaTimelinePage.h in CopyFiles */,
-				07949DD6168D092300A5B6FE /* FaunaTimeline.h in CopyFiles */,
-				0711CA1D168BEFE900CEEAA1 /* FaunaInstance.h in CopyFiles */,
 				077E22A81682D5D200FB0B30 /* FaunaResponse.h in CopyFiles */,
 				077E22A91682D5D200FB0B30 /* FaunaConstants.h in CopyFiles */,
-				077E229E1682CAA700FB0B30 /* FaunaUser.h in CopyFiles */,
 				0722A2661682228000EEB025 /* FaunaAFNetworking.h in CopyFiles */,
 				0722A2671682228000EEB025 /* FaunaAFURLConnectionOperation.h in CopyFiles */,
 				0722A2681682228000EEB025 /* FaunaAFHTTPRequestOperation.h in CopyFiles */,
 				0722A2691682228000EEB025 /* FaunaAFJSONRequestOperation.h in CopyFiles */,
 				0722A26A1682228000EEB025 /* FaunaAFHTTPClient.h in CopyFiles */,
 				0722A26B1682228000EEB025 /* FaunaAFJSONUtilities.h in CopyFiles */,
-				07B60617167A624300CD6604 /* FaunaKey.h in CopyFiles */,
-				07B60618167A624300CD6604 /* FaunaClientKey.h in CopyFiles */,
-				074CF7B5167880C800686606 /* FaunaPublisherKey.h in CopyFiles */,
-				074CF7AC1678719B00686606 /* FaunaResource.h in CopyFiles */,
-				074CF7AD1678719B00686606 /* FaunaToken.h in CopyFiles */,
 				074CF7AE1678719B00686606 /* FaunaContext.h in CopyFiles */,
 				074CF7991678713F00686606 /* Fauna.h in CopyFiles */,
 			);
@@ -79,36 +56,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0711CA19168BEAD300CEEAA1 /* FaunaInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaInstance.h; sourceTree = "<group>"; };
-		0711CA1A168BEAD300CEEAA1 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
+		07115BDD169D136F001420E7 /* FaunaInstances.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaInstances.h; sourceTree = "<group>"; };
+		07115BDE169D136F001420E7 /* FaunaInstances.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstances.m; sourceTree = "<group>"; };
+		07115BDF169D136F001420E7 /* FaunaTimelines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaTimelines.h; sourceTree = "<group>"; };
+		07115BE0169D136F001420E7 /* FaunaTimelines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaTimelines.m; sourceTree = "<group>"; };
+		07115BE1169D136F001420E7 /* FaunaTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaTokens.h; sourceTree = "<group>"; };
+		07115BE2169D136F001420E7 /* FaunaTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaTokens.m; sourceTree = "<group>"; };
+		07115BE3169D136F001420E7 /* FaunaUsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaUsers.h; sourceTree = "<group>"; };
+		07115BE4169D136F001420E7 /* FaunaUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaUsers.m; sourceTree = "<group>"; };
+		07115C00169D17F9001420E7 /* FaunaCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCommand.h; sourceTree = "<group>"; };
+		07115C01169D17F9001420E7 /* FaunaCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaCommand.m; sourceTree = "<group>"; };
 		074CF7901678713F00686606 /* libFauna.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFauna.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		074CF7931678713F00686606 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		074CF7971678713F00686606 /* Fauna-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fauna-Prefix.pch"; sourceTree = "<group>"; };
 		074CF7981678713F00686606 /* Fauna.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fauna.h; sourceTree = "<group>"; };
 		074CF79A1678713F00686606 /* Fauna.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Fauna.m; sourceTree = "<group>"; };
-		074CF7A11678715600686606 /* FaunaResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResource.h; sourceTree = "<group>"; };
-		074CF7A21678715600686606 /* FaunaResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResource.m; sourceTree = "<group>"; };
-		074CF7A31678715600686606 /* FaunaToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaToken.h; sourceTree = "<group>"; };
-		074CF7A41678715600686606 /* FaunaToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaToken.m; sourceTree = "<group>"; };
 		074CF7A51678715600686606 /* FaunaContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaContext.h; sourceTree = "<group>"; };
 		074CF7A61678715600686606 /* FaunaContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaContext.m; sourceTree = "<group>"; };
-		074CF7AF16787EA700686606 /* FaunaPublisherKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaPublisherKey.h; sourceTree = "<group>"; };
-		074CF7B016787EA800686606 /* FaunaPublisherKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaPublisherKey.m; sourceTree = "<group>"; };
-		07570BFE1690AEDC00C4B94A /* FaunaCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCommand.h; sourceTree = "<group>"; };
-		07570BFF1690AEDC00C4B94A /* FaunaCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaCommand.m; sourceTree = "<group>"; };
-		077E22811682B3E800FB0B30 /* FaunaUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaUser.h; sourceTree = "<group>"; };
-		077E22821682B3E800FB0B30 /* FaunaUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaUser.m; sourceTree = "<group>"; };
 		077E22A41682D4FB00FB0B30 /* FaunaResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResponse.h; sourceTree = "<group>"; };
 		077E22A51682D4FB00FB0B30 /* FaunaResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResponse.m; sourceTree = "<group>"; };
 		077E22A71682D57800FB0B30 /* FaunaConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaConstants.h; sourceTree = "<group>"; };
-		07949DD2168D021600A5B6FE /* FaunaTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaTimeline.h; sourceTree = "<group>"; };
-		07949DD3168D021600A5B6FE /* FaunaTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaTimeline.m; sourceTree = "<group>"; };
-		07949DD8168D1A5800A5B6FE /* FaunaTimelinePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaTimelinePage.h; sourceTree = "<group>"; };
-		07949DD9168D1A5800A5B6FE /* FaunaTimelinePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaTimelinePage.m; sourceTree = "<group>"; };
-		07B60610167A5CFA00CD6604 /* FaunaKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaKey.h; sourceTree = "<group>"; };
-		07B60611167A5CFA00CD6604 /* FaunaKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaKey.m; sourceTree = "<group>"; };
-		07B60614167A609900CD6604 /* FaunaClientKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaClientKey.h; sourceTree = "<group>"; };
-		07B60615167A609900CD6604 /* FaunaClientKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaClientKey.m; sourceTree = "<group>"; };
 		07B6061A167AD39100CD6604 /* FaunaAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFNetworking.h; sourceTree = "<group>"; };
 		07B6061B167AD39100CD6604 /* FaunaAFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFURLConnectionOperation.h; sourceTree = "<group>"; };
 		07B6061C167AD39100CD6604 /* FaunaAFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FaunaAFURLConnectionOperation.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -163,34 +130,24 @@
 			isa = PBXGroup;
 			children = (
 				07B60619167AD36000CD6604 /* AFNetworking */,
+				074CF7961678713F00686606 /* Supporting Files */,
 				074CF7981678713F00686606 /* Fauna.h */,
 				074CF79A1678713F00686606 /* Fauna.m */,
-				074CF7A11678715600686606 /* FaunaResource.h */,
-				074CF7A21678715600686606 /* FaunaResource.m */,
-				074CF7A31678715600686606 /* FaunaToken.h */,
-				074CF7A41678715600686606 /* FaunaToken.m */,
 				074CF7A51678715600686606 /* FaunaContext.h */,
 				074CF7A61678715600686606 /* FaunaContext.m */,
-				074CF7961678713F00686606 /* Supporting Files */,
-				074CF7AF16787EA700686606 /* FaunaPublisherKey.h */,
-				074CF7B016787EA800686606 /* FaunaPublisherKey.m */,
-				07B60610167A5CFA00CD6604 /* FaunaKey.h */,
-				07B60611167A5CFA00CD6604 /* FaunaKey.m */,
-				07B60614167A609900CD6604 /* FaunaClientKey.h */,
-				07B60615167A609900CD6604 /* FaunaClientKey.m */,
-				077E22811682B3E800FB0B30 /* FaunaUser.h */,
-				077E22821682B3E800FB0B30 /* FaunaUser.m */,
 				077E22A41682D4FB00FB0B30 /* FaunaResponse.h */,
 				077E22A51682D4FB00FB0B30 /* FaunaResponse.m */,
 				077E22A71682D57800FB0B30 /* FaunaConstants.h */,
-				0711CA19168BEAD300CEEAA1 /* FaunaInstance.h */,
-				0711CA1A168BEAD300CEEAA1 /* FaunaInstance.m */,
-				07949DD2168D021600A5B6FE /* FaunaTimeline.h */,
-				07949DD3168D021600A5B6FE /* FaunaTimeline.m */,
-				07949DD8168D1A5800A5B6FE /* FaunaTimelinePage.h */,
-				07949DD9168D1A5800A5B6FE /* FaunaTimelinePage.m */,
-				07570BFE1690AEDC00C4B94A /* FaunaCommand.h */,
-				07570BFF1690AEDC00C4B94A /* FaunaCommand.m */,
+				07115C00169D17F9001420E7 /* FaunaCommand.h */,
+				07115C01169D17F9001420E7 /* FaunaCommand.m */,
+				07115BDD169D136F001420E7 /* FaunaInstances.h */,
+				07115BDE169D136F001420E7 /* FaunaInstances.m */,
+				07115BDF169D136F001420E7 /* FaunaTimelines.h */,
+				07115BE0169D136F001420E7 /* FaunaTimelines.m */,
+				07115BE1169D136F001420E7 /* FaunaTokens.h */,
+				07115BE2169D136F001420E7 /* FaunaTokens.m */,
+				07115BE3169D136F001420E7 /* FaunaUsers.h */,
+				07115BE4169D136F001420E7 /* FaunaUsers.m */,
 			);
 			path = Fauna;
 			sourceTree = "<group>";
@@ -273,23 +230,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				074CF79B1678713F00686606 /* Fauna.m in Sources */,
-				074CF7A71678715600686606 /* FaunaResource.m in Sources */,
-				074CF7A81678715600686606 /* FaunaToken.m in Sources */,
 				074CF7A91678715600686606 /* FaunaContext.m in Sources */,
-				074CF7B116787EA800686606 /* FaunaPublisherKey.m in Sources */,
-				07B60612167A5CFA00CD6604 /* FaunaKey.m in Sources */,
-				07B60616167A609900CD6604 /* FaunaClientKey.m in Sources */,
 				07B60625167AD39100CD6604 /* FaunaAFURLConnectionOperation.m in Sources */,
 				07B60626167AD39100CD6604 /* FaunaAFHTTPRequestOperation.m in Sources */,
 				07B60627167AD39100CD6604 /* FaunaAFJSONRequestOperation.m in Sources */,
 				07B60628167AD39100CD6604 /* FaunaAFHTTPClient.m in Sources */,
 				07B60629167AD39100CD6604 /* FaunaAFJSONUtilities.m in Sources */,
-				077E22831682B3E800FB0B30 /* FaunaUser.m in Sources */,
 				077E22A61682D4FB00FB0B30 /* FaunaResponse.m in Sources */,
-				0711CA1B168BEAD400CEEAA1 /* FaunaInstance.m in Sources */,
-				07949DD4168D021600A5B6FE /* FaunaTimeline.m in Sources */,
-				07949DDA168D1A5800A5B6FE /* FaunaTimelinePage.m in Sources */,
-				07570C001690AEDC00C4B94A /* FaunaCommand.m in Sources */,
+				07115BE6169D136F001420E7 /* FaunaInstances.m in Sources */,
+				07115BE7169D136F001420E7 /* FaunaTimelines.m in Sources */,
+				07115BE8169D136F001420E7 /* FaunaTokens.m in Sources */,
+				07115BE9169D136F001420E7 /* FaunaUsers.m in Sources */,
+				07115C02169D17F9001420E7 /* FaunaCommand.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

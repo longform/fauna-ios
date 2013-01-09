@@ -22,8 +22,8 @@
   
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-  self.viewController =  [[FaunaExampleViewController alloc] initWithNibName:@"FaunaExampleViewController" bundle:nil];
-  self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+  self.viewController = [[UINavigationController alloc] initWithRootViewController:[[FaunaExampleViewController alloc] initWithNibName:@"FaunaExampleViewController" bundle:nil]];
+  self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -60,7 +60,7 @@
 - (void)initializeFauna {
   
   // Initializes the Fauna Environment with a Client Key  
-  Fauna.current = [[FaunaContext alloc] initWithClientKey:@"AQEARsraT2AAAABB9FVmsAAAbY0oke9aVrU2J4HEdI7poQ"];
+  Fauna.current = [[FaunaContext alloc] initWithClientKeyString:@"AQEARsraT2AAAABB9FVmsAAAbY0oke9aVrU2J4HEdI7poQ"];
 
 }
 

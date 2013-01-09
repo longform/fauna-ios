@@ -7,8 +7,7 @@
 //
 
 #import "FaunaExampleMessageComposerViewController.h"
-#import <Fauna/FaunaInstance.h>
-#import <Fauna/FaunaTimeline.h>
+#import <Fauna/Fauna.h>
 
 @implementation FaunaExampleMessageComposerViewController
 
@@ -34,22 +33,26 @@
 }
 
 - (void)sendAction:(id)sender {
-  FaunaInstance *instance = [[FaunaInstance alloc] init];
-  instance.className = @"message";
-  instance.data = @{@"body" : self.messageField.text};
-  [instance save:^(FaunaResponse *response, NSError *error) {
+  NSDictionary *newInstance = @{
+    @"class" : @"message",
+    @"data": @{
+      @"body" : self.messageField.text
+    }
+  };
+  [Fauna.current.instances create:newInstance callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
-      NSLog(@"Instance save error: %@", error);
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+      [alert show];
     } else {
-      FaunaInstance * instance = (FaunaInstance*)response.resource;
-      NSString * instanceReference = instance.reference;
-      NSLog(@"Instance saved successfully: %@", instanceReference);
-      [self.timeline add:instance callback:^(FaunaResponse *response, NSError *error) {
+      NSLog(@"Instance saved successfully: %@", response.resource);
+      NSDictionary *instance = response.resource;
+      [Fauna.current.timelines addInstance:instance[@"ref"] toTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
         if(error) {
           NSLog(@"Timeline add error: %@", error);
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+          [alert show];
         } else {
-          FaunaTimeline *timeline = (FaunaTimeline*)response.resource;
-          NSLog(@"Added to timeline successfully: %@", timeline.reference);
+          NSLog(@"Added to timeline successfully: %@", response.resource[@"ref"]);
           [self.navigationController dismissModalViewControllerAnimated:YES];
         }
       }];

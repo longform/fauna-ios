@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FaunaExampleSignupViewController : UIViewController
+@interface FaunaExampleSignupViewController : UIViewController<UIAlertViewDelegate>
 
 - (IBAction)signupAction:(id)sender;
 

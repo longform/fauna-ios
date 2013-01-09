@@ -13,24 +13,15 @@
 
 @implementation FaunaResponse
 
-- (id)initWithContext:(FaunaContext*) context response:(NSDictionary*)responseDictionary andRootResourceClass:(Class)rootResourceClass {
-  NSAssert(context, @"Context is required in order to initialize FaunaResponse");
++ (FaunaResponse*)responseWithDictionary:(NSDictionary*)responseDictionary {
+  return [[self alloc] initWithDictionary:responseDictionary];
+}
+
+- (id)initWithDictionary:(NSDictionary*)responseDictionary {
+  NSAssert(responseDictionary, @"responseDictionary is required to initialize FaunaResponse");
   if(self = [super init]) {
-    self.context = context;
-    id res = [rootResourceClass alloc];
-    self.resource = [res initWithDictionary:[responseDictionary objectForKey:kResourceKey]];
-    
-    NSDictionary * refDictionary = [responseDictionary objectForKey:kReferencesKey];
-    NSMutableDictionary * references = [NSMutableDictionary dictionaryWithCapacity:refDictionary.count];
-    if(refDictionary) {
-      // Translate all the references from the API response into a dictionary filled with FaunaResource instances.
-      for (NSString *refId in [refDictionary allKeys]) {
-        NSMutableDictionary *resourceDict = [refDictionary objectForKey:refId];
-        FaunaResource *resource = [[FaunaResource alloc] initWithContext:self.context andDictionary:resourceDict];
-        [references setObject:resource forKey:refId];
-      }
-    }
-    self.references = references;
+    self.resource = [responseDictionary objectForKey:kResourceKey];    
+    self.references = [responseDictionary objectForKey:kReferencesKey];
   }
   return self;
 }

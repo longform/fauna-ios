@@ -6,26 +6,23 @@
 //  Copyright (c) 2012 Fauna. All rights reserved.
 //
 
-#import "FaunaResource.h"
-#import "FaunaContext.h"
-
 @interface FaunaResponse : NSObject
 
-- (id)initWithContext:(FaunaContext*) context response:(NSDictionary*)responseDictionary andRootResourceClass:(Class)rootResourceClass;
++ (FaunaResponse*)responseWithDictionary:(NSDictionary*)responseDictionary;
 
 /*!
- Returns the context associated with the response.
+ Initializes a FaunaResponse instance with a dictionary returned from the Server
  */
-@property (nonatomic, strong) FaunaContext *context;
+- (id)initWithDictionary:(NSDictionary*)responseDictionary;
 
 /*!
- Returns the resource retrieved from the server.
+ Returns the resource dictionary returned by the API.
  */
-@property (nonatomic, strong) FaunaResource *resource;
+@property (nonatomic, strong) NSDictionary *resource;
 
 /*!
- Returns a dictionary with FaunaResource instances related to the resource retrieved from the server.
+ Returns a dictionary of references in the resource.
  */
-@property (nonatomic, strong) NSMutableDictionary *references;
+@property (nonatomic, strong) NSDictionary *references;
 
 @end

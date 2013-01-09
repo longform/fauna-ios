@@ -7,52 +7,42 @@
 //
 
 #import "FaunaExampleSignupViewController.h"
-#import <Fauna/FaunaUser.h>
-
-@interface FaunaExampleSignupViewController ()
-
-@end
+#import <Fauna/Fauna.h>
 
 @implementation FaunaExampleSignupViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
-    // Custom initialization
-  }
-  return self;
-}
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  self.title = @"Sign Up";
   self.emailField.text = @"test@example.com";
   self.passwordField.text = @"my_pass";
   self.nameField.text = @"tester";
-  // Do any additional setup after loading the view from its nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)signupAction:(id)sender {
-  FaunaUser * user = [[FaunaUser alloc] init];
-  user.email = self.emailField.text;
-  user.password = self.passwordField.text;
-  user.name = self.nameField.text;
-  [user save:^(FaunaResponse *response, NSError *error) {
+  
+  // prepare user info data
+  NSDictionary * newUserInfo = @{
+    @"email" : self.emailField.text,
+    @"password" : self.passwordField.text,
+    @"name" : self.nameField.text
+  };
+  
+  [Fauna.current.users create:newUserInfo callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
-      NSLog(@"Error: %@", error);
+      UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+      [alert show];
     } else {
-      FaunaUser *user = (FaunaUser*)response.resource;
-      UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"HI %@", user.name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+      NSDictionary *userInfo = response.resource;
+      UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat %@", userInfo[@"name"]] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];
     }
   }];
+}
+
+- (void)alertViewCancel:(UIAlertView *)alertView {
+  
 }
 
 @end

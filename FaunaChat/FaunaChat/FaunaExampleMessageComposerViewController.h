@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong) IBOutlet UITextField *messageField;
 
-@property (nonatomic, strong) FaunaTimeline* timeline;
+@property (nonatomic, strong) NSString* timelineResource;
 
 @end

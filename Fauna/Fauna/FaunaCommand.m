@@ -10,7 +10,7 @@
 #import "Fauna.h"
 
 @implementation FaunaCommand
-
+/*
 + (void)execute:(NSString*)commandName params:(NSDictionary*)params callback:(FaunaResponseResultBlock)block {
   return [FaunaCommand execute:commandName params:params callback:block];
 }
@@ -28,5 +28,5 @@
     block(nil, error);
   }];
 }
-
+*/
 @end
