@@ -8,6 +8,7 @@
 
 #import "FaunaExampleRoomViewController.h"
 #import "FaunaExampleMessageComposerViewController.h"
+#import "FaunaExampleReplyViewController.h"
 
 @implementation FaunaExampleRoomViewController
 
@@ -118,13 +119,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  // Navigation logic may go here. Create and push another view controller.
-  /*
-   <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-   // ...
-   // Pass the selected object to the new view controller.
-   [self.navigationController pushViewController:detailViewController animated:YES];
-   */
+  NSArray* eventArray = ((NSArray*)self.currentPage[@"events"])[indexPath.row];
+  NSString* ref = (NSString*)eventArray[2];
+  NSDictionary* messageInstance = (NSDictionary*)[self.currentTimelineResponse.references objectForKey:ref];
+  
+  FaunaExampleReplyViewController *detailViewController = [[FaunaExampleReplyViewController alloc] initWithNibName:@"FaunaExampleReplyViewController" bundle:nil];
+  detailViewController.timelineResource = self.timelineResource;
+  detailViewController.message = messageInstance;
+  UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+  [self presentModalViewController:navController animated:YES];
 }
 
 #pragma mark - Post

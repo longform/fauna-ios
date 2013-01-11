@@ -12,6 +12,7 @@
 #import "FaunaUsers.h"
 #import "FaunaTokens.h"
 #import "FaunaInstances.h"
+#import "FaunaCommands.h"
 
 @interface FaunaContext : NSObject
 
@@ -57,5 +58,10 @@
  Manage Fauna Instances
  */
 @property (nonatomic, strong, readonly) FaunaInstances * instances;
+
+/*!
+ Manage Fauna Commands
+ */
+@property (nonatomic, strong, readonly) FaunaCommands * commands;
 
 @end

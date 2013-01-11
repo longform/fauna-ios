@@ -28,6 +28,8 @@
 		077E22951682C3A900FB0B30 /* FaunaExampleSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */; };
 		07B9D8B916866913002956FF /* FaunaExampleLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */; };
 		07B9D8BA16866913002956FF /* FaunaExampleLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */; };
+		07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */; };
+		07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,9 @@
 		07B9D8B616866913002956FF /* FaunaExampleLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleLoginViewController.h; sourceTree = "<group>"; };
 		07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleLoginViewController.m; sourceTree = "<group>"; };
 		07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleLoginViewController.xib; sourceTree = "<group>"; };
+		07E2455F169F83FD007B6CFE /* FaunaExampleReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleReplyViewController.h; sourceTree = "<group>"; };
+		07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleReplyViewController.m; sourceTree = "<group>"; };
+		07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleReplyViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +133,9 @@
 				0711CA14168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.h */,
 				0711CA15168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m */,
 				0711CA16168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib */,
+				07E2455F169F83FD007B6CFE /* FaunaExampleReplyViewController.h */,
+				07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */,
+				07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */,
 			);
 			path = FaunaChat;
 			sourceTree = "<group>";
@@ -216,6 +224,7 @@
 				07B9D8BA16866913002956FF /* FaunaExampleLoginViewController.xib in Resources */,
 				0711CA12168BD41C00CEEAA1 /* FaunaExampleRoomViewController.xib in Resources */,
 				0711CA18168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib in Resources */,
+				07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +242,7 @@
 				07B9D8B916866913002956FF /* FaunaExampleLoginViewController.m in Sources */,
 				0711CA11168BD41C00CEEAA1 /* FaunaExampleRoomViewController.m in Sources */,
 				0711CA17168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m in Sources */,
+				07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -38,7 +38,10 @@
     [_tokens performSelector:@selector(setClient:) withObject:_keyClient];
     
     _instances = [[FaunaInstances alloc] init];
-    [_instances performSelector:@selector(setClient:) withObject:_keyClient];
+    [_instances performSelector:@selector(setClient:) withObject:_userClient];
+    
+    _commands = [[FaunaCommands alloc] init];
+    [_commands performSelector:@selector(setClient:) withObject:_userClient];
     
   }
   return self;
