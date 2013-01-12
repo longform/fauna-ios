@@ -46,4 +46,23 @@
   }];
 }
 
+- (void)update:(NSString*)ref changes:(NSDictionary*)changes callback:(FaunaResponseResultBlock)block {
+  NSAssert(ref, @"ref is required");
+  NSArray * arr = [ref componentsSeparatedByString:@"/"];
+  
+  // works when ref is just the number of the instance.
+  // E.g. "123445678" and also for "instances/123445678"
+  NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
+  
+  NSDictionary *sendParams = changes;
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, resourcePath];
+  [self.client putPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
+    FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject];
+    block(response, nil);
+  } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Error updating instance: %@", error);
+    block(nil, error);
+  }];
+}
+
 @end

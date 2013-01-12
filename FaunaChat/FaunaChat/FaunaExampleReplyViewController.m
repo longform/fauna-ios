@@ -7,6 +7,7 @@
 //
 
 #import "FaunaExampleReplyViewController.h"
+#import "FaunaExampleMessageEditorViewController.h"
 #import <Fauna/Fauna.h>
 
 @implementation FaunaExampleReplyViewController
@@ -23,6 +24,12 @@
 
 - (void)cancelAction:(id)sender {
   [self.navigationController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)editAction:(id)sender {
+  FaunaExampleMessageEditorViewController *controller = [[FaunaExampleMessageEditorViewController alloc] initWithNibName:@"FaunaExampleMessageEditorViewController" bundle:nil];
+  controller.message = self.message;
+  [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)sendAction:(id)sender {
