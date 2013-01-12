@@ -12,4 +12,6 @@
 
 - (void)create:(NSDictionary*)instance callback:(FaunaResponseResultBlock)block;
 
+- (void)destroy:(NSString*)ref callback:(FaunaSimpleResultBlock)block;
+
 @end

@@ -15,4 +15,6 @@
 
 typedef void (^FaunaResponseResultBlock)(FaunaResponse* response, NSError *error);
 
+typedef void (^FaunaSimpleResultBlock)(NSError *error);
+
 #endif

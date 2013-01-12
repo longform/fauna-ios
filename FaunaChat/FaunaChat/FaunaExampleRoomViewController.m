@@ -32,6 +32,7 @@
     } else {
       self.currentTimelineResponse = response;
       self.currentPage = response.resource;
+      self.events = [[NSMutableArray alloc] initWithArray:self.currentPage[@"events"]];
       NSLog(@"Timeline page");
       [self.tableView reloadData];
     }
@@ -52,8 +53,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  NSArray * events = [self.currentPage valueForKeyPath:@"events"];
-  return events.count;
+  return self.events.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -66,7 +66,7 @@
   
   //HACK: These magic numbers and blind parsing are temporary, FaunaResponse should be smarter than this.
   // https://fauna.org/API#timelines
-  NSArray* eventArray = ((NSArray*)self.currentPage[@"events"])[indexPath.row];
+  NSArray* eventArray = self.events[indexPath.row];
   NSString* ref = (NSString*)eventArray[2];
   NSDictionary* messageInstance = (NSDictionary*)[self.currentTimelineResponse.references objectForKey:ref];
   NSDictionary* messageData = messageInstance[@"data"];
@@ -76,28 +76,31 @@
   return cell;
 }
 
-/*
+
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
  {
- // Return NO if you do not want the specified item to be editable.
  return YES;
  }
- */
 
-/*
  // Override to support editing the table view.
  - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
  {
  if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+   NSArray* eventArray = self.events[indexPath.row];
+   NSString* instanceRef = (NSString*)eventArray[2];
+   [self.events removeObjectAtIndex:indexPath.row];
+   [Fauna.current.instances destroy:instanceRef callback:^(NSError *error) {
+     if(error) {
+       NSLog(@"Message Instance destroy error: %@", error);
+     } else {
+       NSLog(@"Message Instance destroyed successfully");
+     }
+   }];
+   [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
  }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
  }
- }
- */
+ 
 
 /*
  // Override to support rearranging the table view.
@@ -119,7 +122,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSArray* eventArray = ((NSArray*)self.currentPage[@"events"])[indexPath.row];
+  NSArray* eventArray = self.events[indexPath.row];
   NSString* ref = (NSString*)eventArray[2];
   NSDictionary* messageInstance = (NSDictionary*)[self.currentTimelineResponse.references objectForKey:ref];
   

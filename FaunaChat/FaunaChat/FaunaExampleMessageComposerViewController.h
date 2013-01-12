@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Fauna/FaunaTimeline.h>
 
 @interface FaunaExampleMessageComposerViewController : UIViewController
 

@@ -16,6 +16,13 @@
   [super viewDidLoad];
   self.title = @"Reply";
   self.lblMessage.text = [self.message valueForKeyPath:@"data.body"];
+  
+  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(sendAction:)];
+}
+
+- (void)cancelAction:(id)sender {
+  [self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)sendAction:(id)sender {
