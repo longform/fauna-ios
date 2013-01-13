@@ -65,4 +65,22 @@
   }];
 }
 
+- (void)details:(NSString*)ref callback:(FaunaResponseResultBlock)block {
+  NSAssert(ref, @"ref is required");
+  NSArray * arr = [ref componentsSeparatedByString:@"/"];
+  
+  // works when ref is just the number of the instance.
+  // E.g. "123445678" and also for "instances/123445678"
+  NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
+  
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, resourcePath];
+  [self.client getPath:path parameters:nil success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
+    FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject];
+    block(response, nil);
+  } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Error querying instance details: %@", error);
+    block(nil, error);
+  }];
+}
+
 @end

@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) IBOutlet UITextField * txtMessage;
 
-@property (nonatomic, strong) IBOutlet NSDictionary * message;
+@property (nonatomic, strong) IBOutlet NSString * messageRef;
 
 @property (nonatomic, strong) NSString* timelineResource;
 

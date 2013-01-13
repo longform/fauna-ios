@@ -28,7 +28,7 @@
 
 - (void)editAction:(id)sender {
   FaunaExampleMessageEditorViewController *controller = [[FaunaExampleMessageEditorViewController alloc] initWithNibName:@"FaunaExampleMessageEditorViewController" bundle:nil];
-  controller.message = self.message;
+  controller.messageRef = self.message[@"ref"];
   [self.navigationController pushViewController:controller animated:YES];
 }
 

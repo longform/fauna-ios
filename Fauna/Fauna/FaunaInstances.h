@@ -16,4 +16,6 @@
 
 - (void)update:(NSString*)ref changes:(NSDictionary*)changes callback:(FaunaResponseResultBlock)block;
 
+- (void)details:(NSString*)ref callback:(FaunaResponseResultBlock)block;
+
 @end

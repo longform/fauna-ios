@@ -8,6 +8,17 @@
 
 #import "FaunaExampleMessageEditorViewController.h"
 #import <Fauna/Fauna.h>
+#import "SVProgressHUD.h"
+
+@interface FaunaExampleMessageEditorViewController ()
+
+- (void)loadMessageDetails;
+
+- (void)showMessageDetails;
+
+@property (nonatomic, strong) IBOutlet NSDictionary * message;
+
+@end
 
 @implementation FaunaExampleMessageEditorViewController
 
@@ -26,7 +37,31 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  [self loadMessageDetails];
+}
+
+- (void)loadMessageDetails {
+  [SVProgressHUD showWithStatus:@"Loading"];
+  [Fauna.current.instances details:self.messageRef callback:^(FaunaResponse *response, NSError *error) {
+    if(error) {
+      [SVProgressHUD dismiss];
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+      [alert show];
+    } else {
+      NSLog(@"Instance details retrieved successfully: %@", response.resource);
+      self.message = response.resource;
+      [self showMessageDetails];
+      [SVProgressHUD showSuccessWithStatus:@"Done"];
+    }
+  }];
+}
+
+- (void)showMessageDetails {
   self.txtMessage.text = [self.message valueForKeyPath:@"data.body"];
+}
+
+- (void)cancelAction:(id)sender {
+  [self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)sendAction:(id)sender {
@@ -42,9 +77,9 @@
       [alert show];
     } else {
       NSLog(@"Instance updated successfully: %@", response.resource);
-      NSDictionary *instance = response.resource;
       [self.navigationController dismissModalViewControllerAnimated:YES];
     }
-  }];}
+  }];
+}
 
 @end

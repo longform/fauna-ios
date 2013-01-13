@@ -32,6 +32,9 @@
 		07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */; };
 		07E2457C16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2457A16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m */; };
 		07E2457D16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E2457B16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib */; };
+		07E2458616A2D3D0007B6CFE /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07E2458316A2D3D0007B6CFE /* SVProgressHUD.bundle */; };
+		07E2458716A2D3D0007B6CFE /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */; };
+		07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E2458816A2D3EF007B6CFE /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +74,10 @@
 		07E2457916A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleMessageEditorViewController.h; sourceTree = "<group>"; };
 		07E2457A16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleMessageEditorViewController.m; sourceTree = "<group>"; };
 		07E2457B16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleMessageEditorViewController.xib; sourceTree = "<group>"; };
+		07E2458316A2D3D0007B6CFE /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		07E2458416A2D3D0007B6CFE /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		07E2458816A2D3EF007B6CFE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */,
 				074CF7AB1678718200686606 /* libFauna.a in Frameworks */,
 				074CF6C0167855AD00686606 /* UIKit.framework in Frameworks */,
 				074CF6C2167855AD00686606 /* Foundation.framework in Frameworks */,
@@ -109,6 +117,7 @@
 		074CF6BE167855AD00686606 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07E2458816A2D3EF007B6CFE /* QuartzCore.framework */,
 				074CF6BF167855AD00686606 /* UIKit.framework */,
 				074CF6C1167855AD00686606 /* Foundation.framework */,
 				074CF6C3167855AD00686606 /* CoreGraphics.framework */,
@@ -119,6 +128,7 @@
 		074CF6C5167855AD00686606 /* FaunaChat */ = {
 			isa = PBXGroup;
 			children = (
+				07E2457F16A2D275007B6CFE /* ThirdParty */,
 				074CF7C816788F5100686606 /* Resources */,
 				074CF6CE167855AE00686606 /* FaunaExampleAppDelegate.h */,
 				074CF6CF167855AE00686606 /* FaunaExampleAppDelegate.m */,
@@ -168,6 +178,24 @@
 				074CF7C916788F7800686606 /* fauna_logo_small.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		07E2457F16A2D275007B6CFE /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				07E2458216A2D3B5007B6CFE /* SVProgressHUD */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		07E2458216A2D3B5007B6CFE /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				07E2458316A2D3D0007B6CFE /* SVProgressHUD.bundle */,
+				07E2458416A2D3D0007B6CFE /* SVProgressHUD.h */,
+				07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */,
+			);
+			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,6 +262,7 @@
 				0711CA18168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib in Resources */,
 				07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */,
 				07E2457D16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib in Resources */,
+				07E2458616A2D3D0007B6CFE /* SVProgressHUD.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +282,7 @@
 				0711CA17168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m in Sources */,
 				07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */,
 				07E2457C16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m in Sources */,
+				07E2458716A2D3D0007B6CFE /* SVProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
