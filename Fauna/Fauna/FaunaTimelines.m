@@ -17,7 +17,7 @@
 
 @interface FaunaTimelines ()
 
-- (void)pageFromTimeline:(NSString*)timelineReference count:(NSInteger)count before:(NSDate*)before after:(NSDate*)after callback:(FaunaResponseResultBlock)block;
+- (void)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after callback:(FaunaResponseResultBlock)block;
 
 @property (nonatomic, strong) FaunaAFHTTPClient * client;
 
@@ -41,13 +41,13 @@
 }
 
 - (void)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block {
-  [self pageFromTimeline:timelineReference count:count before:nil after:nil callback:block];
+  [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil callback:block];
 }
 
-- (void)pageFromTimeline:(NSString*)timelineReference count:(NSInteger)count before:(NSDate*)before after:(NSDate*)after callback:(FaunaResponseResultBlock)block {
+- (void)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after callback:(FaunaResponseResultBlock)block {
   NSMutableDictionary *sendParams = [[NSMutableDictionary alloc] initWithCapacity:3];
   if(count) {
-    [sendParams setObject:[NSNumber numberWithInteger:count] forKey:kCountKey];
+    [sendParams setObject:count forKey:kCountKey];
   }
   if(before) {
     [sendParams setObject:[NSNumber numberWithDouble:[before timeIntervalSince1970]] forKey:kBeforeKey];
@@ -62,6 +62,22 @@
   } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
     block(nil, error);
   }];
+}
+
+- (void)pageFromTimeline:(NSString *)timelineReference after:(NSDate *)after callback:(FaunaResponseResultBlock)block {
+  [self pageFromTimeline:timelineReference count:nil before:nil after:after callback:block];
+}
+
+- (void)pageFromTimeline:(NSString *)timelineReference after:(NSDate *)after withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block {
+  [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:after callback:block];
+}
+
+- (void)pageFromTimeline:(NSString *)timelineReference before:(NSDate *)before callback:(FaunaResponseResultBlock)block {
+  [self pageFromTimeline:timelineReference count:nil before:before after:nil callback:block];
+}
+
+- (void)pageFromTimeline:(NSString *)timelineReference before:(NSDate *)before withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block {
+  [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:before after:nil callback:block];
 }
 
 @end
