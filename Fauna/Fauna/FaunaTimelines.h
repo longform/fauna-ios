@@ -16,6 +16,8 @@
 
 - (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
 
+- (void)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
+
 #pragma mark - Queries
 
 - (void)pageFromTimeline:(NSString*)timelineReference withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;

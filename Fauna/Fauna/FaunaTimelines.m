@@ -7,6 +7,7 @@
 //
 
 #import "FaunaTimelines.h"
+#import "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h"
 #define kResourceKey @"resource"
 #define kRefKey @"ref"
 #define kCountKey @"count"
@@ -33,6 +34,20 @@
   NSDictionary *sendParams = @{kResourceKey : instanceReference};
   NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
   [self.client postPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
+    FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject];
+    block(response, nil);
+  } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
+    block(nil, error);
+  }];
+}
+
+- (void)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block {
+  NSAssert(instanceReference, @"instanceReference is required");
+  NSAssert(timelineReference, @"timelineReference is required");
+  NSAssert(block, @"block is required");
+  NSDictionary *sendParams = @{kResourceKey : instanceReference};
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
+  [self.client deleteBodyPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
     FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject];
     block(response, nil);
   } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {

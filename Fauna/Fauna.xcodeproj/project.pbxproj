@@ -36,6 +36,7 @@
 		07E24568169FB2E1007B6CFE /* FaunaTimelines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07115BDF169D136F001420E7 /* FaunaTimelines.h */; };
 		07E24569169FB2E1007B6CFE /* FaunaTokens.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07115BE1169D136F001420E7 /* FaunaTokens.h */; };
 		07E2456A169FB2E1007B6CFE /* FaunaUsers.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07115BE3169D136F001420E7 /* FaunaUsers.h */; };
+		07E2459316A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2459216A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -97,6 +98,8 @@
 		07B60622167AD39100CD6604 /* FaunaAFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FaunaAFHTTPClient.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		07B60623167AD39100CD6604 /* FaunaAFJSONUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaAFJSONUtilities.h; sourceTree = "<group>"; };
 		07B60624167AD39100CD6604 /* FaunaAFJSONUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaAFJSONUtilities.m; sourceTree = "<group>"; };
+		07E2459116A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h"; sourceTree = "<group>"; };
+		07E2459216A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +187,8 @@
 				07B60622167AD39100CD6604 /* FaunaAFHTTPClient.m */,
 				07B60623167AD39100CD6604 /* FaunaAFJSONUtilities.h */,
 				07B60624167AD39100CD6604 /* FaunaAFJSONUtilities.m */,
+				07E2459116A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h */,
+				07E2459216A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m */,
 			);
 			path = AFNetworking;
 			sourceTree = "<group>";
@@ -252,6 +257,7 @@
 				07115BE8169D136F001420E7 /* FaunaTokens.m in Sources */,
 				07115BE9169D136F001420E7 /* FaunaUsers.m in Sources */,
 				07115C02169D17F9001420E7 /* FaunaCommands.m in Sources */,
+				07E2459316A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

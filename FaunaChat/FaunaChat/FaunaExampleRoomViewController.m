@@ -90,11 +90,26 @@
    NSArray* eventArray = self.events[indexPath.row];
    NSString* instanceRef = (NSString*)eventArray[2];
    [self.events removeObjectAtIndex:indexPath.row];
-   [Fauna.current.instances destroy:instanceRef callback:^(NSError *error) {
+   
+   // Remove instance from Timeline.
+   [Fauna.current.timelines removeInstance:instanceRef fromTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
      if(error) {
-       NSLog(@"Message Instance destroy error: %@", error);
+       NSLog(@"Message Remove from Timeline error: %@", error);
+       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+       [alert show];
      } else {
-       NSLog(@"Message Instance destroyed successfully");
+       NSLog(@"Message Removed from timeline successfully: %@", response.resource);
+       
+       // Destroy the instance of 'message'.
+       [Fauna.current.instances destroy:instanceRef callback:^(NSError *error) {
+         if(error) {
+           NSLog(@"Message Instance destroy error: %@", error);
+           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+           [alert show];
+         } else {
+           NSLog(@"Message Instance destroyed successfully");
+         }
+       }];
      }
    }];
    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

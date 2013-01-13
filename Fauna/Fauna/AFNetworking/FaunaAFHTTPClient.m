@@ -143,6 +143,7 @@ static NSString * AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(NS
 
 extern NSArray * AFQueryStringPairsFromDictionary(NSDictionary *dictionary);
 extern NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value);
+extern NSString * AFQueryStringFromParametersWithEncoding(NSDictionary *parameters, NSStringEncoding stringEncoding);
 
 NSString * AFQueryStringFromParametersWithEncoding(NSDictionary *parameters, NSStringEncoding stringEncoding) {
     NSMutableArray *mutablePairs = [NSMutableArray array];
@@ -174,8 +175,7 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
     
     return mutableQueryStringComponents;
 }
-
-static NSString * AFJSONStringFromParameters(NSDictionary *parameters) {
+extern NSString * AFJSONStringFromParameters(NSDictionary *parameters) {
     NSError *error = nil;
     NSData *JSONData = FaunaAFJSONEncode(parameters, &error);
     
@@ -186,7 +186,7 @@ static NSString * AFJSONStringFromParameters(NSDictionary *parameters) {
     }
 }
 
-static NSString * AFPropertyListStringFromParameters(NSDictionary *parameters) {
+extern NSString * AFPropertyListStringFromParameters(NSDictionary *parameters) {
     NSString *propertyListString = nil;
     NSError *error = nil;
     
