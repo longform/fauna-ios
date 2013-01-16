@@ -10,35 +10,34 @@ Fauna SDK for iOS + Examples
 
 ### API Coverage
 
-The iOS SDK provides client classes to consume most of the features available in the API under [Client Key or User Token](https://fauna.org/API).
+The Fauna SDK for iOS is designed for use in distributions of client applications. It provides access to the parts of the Fauna API accessible via [Client Keys](https://fauna.org/API) and [Tokens](https://fauna.org/API):
 
 * [User Signup, Tokens and Passwords](https://fauna.org/API#resources-users)
 * [Timelines](https://fauna.org/API#timelines)
 * [Instances](https://fauna.org/API#resources-instances)
 * [Commands](https://fauna.org/API#access_model-commands)
 
+It does not currently provide access to publisher or administrative features of the API.
+
 ### Content
 
 The code is organized in two projects under a single XCode workspace:
 
 * Fauna: Fauna API Client.
-* FaunaChat: A simple Example Chat-like application that uses Fauna Platform and the Fauna Chat SDK.
+* FaunaChat: A simple Example Chat-like application built with the Fauna API Client.
 
 ### Running the Example Project
 
-1. Having [git](http://git-scm.com/) and Xcode installed:
-
-    git clone git@github.com:fauna/fauna-ios.git
-    ( cd fauna-ios ; open Fauna-iOS.xcworkspace )
-
-3. Select FaunaChat scheme in Xcode.
-2. Run the *FaunaChat* project.
-
+1. `git clone git@github.com:fauna/fauna-ios.git`
+2. `cd fauna-ios`
+3. `open Fauna-iOS.xcworkspace`
+4. Select FaunaChat scheme in Xcode.
+5. Run the *FaunaChat* project.
 
 ### Using Fauna SDK in your Xcode Project
 
-1. Clone the SDK using `git clone`.
-2. Close all the Xcode projects related to the Fauna SDK (workspace, Fauna, FaunaChat, etc).
+1. `git clone git@github.com:fauna/fauna-ios.git`
+2. Close any open Xcode projects related to the Fauna SDK (workspace, Fauna, FaunaChat, etc).
 2. Open your Xcode project and using Finder, go to the directory fauna-ios/Fauna and Drag and Drop the file `Fauna.xcodeproj` into your Xcode project, right under the root of your project.
     Your Xcode project structure should now look like this:
 
