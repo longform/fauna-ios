@@ -10,6 +10,8 @@
 #import "FaunaExampleMessageComposerViewController.h"
 #import "FaunaExampleReplyViewController.h"
 
+#define kEventsPageSize 30
+
 @implementation FaunaExampleRoomViewController
 
 - (void)viewDidLoad
@@ -26,13 +28,24 @@
 }
 
 - (void)reloadTimeline {
-  [Fauna.client.timelines pageFromTimeline:self.timelineResource withCount:10 callback:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client.timelines pageFromTimeline:self.timelineResource withCount:kEventsPageSize callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
       NSLog(@"Error retrieving timeline: %@", error);
     } else {
       self.currentTimelineResponse = response;
       self.currentPage = response.resource;
-      self.events = [[NSMutableArray alloc] initWithArray:self.currentPage[@"events"]];
+      
+      NSArray * incomingEvents = self.currentPage[@"events"];
+      
+      self.events = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
+      
+      // filter for "create" event only.
+      for (NSArray * event in incomingEvents) {
+        if([@"create" isEqualToString:event[1]]) {
+          [_events addObject:event];
+        }
+      }
+      
       NSLog(@"Timeline page");
       [self.tableView reloadData];
     }
