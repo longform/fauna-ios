@@ -10,9 +10,19 @@
 #import "FaunaAFNetworking.h"
 #define kFaunaTokenUserKey @"FaunaContextUserToken"
 
-@interface FaunaContext (Internal)
+@interface FaunaContext ()
 
 + (FaunaAFHTTPClient*)createHTTPClient;
+
+/*!
+ Returns the HTTP Client enabled with Client Key.
+ */
+@property (nonatomic, strong, readonly) FaunaAFHTTPClient *keyClient;
+
+/*!
+ Returns the HTTP Client enabled with the current User Token.
+ */
+@property (nonatomic, strong, readonly) FaunaAFHTTPClient *userClient;
 
 @end
 

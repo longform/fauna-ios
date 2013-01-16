@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaAFNetworking.h"
 #import "FaunaTimelines.h"
 #import "FaunaUsers.h"
 #import "FaunaTokens.h"
@@ -29,15 +28,6 @@
  */
 @property (nonatomic, strong) NSString *userToken;
 
-/*!
- Returns the HTTP Client enabled with Client Key.
- */
-@property (nonatomic, strong, readonly) FaunaAFHTTPClient *keyClient;
-
-/*!
- Returns the HTTP Client enabled with the current User Token.
- */
-@property (nonatomic, strong, readonly) FaunaAFHTTPClient *userClient;
 
 /*!
  Manage Fauna Timelines

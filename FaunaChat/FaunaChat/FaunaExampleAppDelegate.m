@@ -7,7 +7,6 @@
 //
 
 #import "FaunaExampleAppDelegate.h"
-
 #import "FaunaExampleViewController.h"
 
 @interface FaunaExampleAppDelegate()
