@@ -26,7 +26,7 @@
 }
 
 - (void)reloadTimeline {
-  [Fauna.current.timelines pageFromTimeline:self.timelineResource withCount:10 callback:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client.timelines pageFromTimeline:self.timelineResource withCount:10 callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
       NSLog(@"Error retrieving timeline: %@", error);
     } else {
@@ -92,7 +92,7 @@
    [self.events removeObjectAtIndex:indexPath.row];
    
    // Remove instance from Timeline.
-   [Fauna.current.timelines removeInstance:instanceRef fromTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
+   [Fauna.client.timelines removeInstance:instanceRef fromTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
      if(error) {
        NSLog(@"Message Remove from Timeline error: %@", error);
        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -101,7 +101,7 @@
        NSLog(@"Message Removed from timeline successfully: %@", response.resource);
        
        // Destroy the instance of 'message'.
-       [Fauna.current.instances destroy:instanceRef callback:^(NSError *error) {
+       [Fauna.client.instances destroy:instanceRef callback:^(NSError *error) {
          if(error) {
            NSLog(@"Message Instance destroy error: %@", error);
            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

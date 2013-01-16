@@ -10,7 +10,7 @@
 #import "FaunaConstants.h"
 
 /*!
- Fauna User Token.
+ Fauna User Tokens.
  
  See https://fauna.org/API#access_model-tokens
  */

@@ -59,7 +59,7 @@
 - (void)initializeFauna {
   
   // Initializes the Fauna Environment with a Client Key  
-  Fauna.current = [[FaunaContext alloc] initWithClientKeyString:@"AQEARsraT2AAAABB9FVmsAAAbY0oke9aVrU2J4HEdI7poQ"];
+  Fauna.client = [[FaunaClient alloc] initWithClientKeyString:@"AQEARsraT2AAAABB9FVmsAAAbY0oke9aVrU2J4HEdI7poQ"];
 
 }
 

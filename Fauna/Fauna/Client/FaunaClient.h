@@ -13,7 +13,7 @@
 #import "FaunaInstances.h"
 #import "FaunaCommands.h"
 
-@interface FaunaContext : NSObject
+@interface FaunaClient : NSObject
 
 - (id)init;
 

@@ -39,14 +39,14 @@
       @"body" : self.messageField.text
     }
   };
-  [Fauna.current.instances create:newInstance callback:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client.instances create:newInstance callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];
     } else {
       NSLog(@"Instance saved successfully: %@", response.resource);
       NSDictionary *instance = response.resource;
-      [Fauna.current.timelines addInstance:instance[@"ref"] toTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
+      [Fauna.client.timelines addInstance:instance[@"ref"] toTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
         if(error) {
           NSLog(@"Timeline add error: %@", error);
           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

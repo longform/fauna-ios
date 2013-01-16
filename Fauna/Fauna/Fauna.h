@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaContext.h"
+#import "FaunaClient.h"
 
 /*!
  Fauna
@@ -17,14 +17,14 @@
 /** @name Initializing Fauna */
 
 /*!
- Returns the current FaunaContext instance in use for the current app. The instance is shared across all threads, however, this property is not thread-safe.
+ Returns the current FaunaClient instance.
  */
-+(FaunaContext*) current;
++(FaunaClient*) client;
 
 /*!
- Sets the current FaunaContext associated for the current app.
- @param current new global Context to use in the current app.
+ Sets the current FaunaClient associated for the current app.
+ @param current new global Client to use in the current app.
  */
-+(void)setCurrent:(FaunaContext*)current;
++(void)setClient:(FaunaClient*)client;
 
 @end

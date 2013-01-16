@@ -33,14 +33,14 @@
 }
 
 - (IBAction)sendAction:(id)sender {
-  [Fauna.current.commands execute:@"reply_message" params:@{@"body": self.txtMessage.text} callback:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client.commands execute:@"reply_message" params:@{@"body": self.txtMessage.text} callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
       NSLog(@"Command execute error: %@", error);
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];
     } else {
       NSLog(@"Command executed successfully: %@", response.resource);
-      [Fauna.current.timelines addInstance:response.resource[@"ref"] toTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
+      [Fauna.client.timelines addInstance:response.resource[@"ref"] toTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
         if(error) {
           NSLog(@"Timeline add error: %@", error);
           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

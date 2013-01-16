@@ -10,14 +10,14 @@
 
 @implementation Fauna
 
-static FaunaContext *_current;
+static FaunaClient *_client;
 
-+(FaunaContext*) current {
-  return _current;
++(FaunaClient*) client {
+  return _client;
 }
 
-+(void)setCurrent:(FaunaContext*)context {
-  _current = context;
++(void)setClient:(FaunaClient*)client {
+  _client = client;
 }
 
 @end

@@ -23,7 +23,7 @@
     @"email": self.emailField.text,
     @"password": self.passwordField.text
   };
-  [Fauna.current.tokens create:credentials block:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client.tokens create:credentials block:^(FaunaResponse *response, NSError *error) {
     if(error) {
       UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];
@@ -32,7 +32,7 @@
       NSString * token = tokenInfo[@"token"];
       
       // set the token in the fauna context
-      Fauna.current.userToken = token;
+      Fauna.client.userToken = token;
       
       NSLog(@"Token: %@", token);
       UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat!"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

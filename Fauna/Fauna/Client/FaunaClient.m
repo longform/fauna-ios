@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 Fauna. All rights reserved.
 //
 
-#import "FaunaContext.h"
+#import "FaunaClient.h"
 #import "FaunaAFNetworking.h"
 #define kFaunaTokenUserKey @"FaunaContextUserToken"
 
-@interface FaunaContext ()
+@interface FaunaClient ()
 
 + (FaunaAFHTTPClient*)createHTTPClient;
 
@@ -26,13 +26,13 @@
 
 @end
 
-@implementation FaunaContext
+@implementation FaunaClient
 
 - (id)init {
   self = [super init];
   if(self) {
-    _keyClient = [FaunaContext createHTTPClient];
-    _userClient = [FaunaContext createHTTPClient];
+    _keyClient = [FaunaClient createHTTPClient];
+    _userClient = [FaunaClient createHTTPClient];
     
     // Load persisted user token
     NSString *persistedTokenString = [[NSUserDefaults standardUserDefaults] objectForKey:kFaunaTokenUserKey];
