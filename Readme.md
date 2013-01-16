@@ -31,8 +31,7 @@ The code is organized in two projects under a single XCode workspace:
 1. `git clone git@github.com:fauna/fauna-ios.git`
 2. `cd fauna-ios`
 3. `open Fauna-iOS.xcworkspace`
-4. Select FaunaChat scheme in Xcode.
-5. Run the *FaunaChat* project.
+4. Run the project.
 
 ### Using Fauna SDK in your Xcode Project
 

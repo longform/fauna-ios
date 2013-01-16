@@ -53,6 +53,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "074CF6BA167855AD00686606"
+            BuildableName = "FaunaChat.app"
+            BlueprintName = "FaunaChat"
+            ReferencedContainer = "container:../FaunaChat/FaunaChat.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
