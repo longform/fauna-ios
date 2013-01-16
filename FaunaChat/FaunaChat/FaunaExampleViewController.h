@@ -16,4 +16,6 @@
 
 -(IBAction)chatRoomAction:(id)sender;
 
+-(IBAction)changePasswordAction:(id)sender;
+
 @end

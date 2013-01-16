@@ -9,11 +9,15 @@
 #import "FaunaUsers.h"
 #import "FaunaAFNetworking.h"
 
-@class FaunaContext;
+#define kPassword @"password"
+#define kNewPassword @"new_password"
+#define kNewPasswordConfirmation @"new_password_confirmation"
 
 @interface FaunaUsers ()
 
 @property (nonatomic, strong) FaunaAFHTTPClient * client;
+
+@property (nonatomic, strong) FaunaAFHTTPClient * userClient;
 
 @end
 
@@ -27,6 +31,20 @@
     block(response, nil);
   } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
     block(nil, error);
+  }];
+}
+
+- (void)changePassword:(NSString*)oldPassword newPassword:(NSString*)newPassword confirmation:(NSString*)confirmation callback:(FaunaSimpleResultBlock)block {
+  NSDictionary *sendParams = @{
+    kPassword : oldPassword,
+    kNewPassword: newPassword,
+    kNewPasswordConfirmation: confirmation
+  };
+  NSString * path = [NSString stringWithFormat:@"/%@/users/self/settings/password", FaunaAPIVersion];
+  [self.userClient putPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
+    block(nil);
+  } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
+    block(error);
   }];
 }
 

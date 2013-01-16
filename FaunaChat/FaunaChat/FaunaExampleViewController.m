@@ -10,6 +10,7 @@
 #import "FaunaExampleSignupViewController.h"
 #import "FaunaExampleLoginViewController.h"
 #import "FaunaExampleRoomViewController.h"
+#import "FaunaExampleChangePasswordViewController.h"
 
 @interface FaunaExampleViewController ()
 
@@ -35,6 +36,11 @@
 
 -(IBAction)chatRoomAction:(id)sender {
   FaunaExampleRoomViewController * controller = [[FaunaExampleRoomViewController alloc] initWithNibName:@"FaunaExampleRoomViewController" bundle:nil];
+  [self.navigationController pushViewController:controller animated:YES];
+}
+
+-(IBAction)changePasswordAction:(id)sender {
+  FaunaExampleChangePasswordViewController * controller = [[FaunaExampleChangePasswordViewController alloc] initWithNibName:@"FaunaExampleChangePasswordViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 

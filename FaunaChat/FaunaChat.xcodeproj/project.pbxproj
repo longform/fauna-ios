@@ -24,6 +24,8 @@
 		074CF6DC167855AE00686606 /* FaunaExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6DA167855AE00686606 /* FaunaExampleViewController.xib */; };
 		074CF7AB1678718200686606 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7AA1678718200686606 /* libFauna.a */; };
 		074CF7CA16788F7800686606 /* fauna_logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CF7C916788F7800686606 /* fauna_logo_small.png */; };
+		07603C2D16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */; };
+		07603C2E16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */; };
 		077E22941682C3A900FB0B30 /* FaunaExampleSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */; };
 		077E22951682C3A900FB0B30 /* FaunaExampleSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */; };
 		07B9D8B916866913002956FF /* FaunaExampleLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */; };
@@ -62,6 +64,9 @@
 		074CF6DB167855AE00686606 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FaunaExampleViewController.xib; sourceTree = "<group>"; };
 		074CF7AA1678718200686606 /* libFauna.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFauna.a; path = "../Fauna/build/Release-iphoneos/libFauna.a"; sourceTree = "<group>"; };
 		074CF7C916788F7800686606 /* fauna_logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fauna_logo_small.png; sourceTree = "<group>"; };
+		07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleChangePasswordViewController.h; sourceTree = "<group>"; };
+		07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleChangePasswordViewController.m; sourceTree = "<group>"; };
+		07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleChangePasswordViewController.xib; sourceTree = "<group>"; };
 		077E22911682C3A900FB0B30 /* FaunaExampleSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleSignupViewController.h; sourceTree = "<group>"; };
 		077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleSignupViewController.m; sourceTree = "<group>"; };
 		077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleSignupViewController.xib; sourceTree = "<group>"; };
@@ -154,6 +159,9 @@
 				07E2457916A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.h */,
 				07E2457A16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m */,
 				07E2457B16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib */,
+				07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */,
+				07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */,
+				07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */,
 			);
 			path = FaunaChat;
 			sourceTree = "<group>";
@@ -263,6 +271,7 @@
 				07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */,
 				07E2457D16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib in Resources */,
 				07E2458616A2D3D0007B6CFE /* SVProgressHUD.bundle in Resources */,
+				07603C2E16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +292,7 @@
 				07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */,
 				07E2457C16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m in Sources */,
 				07E2458716A2D3D0007B6CFE /* SVProgressHUD.m in Sources */,
+				07603C2D16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

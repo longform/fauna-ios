@@ -33,6 +33,7 @@
     
     _users = [[FaunaUsers alloc] init];
     [_users performSelector:@selector(setClient:) withObject:_keyClient];
+    [_users performSelector:@selector(setUserClient:) withObject:_userClient]; // also needed to change the password
     
     _tokens = [[FaunaTokens alloc] init];
     [_tokens performSelector:@selector(setClient:) withObject:_keyClient];
