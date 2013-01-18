@@ -8,6 +8,8 @@
 
 #import "FaunaClient.h"
 #import "FaunaAFNetworking.h"
+#import "FaunaCache.h"
+
 #define kFaunaTokenUserKey @"FaunaContextUserToken"
 
 @interface FaunaClient ()

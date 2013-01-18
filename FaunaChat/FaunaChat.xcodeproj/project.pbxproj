@@ -28,6 +28,7 @@
 		07603C5616A64BF600A9A885 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07603C5516A64BF600A9A885 /* libFauna.a */; };
 		077E22941682C3A900FB0B30 /* FaunaExampleSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */; };
 		077E22951682C3A900FB0B30 /* FaunaExampleSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */; };
+		0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693C16A8D96000B3639C /* libsqlite3.dylib */; };
 		07B9D8B916866913002956FF /* FaunaExampleLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */; };
 		07B9D8BA16866913002956FF /* FaunaExampleLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */; };
 		07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */; };
@@ -66,10 +67,11 @@
 		07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleChangePasswordViewController.h; sourceTree = "<group>"; };
 		07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleChangePasswordViewController.m; sourceTree = "<group>"; };
 		07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleChangePasswordViewController.xib; sourceTree = "<group>"; };
-		07603C5516A64BF600A9A885 /* libFauna.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libFauna.a; path = "../Fauna/build/Release-iphoneos/libFauna.a"; sourceTree = "<group>"; };
+		07603C5516A64BF600A9A885 /* libFauna.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFauna.a; path = "../Fauna/build/Release-iphoneos/libFauna.a"; sourceTree = "<group>"; };
 		077E22911682C3A900FB0B30 /* FaunaExampleSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleSignupViewController.h; sourceTree = "<group>"; };
 		077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleSignupViewController.m; sourceTree = "<group>"; };
 		077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleSignupViewController.xib; sourceTree = "<group>"; };
+		0786693C16A8D96000B3639C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		07B9D8B616866913002956FF /* FaunaExampleLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleLoginViewController.h; sourceTree = "<group>"; };
 		07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleLoginViewController.m; sourceTree = "<group>"; };
 		07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleLoginViewController.xib; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */,
 				07603C5616A64BF600A9A885 /* libFauna.a in Frameworks */,
 				07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */,
 				074CF6C0167855AD00686606 /* UIKit.framework in Frameworks */,
@@ -122,6 +125,7 @@
 		074CF6BE167855AD00686606 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0786693C16A8D96000B3639C /* libsqlite3.dylib */,
 				07E2458816A2D3EF007B6CFE /* QuartzCore.framework */,
 				074CF6BF167855AD00686606 /* UIKit.framework */,
 				074CF6C1167855AD00686606 /* Foundation.framework */,
@@ -374,6 +378,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FaunaChat/FaunaChat-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "FaunaChat/FaunaChat-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -391,6 +396,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FaunaChat/FaunaChat-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "FaunaChat/FaunaChat-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
