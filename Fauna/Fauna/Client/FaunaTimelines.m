@@ -15,12 +15,14 @@
 #define kAfterKey @"after"
 
 #import "FaunaAFNetworking.h"
+#import "FaunaCache.h"
 
 @interface FaunaTimelines ()
 
 - (void)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after callback:(FaunaResponseResultBlock)block;
 
 @property (nonatomic, strong) FaunaAFHTTPClient * client;
+@property (nonatomic, strong) FaunaCache * cache;
 
 @end
 
@@ -71,10 +73,29 @@
     [sendParams setObject:[NSNumber numberWithDouble:[after timeIntervalSince1970]] forKey:kAfterKey];
   }
   NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
+  NSString * responsePath = [FaunaResponse requestPathFromPath:path andMethod:@"GET"];
+  if(![FaunaCache shouldIgnoreCache]) {
+    // if response is cached, return it.
+    FaunaResponse * response = [_cache loadResponse:responsePath];
+    if(response) {
+      block(response, nil);
+      return;
+    }
+  }
+  
   [self.client getPath:path parameters:sendParams success:^(FaunaAFHTTPRequestOperation *operation, id responseObject) {
-    FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject];
+    FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
+    [_cache saveResponse:response];
     block(response, nil);
   } failure:^(FaunaAFHTTPRequestOperation *operation, NSError *error) {
+    // if there is an error, return from cache if current policy allow it.
+    if(![FaunaCache shouldIgnoreCache] && error.shouldRespondFromCache) {
+      FaunaResponse *response = [_cache loadResponse:responsePath];
+      if(response) {
+        block(response, nil);
+        return;
+      }
+    }
     block(nil, error);
   }];
 }

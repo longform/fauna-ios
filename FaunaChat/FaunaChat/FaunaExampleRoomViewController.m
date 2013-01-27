@@ -28,28 +28,33 @@
 }
 
 - (void)reloadTimeline {
-  [Fauna.client.timelines pageFromTimeline:self.timelineResource withCount:kEventsPageSize callback:^(FaunaResponse *response, NSError *error) {
-    if(error) {
-      NSLog(@"Error retrieving timeline: %@", error);
-    } else {
-      self.currentTimelineResponse = response;
-      self.currentPage = response.resource;
-      
-      NSArray * incomingEvents = self.currentPage[@"events"];
-      
-      self.events = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
-      
-      // filter for "create" event only.
-      for (NSArray * event in incomingEvents) {
-        if([@"create" isEqualToString:event[1]]) {
-          [_events addObject:event];
+  [FaunaCache ignoreCache:^{
+    [Fauna.client.timelines pageFromTimeline:self.timelineResource withCount:kEventsPageSize callback:^(FaunaResponse *response, NSError *error) {
+      if(error) {
+        NSLog(@"Error retrieving timeline: %@", error);
+      } else {
+        self.currentTimelineResponse = response;
+        self.currentPage = response.resource;
+        
+        NSArray * incomingEvents = self.currentPage[@"events"];
+        
+        self.events = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
+        
+        // filter for "create" event only.
+        for (NSArray * event in incomingEvents) {
+          if([@"create" isEqualToString:event[1]]) {
+            [_events addObject:event];
+          }
         }
+        if(response.cached) {
+          NSLog(@"Timeline page [cached]");
+        } else {
+          NSLog(@"Timeline page");
+        }
+        [self.tableView reloadData];
       }
-      
-      NSLog(@"Timeline page");
-      [self.tableView reloadData];
-    }
-  } ];
+      }];
+  }];
 }
 
 - (void)didReceiveMemoryWarning

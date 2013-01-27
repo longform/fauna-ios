@@ -12,6 +12,7 @@
 #import "FaunaTokens.h"
 #import "FaunaInstances.h"
 #import "FaunaCommands.h"
+#import "FaunaCache.h"
 
 @interface FaunaClient : NSObject
 
@@ -53,5 +54,10 @@
  Manage Fauna Commands
  */
 @property (nonatomic, strong, readonly) FaunaCommands * commands;
+
+/*!
+ Returns FaunaCache instance in use by the client.
+ */
+@property (nonatomic, strong, readonly) FaunaCache *cache;
 
 @end

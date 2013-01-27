@@ -14,6 +14,12 @@
 #define kRefColumnOrdinal 1
 #define kDataColumnOrdinal 2
 
+#define kPathColumnOrdinal 1
+#define kResourcesColumnOrdinal 2
+#define kReferencesColumnOrdinal 3
+#define kTLSCachePolicyKey @"FaunaCachePolicy"
+#define TLS [[NSThread currentThread] threadDictionary]
+
 @interface FaunaCache () {
   sqlite3 *database;
 }
@@ -87,6 +93,7 @@
 
 - (NSDictionary*)loadResource:(NSString*)ref {
   NSParameterAssert(ref);
+  
   SQLITE_STATUS status;
   sqlite3_stmt *statement;
   status = sqlite3_prepare_v2(database, "SELECT ROWID, REF, DATA FROM RESOURCES WHERE REF = ?", -1, &statement, NULL);
@@ -119,6 +126,13 @@
     NSLog(@"FaunaCache: failed to create table");
     return NO;
   }
+  status = sqlite3_exec(database,
+                        "CREATE TABLE IF NOT EXISTS RESPONSES (PATH TEXT PRIMARY KEY, REFS BLOB, RESS BLOB)",
+                        NULL, NULL, NULL);
+  if(status != SQLITE_OK) {
+    NSLog(@"FaunaCache: failed to create table: %@", [NSString stringWithUTF8String:sqlite3_errmsg(database)]);
+    return NO;
+  }
   return YES;
 }
 
@@ -127,6 +141,131 @@
   if(status != SQLITE_OK) {
     NSLog(@"FaunaCache: database closed with status %d", status);
   }
+}
+
+- (void)saveResponse:(FaunaResponse*)response {
+  NSParameterAssert(response);
+  
+  // save references data separately
+  for (NSMutableDictionary *resource in response.references.allValues) {
+    [self saveResource:resource];
+  }
+  NSMutableArray * resourcesRef = [[NSMutableArray alloc] initWithCapacity:response.resources.count];
+  
+  // save resources data separately
+  for (NSMutableDictionary *resource in response.resources) {
+    [self saveResource:resource];
+    [resourcesRef addObject:resource[@"ref"]];
+  }
+  
+  // only store ref strings of the references, we hydrate them later
+  NSArray *references = response.references.allKeys;
+  
+  NSString *requestPath = response.requestPath;
+  
+  SQLITE_STATUS status;
+  sqlite3_stmt *statement;
+  
+  status = sqlite3_prepare_v2(database, "INSERT OR REPLACE INTO RESPONSES (PATH, REFS, RESS) VALUES (?, ?, ?)", -1, &statement, NULL);
+  if(status != SQLITE_OK) {
+    NSLog(@"FaunaCache: Failed to prepare insert statement with status %d: %@", status, [NSString stringWithUTF8String:sqlite3_errmsg(database)]);
+    return;
+  }
+  
+  status = sqlite3_bind_text(statement, kPathColumnOrdinal, [requestPath UTF8String], -1, SQLITE_TRANSIENT);
+  if(status != SQLITE_OK) {
+    sqlite3_finalize(statement);
+    NSLog(@"FaunaCache: Failed to bind ref column with status %d", status);
+    return;
+  }
+  
+  NSData * referencesData = [NSKeyedArchiver archivedDataWithRootObject:references];
+  status = sqlite3_bind_blob(statement, kReferencesColumnOrdinal, [referencesData bytes], [referencesData length], SQLITE_TRANSIENT);
+  if(status != SQLITE_OK) {
+    sqlite3_finalize(statement);
+    NSLog(@"FaunaCache: Failed to bind references blob data column with status %d", status);
+    return;
+  }
+  
+  NSData * resourcesData = [NSKeyedArchiver archivedDataWithRootObject:resourcesRef];
+  status = sqlite3_bind_blob(statement, kResourcesColumnOrdinal, [resourcesData bytes], [resourcesData length], SQLITE_TRANSIENT);
+  if(status != SQLITE_OK) {
+    sqlite3_finalize(statement);
+    NSLog(@"FaunaCache: Failed to bind resources blob data column with status %d", status);
+    return;
+  }
+  
+  status = sqlite3_step(statement);
+  if(status != SQLITE_DONE) {
+    sqlite3_finalize(statement);
+    NSLog(@"FaunaCache: Failed to insert response in cache with status %d", status);
+    return;
+  }
+  sqlite3_finalize(statement);
+}
+
+static id readBlob(sqlite3_stmt *statement, int ordinal) {
+  int bytes = sqlite3_column_bytes(statement, ordinal);
+  NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(statement, ordinal) length:bytes];
+  return [NSKeyedUnarchiver unarchiveObjectWithData:blobData];
+}
+
+- (FaunaResponse*)loadResponse:(NSString*)responsePath {
+  NSParameterAssert(responsePath);
+  SQLITE_STATUS status;
+  sqlite3_stmt *statement;
+  status = sqlite3_prepare_v2(database, "SELECT ROWID, PATH, REFS, RESS FROM RESPONSES WHERE PATH = ?", -1, &statement, NULL);
+  if(status != SQLITE_OK) {
+    NSLog(@"FaunaCache: Failed to prepare insert statement with status %d", status);
+    return nil;
+  }
+  status = sqlite3_bind_text(statement, kPathColumnOrdinal, [responsePath UTF8String], -1, SQLITE_TRANSIENT);
+  if(status != SQLITE_OK) {
+    sqlite3_finalize(statement);
+    NSLog(@"FaunaCache: Failed to bind path column with status %d", status);
+    return nil;
+  }
+  FaunaResponse * response = nil;
+  NSArray * referencesList = nil;
+  NSArray * resourcesList = nil;
+  NSString * cachedResponsePath = nil;
+  while(sqlite3_step(statement) == SQLITE_ROW) {
+    cachedResponsePath = [NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, kPathColumnOrdinal)];
+    referencesList = readBlob(statement, kReferencesColumnOrdinal);
+    resourcesList = readBlob(statement, kResourcesColumnOrdinal);
+  }
+  sqlite3_finalize(statement);
+  if(!cachedResponsePath) {
+    return nil;
+  }
+  
+  // hydrate resources
+  NSMutableArray * resources = [[NSMutableArray alloc] initWithCapacity:resourcesList.count];
+  for (NSString* ref in resourcesList) {
+    NSDictionary * res = [self loadResource:ref];
+    [resources addObject:res];
+  }
+  
+  // hydrate references
+  NSMutableDictionary * references = [[NSMutableDictionary alloc] initWithCapacity:referencesList.count];
+  for (NSString* ref in referencesList) {
+    NSDictionary * refResource = [self loadResource:ref];
+    references[ref] = refResource;
+  }
+  
+  response = [FaunaResponse responseWithDictionary:@{@"resources" : resources, @"references": references} cached:YES requestPath:cachedResponsePath];
+  return response;
+}
+
++ (BOOL)shouldIgnoreCache {
+  return [TLS[kTLSCachePolicyKey] boolValue];
+}
+
++ (void)ignoreCache:(FaunaCacheScopeBlock)block {
+  NSParameterAssert(block);
+  TLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:YES];
+  block();
+  TLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:NO];
 }
 
 @end

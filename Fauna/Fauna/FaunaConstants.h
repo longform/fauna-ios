@@ -10,6 +10,7 @@
 #define Fauna_FaunaConstants_h
 
 #import "FaunaResponse.h"
+#import "NSError+FaunaErrors.h"
 
 #define FaunaAPIVersion @"v0"
 

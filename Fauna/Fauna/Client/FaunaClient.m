@@ -8,9 +8,9 @@
 
 #import "FaunaClient.h"
 #import "FaunaAFNetworking.h"
-#import "FaunaCache.h"
 
 #define kFaunaTokenUserKey @"FaunaContextUserToken"
+#define kCacheName @"client"
 
 @interface FaunaClient ()
 
@@ -33,6 +33,7 @@
 - (id)init {
   self = [super init];
   if(self) {
+    _cache = [[FaunaCache alloc] initWithName:kCacheName];
     _keyClient = [FaunaClient createHTTPClient];
     _userClient = [FaunaClient createHTTPClient];
     
@@ -42,6 +43,7 @@
     
     _timelines = [[FaunaTimelines alloc] init];
     [_timelines performSelector:@selector(setClient:) withObject:_userClient];
+    [_timelines performSelector:@selector(setCache:) withObject:_cache];
     
     _users = [[FaunaUsers alloc] init];
     [_users performSelector:@selector(setClient:) withObject:_keyClient];
