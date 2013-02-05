@@ -9,6 +9,8 @@
 #ifndef Fauna_FaunaConstants_h
 #define Fauna_FaunaConstants_h
 
+#define FaunaTLS [[NSThread currentThread] threadDictionary]
+
 #import "FaunaResponse.h"
 #import "NSError+FaunaErrors.h"
 
@@ -17,5 +19,11 @@
 typedef void (^FaunaResponseResultBlock)(FaunaResponse* response, NSError *error);
 
 typedef void (^FaunaSimpleResultBlock)(NSError *error);
+
+typedef void (^FaunaBlock)();
+
+typedef id (^FaunaRunBlock)();
+
+typedef void (^FaunaResultsBlock)(id results);
 
 #endif

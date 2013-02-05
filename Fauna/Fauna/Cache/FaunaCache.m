@@ -8,6 +8,7 @@
 
 #import "FaunaCache.h"
 #import <sqlite3.h>
+#import "FaunaConstants.h"
 
 #define SQLITE_STATUS int
 
@@ -18,7 +19,6 @@
 #define kResourcesColumnOrdinal 2
 #define kReferencesColumnOrdinal 3
 #define kTLSCachePolicyKey @"FaunaCachePolicy"
-#define TLS [[NSThread currentThread] threadDictionary]
 #define kMaxRetrySeconds 10
 
 @interface FaunaCache () {
@@ -283,14 +283,14 @@ static id readBlob(sqlite3_stmt *statement, int ordinal) {
 }
 
 + (BOOL)shouldIgnoreCache {
-  return [TLS[kTLSCachePolicyKey] boolValue];
+  return [FaunaTLS[kTLSCachePolicyKey] boolValue];
 }
 
 + (void)ignoreCache:(FaunaCacheScopeBlock)block {
   NSParameterAssert(block);
-  TLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:YES];
+  FaunaTLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:YES];
   block();
-  TLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:NO];
+  FaunaTLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:NO];
 }
 
 @end
