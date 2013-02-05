@@ -19,12 +19,15 @@
 #define kReferencesColumnOrdinal 3
 #define kTLSCachePolicyKey @"FaunaCachePolicy"
 #define TLS [[NSThread currentThread] threadDictionary]
+#define kMaxRetrySeconds 10
 
 @interface FaunaCache () {
   sqlite3 *database;
 }
 
 - (BOOL)createTables;
+
+- (int)stepQuery:(sqlite3_stmt *)stmt;
 
 @end
 
@@ -56,6 +59,28 @@
   return self;
 }
 
+
+- (int)stepQuery:(sqlite3_stmt *)stmt
+{
+  int ret;
+  // Try direct first
+  ret = sqlite3_step(stmt);
+  if (ret != SQLITE_BUSY && ret != SQLITE_LOCKED) return ret;
+  
+  int max_seconds = kMaxRetrySeconds;
+  while (max_seconds > 0) {
+    NSLog(@"[FaunaCache] SQLITE BUSY - retrying...");
+    sleep(1);
+    max_seconds--;
+    ret = sqlite3_step(stmt);
+    if (ret != SQLITE_BUSY && ret != SQLITE_LOCKED) return ret;
+  }
+  [[NSException exceptionWithName:@"FaunaCache"
+                           reason:@"SQLITE BUSY for too long" userInfo:nil
+    ] raise];
+  return ret;
+}
+
 - (void)saveResource:(NSDictionary*)resource {
   NSParameterAssert(resource);
   NSString *ref = resource[@"ref"];
@@ -82,7 +107,7 @@
     NSLog(@"FaunaCache: Failed to bind blobk data column with status %d", status);
     return;
   }
-  status = sqlite3_step(statement);
+  status = [self stepQuery:statement];
   if(status != SQLITE_DONE) {
     sqlite3_finalize(statement);
     NSLog(@"FaunaCache: Failed to insert resource in cache with status %d", status);
@@ -108,7 +133,7 @@
     return nil;
   }
   NSDictionary * data = nil;
-  while(sqlite3_step(statement) == SQLITE_ROW) {
+  while([self stepQuery:statement] == SQLITE_ROW) {
     int bytes = sqlite3_column_bytes(statement, kDataColumnOrdinal);
     NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(statement, kDataColumnOrdinal) length:bytes];
     data = [NSKeyedUnarchiver unarchiveObjectWithData:blobData];
@@ -195,7 +220,7 @@
     return;
   }
   
-  status = sqlite3_step(statement);
+  status = [self stepQuery:statement];
   if(status != SQLITE_DONE) {
     sqlite3_finalize(statement);
     NSLog(@"FaunaCache: Failed to insert response in cache with status %d", status);
@@ -229,7 +254,7 @@ static id readBlob(sqlite3_stmt *statement, int ordinal) {
   NSArray * referencesList = nil;
   NSArray * resourcesList = nil;
   NSString * cachedResponsePath = nil;
-  while(sqlite3_step(statement) == SQLITE_ROW) {
+  while([self stepQuery:statement] == SQLITE_ROW) {
     cachedResponsePath = [NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, kPathColumnOrdinal)];
     referencesList = readBlob(statement, kReferencesColumnOrdinal);
     resourcesList = readBlob(statement, kResourcesColumnOrdinal);
