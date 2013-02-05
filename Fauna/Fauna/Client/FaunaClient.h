@@ -7,12 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaTimelines.h"
-#import "FaunaUsers.h"
-#import "FaunaTokens.h"
-#import "FaunaInstances.h"
-#import "FaunaCommands.h"
 #import "FaunaCache.h"
+#import "FaunaConstants.h"
 
 @interface FaunaClient : NSObject
 
@@ -29,35 +25,52 @@
  */
 @property (nonatomic, strong) NSString *userToken;
 
-
-/*!
- Manage Fauna Timelines
- */
-@property (nonatomic, strong, readonly) FaunaTimelines * timelines;
-
-/*!
- Manage Fauna Users
- */
-@property (nonatomic, strong, readonly) FaunaUsers * users;
-
-/*!
- Manage Fauna Tokens
- */
-@property (nonatomic, strong, readonly) FaunaTokens * tokens;
-
-/*!
- Manage Fauna Instances
- */
-@property (nonatomic, strong, readonly) FaunaInstances * instances;
-
-/*!
- Manage Fauna Commands
- */
-@property (nonatomic, strong, readonly) FaunaCommands * commands;
-
 /*!
  Returns FaunaCache instance in use by the client.
  */
 @property (nonatomic, strong, readonly) FaunaCache *cache;
+
+#pragma mark - Instances
+
+- (void)createInstance:(NSDictionary*)instance callback:(FaunaResponseResultBlock)block;
+
+- (void)destroyInstance:(NSString*)ref callback:(FaunaSimpleResultBlock)block;
+
+- (void)updateInstance:(NSString*)ref changes:(NSDictionary*)changes callback:(FaunaResponseResultBlock)block;
+
+- (void)instanceDetails:(NSString*)ref callback:(FaunaResponseResultBlock)block;
+
+#pragma mark - Timelines
+
+
+#pragma mark - Maintainance
+
+- (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
+
+- (void)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
+
+- (void)pageFromTimeline:(NSString*)timelineReference withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
+
+- (void)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before callback:(FaunaResponseResultBlock)block;
+
+- (void)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
+
+- (void)pageFromTimeline:(NSString*)timelineReference after:(NSDate*)after callback:(FaunaResponseResultBlock)block;
+
+- (void)pageFromTimeline:(NSString*)timelineReference after:(NSDate*)after withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
+
+#pragma mark - Users
+
+- (void)createUser:(NSDictionary*)user callback:(FaunaResponseResultBlock)block;
+
+- (void)changePassword:(NSString*)oldPassword newPassword:(NSString*)newPassword confirmation:(NSString*)confirmation callback:(FaunaSimpleResultBlock)block;
+
+#pragma mark - Tokens
+
+- (void)createToken:(NSDictionary*)credentials block:(FaunaResponseResultBlock)block;
+
+#pragma mark - Commands
+
+- (void)execute:(NSString*)commandName params:(NSDictionary*)params callback:(FaunaResponseResultBlock)block;
 
 @end

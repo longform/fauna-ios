@@ -29,7 +29,7 @@
     @"name" : self.nameField.text
   };
   
-  [Fauna.client.users create:newUserInfo callback:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client createUser:newUserInfo callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
       UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];

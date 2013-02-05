@@ -42,7 +42,7 @@
 
 - (void)loadMessageDetails {
   [SVProgressHUD showWithStatus:@"Loading"];
-  [Fauna.client.instances details:self.messageRef callback:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client instanceDetails:self.messageRef callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
       [SVProgressHUD dismiss];
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -71,7 +71,7 @@
   NSDictionary *modifications = @{
   @"data": data
   };
-  [Fauna.client.instances update:ref changes:modifications callback:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client updateInstance:ref changes:modifications callback:^(FaunaResponse *response, NSError *error) {
     if(error) {
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];

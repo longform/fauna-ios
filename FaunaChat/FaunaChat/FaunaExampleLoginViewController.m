@@ -23,7 +23,7 @@
     @"email": self.emailField.text,
     @"password": self.passwordField.text
   };
-  [Fauna.client.tokens create:credentials block:^(FaunaResponse *response, NSError *error) {
+  [Fauna.client createToken:credentials block:^(FaunaResponse *response, NSError *error) {
     if(error) {
       UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
       [alert show];

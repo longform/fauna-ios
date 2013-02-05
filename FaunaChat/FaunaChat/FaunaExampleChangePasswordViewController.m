@@ -20,7 +20,7 @@
 
 - (void)changeAction:(id)sender {
   [SVProgressHUD showWithStatus:@"Processing"];
-  [Fauna.client.users changePassword:self.oldPasswordField.text newPassword:self.passwordField.text confirmation:self.confirmationField.text callback:^(NSError *error) {
+  [Fauna.client changePassword:self.oldPasswordField.text newPassword:self.passwordField.text confirmation:self.confirmationField.text callback:^(NSError *error) {
     if(error) {
       [SVProgressHUD dismiss];
       NSLog(@"Change Password error: %@", error);
