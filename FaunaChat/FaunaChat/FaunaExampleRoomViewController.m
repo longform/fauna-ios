@@ -29,31 +29,47 @@
 
 - (void)reloadTimeline {
   [FaunaCache ignoreCache:^{
-    [Fauna.client pageFromTimeline:self.timelineResource withCount:kEventsPageSize callback:^(FaunaResponse *response, NSError *error) {
+    [FaunaContext background:^id{
+      NSError *error;
+      FaunaResponse *response = [FaunaTimeline pageFromTimeline:self.timelineResource withCount:kEventsPageSize error:&error];
+      // if there is an error in my background block
       if(error) {
-        NSLog(@"Error retrieving timeline: %@", error);
-      } else {
-        self.currentTimelineResponse = response;
-        self.currentPage = response.resource;
-        
-        NSArray * incomingEvents = self.currentPage[@"events"];
-        
-        self.events = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
-        
-        // filter for "create" event only.
-        for (NSArray * event in incomingEvents) {
-          if([@"create" isEqualToString:event[1]]) {
-            [_events addObject:event];
-          }
-        }
-        if(response.cached) {
-          NSLog(@"Timeline page [cached]");
-        } else {
-          NSLog(@"Timeline page");
-        }
-        [self.tableView reloadData];
+        // ... then return error, failure callback will be executed.
+        return error;
       }
-      }];
+      
+      // ... otherwise return the response, success callback will be executed.
+      return response;
+    } success:^(FaunaResponse * response) {
+      /*
+       SUCCESS
+       */
+      self.currentTimelineResponse = response;
+      self.currentPage = response.resource;
+      
+      NSArray * incomingEvents = self.currentPage[@"events"];
+      
+      self.events = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
+      
+      // filter for "create" event only.
+      for (NSArray * event in incomingEvents) {
+        if([@"create" isEqualToString:event[1]]) {
+          [_events addObject:event];
+        }
+      }
+      if(response.cached) {
+        NSLog(@"Timeline page [cached]");
+      } else {
+        NSLog(@"Timeline page");
+      }
+      [self.tableView reloadData];
+
+    } failure:^(NSError *error) {
+      /*
+       FAILURE
+       */
+      NSLog(@"Error retrieving timeline: %@", error);
+    }];
   }];
 }
 

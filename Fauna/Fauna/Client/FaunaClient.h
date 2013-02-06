@@ -59,6 +59,8 @@
 
 - (void)pageFromTimeline:(NSString*)timelineReference after:(NSDate*)after withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
 
+- (FaunaResponse*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
+
 #pragma mark - Users
 
 - (void)createUser:(NSDictionary*)user callback:(FaunaResponseResultBlock)block;
@@ -72,5 +74,13 @@
 #pragma mark - Commands
 
 - (void)execute:(NSString*)commandName params:(NSDictionary*)params callback:(FaunaResponseResultBlock)block;
+
+#pragma mark - HTTP
+
+- (NSMutableURLRequest *)clientKeyRequestWithMethod:(NSString *)method
+path:(NSString *)path parameters:(NSDictionary *)parameters;
+
+- (NSMutableURLRequest *)userRequestWithMethod:(NSString *)method
+                                               path:(NSString *)path parameters:(NSDictionary *)parameters;
 
 @end

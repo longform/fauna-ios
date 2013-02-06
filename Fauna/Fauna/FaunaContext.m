@@ -36,19 +36,28 @@ static FaunaContext* popContext() {
   return context;
 }
 
-@implementation FaunaContext
+@implementation FaunaContext {
+  NSOperationQueue *_queue;
+}
+
+- (id)initWithClientKeyString:(NSString*)keyString {
+  if (self = [self init]) {
+    _queue = [[NSOperationQueue alloc] init];
+    _queue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+    
+    _client = [[FaunaClient alloc] initWithClientKeyString:keyString];
+  }
+  return self;
+}
 
 + (FaunaContext*)applicationContext {
   return _defaultContext;
 }
 
-+ (void)setDefaultApplicationContext:(FaunaContext*)context {
++ (void)setApplicationContext:(FaunaContext*)context {
   _defaultContext = context;
 }
 
-+ (void)run:(FaunaRunBlock)backgroundBlock results:(FaunaResultsBlock)resultsBlock {
-  [[self current] run:backgroundBlock results:resultsBlock];
-}
 
 + (FaunaContext*)scopeContext {
   return ensureContextStack().lastObject;
@@ -68,8 +77,27 @@ static FaunaContext* popContext() {
   }
 }
 
-- (void)run:(FaunaRunBlock)backgroundBlock results:(FaunaResultsBlock)resultsBlock {
++ (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock {
+  return [[self current] background:backgroundBlock success:successBlock failure:failureBlock];
+}
+
+- (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock {
+  NSParameterAssert(backgroundBlock);
+  NSParameterAssert(successBlock);
+  NSParameterAssert(failureBlock);
   
+  NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock: ^{
+    id result = backgroundBlock();
+    [[NSOperationQueue mainQueue] addOperationWithBlock: ^ {
+      if([result isKindOfClass:[NSError class]]) {
+        failureBlock(result);
+      } else {
+        successBlock(result);
+      }
+    }];
+  }];
+  [_queue addOperation:op];
+  return op;
 }
 
 @end

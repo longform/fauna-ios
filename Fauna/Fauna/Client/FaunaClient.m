@@ -8,7 +8,7 @@
 
 #import "FaunaClient.h"
 #import "FaunaAFNetworking.h"
-
+#import "FaunaAFJSONUtilities.h"
 #define kFaunaTokenUserKey @"FaunaContextUserToken"
 #define kCacheName @"client"
 #import "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h"
@@ -37,6 +37,8 @@
 
 - (void)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after callback:(FaunaResponseResultBlock)block;
 
+- (FaunaResponse*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error;
+
 @end
 
 @implementation FaunaClient
@@ -54,6 +56,16 @@
     
   }
   return self;
+}
+
+- (NSMutableURLRequest *)clientKeyRequestWithMethod:(NSString *)method
+                                               path:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [_keyClient requestWithMethod:method path:path parameters:parameters];
+}
+
+- (NSMutableURLRequest *)userRequestWithMethod:(NSString *)method
+                                          path:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [_userClient requestWithMethod:method path:path parameters:parameters];
 }
 
 + (FaunaAFHTTPClient*)createHTTPClient {
@@ -293,5 +305,58 @@
     block(nil, error);
   }];
 }
+
+
+- (FaunaResponse*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
+  return [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil error:error];
+}
+
+- (FaunaResponse*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError*__autoreleasing*)error {
+  FaunaCache * cache = self.cache;
+  
+  NSMutableDictionary *sendParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+  if(count) {
+    [sendParams setObject:count forKey:kCountKey];
+  }
+  if(before) {
+    [sendParams setObject:[NSNumber numberWithDouble:[before timeIntervalSince1970]] forKey:kBeforeKey];
+  }
+  if(after) {
+    [sendParams setObject:[NSNumber numberWithDouble:[after timeIntervalSince1970]] forKey:kAfterKey];
+  }
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
+  NSString * responsePath = [FaunaResponse requestPathFromPath:path andMethod:@"GET"];
+  if(![FaunaCache shouldIgnoreCache]) {
+    // if response is cached, return it.
+    FaunaResponse * response = [cache loadResponse:responsePath];
+    if(response) {
+      return response;
+    }
+  }
+  NSError __autoreleasing *requestError;
+  NSURLResponse *httpResponse;
+  NSMutableURLRequest * request = [self userRequestWithMethod:@"GET" path:path parameters:nil];
+  [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", @"utf-8"] forHTTPHeaderField:@"Content-Type"];
+  //[request setHTTPBody:[AFJSONStringFromParameters(parameters) dataUsingEncoding:@"utf-8"]];
+  NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&httpResponse error:&requestError];
+  if(requestError) {
+    // if there is an error, return from cache if current policy allow it.
+    if(![FaunaCache shouldIgnoreCache] && requestError.shouldRespondFromCache) {
+      FaunaResponse *response = [_cache loadResponse:responsePath];
+      if(response) {
+        return response;
+      }
+    }
+    error = &requestError;
+    return nil;
+  }
+  NSError *jsonError;
+  id responseObject = FaunaAFJSONDecode(data, &jsonError);
+  
+  FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
+  [cache saveResponse:response];
+  return response;
+}
+
 
 @end

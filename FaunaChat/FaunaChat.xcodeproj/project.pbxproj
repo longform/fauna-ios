@@ -23,9 +23,9 @@
 		074CF6D9167855AE00686606 /* FaunaExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF6D8167855AE00686606 /* FaunaExampleViewController.m */; };
 		074CF6DC167855AE00686606 /* FaunaExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6DA167855AE00686606 /* FaunaExampleViewController.xib */; };
 		074CF7CA16788F7800686606 /* fauna_logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CF7C916788F7800686606 /* fauna_logo_small.png */; };
+		07595A0016C1D1D100426133 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 075959FF16C1D1D100426133 /* libFauna.a */; };
 		07603C2D16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */; };
 		07603C2E16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */; };
-		07603C5616A64BF600A9A885 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07603C5516A64BF600A9A885 /* libFauna.a */; };
 		077E22941682C3A900FB0B30 /* FaunaExampleSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */; };
 		077E22951682C3A900FB0B30 /* FaunaExampleSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */; };
 		0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693C16A8D96000B3639C /* libsqlite3.dylib */; };
@@ -64,10 +64,10 @@
 		074CF6D8167855AE00686606 /* FaunaExampleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleViewController.m; sourceTree = "<group>"; };
 		074CF6DB167855AE00686606 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FaunaExampleViewController.xib; sourceTree = "<group>"; };
 		074CF7C916788F7800686606 /* fauna_logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fauna_logo_small.png; sourceTree = "<group>"; };
+		075959FF16C1D1D100426133 /* libFauna.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libFauna.a; path = "../Fauna/build/Release-iphoneos/libFauna.a"; sourceTree = "<group>"; };
 		07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleChangePasswordViewController.h; sourceTree = "<group>"; };
 		07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleChangePasswordViewController.m; sourceTree = "<group>"; };
 		07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleChangePasswordViewController.xib; sourceTree = "<group>"; };
-		07603C5516A64BF600A9A885 /* libFauna.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFauna.a; path = "../Fauna/build/Release-iphoneos/libFauna.a"; sourceTree = "<group>"; };
 		077E22911682C3A900FB0B30 /* FaunaExampleSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleSignupViewController.h; sourceTree = "<group>"; };
 		077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleSignupViewController.m; sourceTree = "<group>"; };
 		077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleSignupViewController.xib; sourceTree = "<group>"; };
@@ -92,8 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07595A0016C1D1D100426133 /* libFauna.a in Frameworks */,
 				0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */,
-				07603C5616A64BF600A9A885 /* libFauna.a in Frameworks */,
 				07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */,
 				074CF6C0167855AD00686606 /* UIKit.framework in Frameworks */,
 				074CF6C2167855AD00686606 /* Foundation.framework in Frameworks */,
@@ -107,7 +107,7 @@
 		074CF6B0167855AD00686606 = {
 			isa = PBXGroup;
 			children = (
-				07603C5516A64BF600A9A885 /* libFauna.a */,
+				075959FF16C1D1D100426133 /* libFauna.a */,
 				074CF6C5167855AD00686606 /* FaunaChat */,
 				074CF6BE167855AD00686606 /* Frameworks */,
 				074CF6BC167855AD00686606 /* Products */,

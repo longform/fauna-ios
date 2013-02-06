@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FaunaClient.h"
 #import "FaunaContext.h"
+#import "FaunaTimeline.h"
 
 /*!
  Fauna

@@ -22,8 +22,10 @@ typedef void (^FaunaSimpleResultBlock)(NSError *error);
 
 typedef void (^FaunaBlock)();
 
-typedef id (^FaunaRunBlock)();
+typedef id (^FaunaBackgroundBlock)();
 
 typedef void (^FaunaResultsBlock)(id results);
+
+typedef void (^FaunaErrorBlock)(NSError *error);
 
 #endif

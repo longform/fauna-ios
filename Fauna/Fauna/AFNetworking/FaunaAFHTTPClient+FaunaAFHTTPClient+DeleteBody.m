@@ -10,7 +10,7 @@
 #import "FaunaAFHTTPRequestOperation.h"
 
 @implementation FaunaAFHTTPClient (DeleteBody)
-// Note: There are already defined in AFHTTPClient.*
+// Note: These are already defined in AFHTTPClient.*
  extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
  extern NSString * AFPropertyListStringFromParameters(NSDictionary *parameters);
 
