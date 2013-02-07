@@ -38,44 +38,27 @@
         return error;
       }
       NSArray * incomingEvents = response.resource[@"events"];
-      for (NSArray* eventArray in incomingEvents) {
-        if([@"create" isEqualToString:eventArray[1]]) {
-          NSString* ref = (NSString*)eventArray[2];
-          NSLog(@"Resolving Class %@",ref);
-          NSError* error;
-          id res = [FaunaResource get:ref error:&error];
-          if(error) {
-            NSLog(@"Error ocurred resolving Class %@: %@",ref, error);
-          } else {
-            NSLog(@"Ref: %@", res);
-          }
-        }
-      }
-      
-      // ... otherwise return the response, success callback will be executed.
-      return response;
-    } success:^(FaunaResponse * response) {
-      /*
-       SUCCESS
-       */
-      self.currentTimelineResponse = response;
-      self.currentPage = response.resource;
-      
-      NSArray * incomingEvents = self.currentPage[@"events"];
-      
-      self.events = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
+      _messages = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
       
       // filter for "create" event only.
       for (NSArray * event in incomingEvents) {
         if([@"create" isEqualToString:event[1]]) {
-          [_events addObject:event];
+          NSString* instanceRef = (NSString*)event[2];
+          NSError* error;
+          FaunaResource *resource = [FaunaResource get:instanceRef error:&error];
+          if(error) {
+            return error;
+          }
+          if(resource) {
+            [_messages addObject:resource];
+          }
         }
       }
-      if(response.cached) {
-        NSLog(@"Timeline page [cached]");
-      } else {
-        NSLog(@"Timeline page");
-      }
+      return nil;
+    } success:^(FaunaResponse * response) {
+      /*
+       SUCCESS
+       */
       [self.tableView reloadData];
 
     } failure:^(NSError *error) {
@@ -101,7 +84,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  return self.events.count;
+  return self.messages.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -111,19 +94,13 @@
   if (cell == nil) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   }
-  
-  //HACK: These magic numbers and blind parsing are temporary, FaunaResponse should be smarter than this.
-  // https://fauna.org/API#timelines
-  NSArray* eventArray = self.events[indexPath.row];
-  NSString* ref = (NSString*)eventArray[2];
-  NSDictionary* messageInstance = (NSDictionary*)[self.currentTimelineResponse.references objectForKey:ref];
-  NSDictionary* messageData = messageInstance[@"data"];
+  FaunaInstance* messageInstance = self.messages[indexPath.row];
+  NSDictionary* messageData = messageInstance.data;
   NSString* messageBody = messageData[@"body"];
   cell.textLabel.text = messageBody;
   
   return cell;
 }
-
 
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -135,9 +112,9 @@
  - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
  {
  if (editingStyle == UITableViewCellEditingStyleDelete) {
-   NSArray* eventArray = self.events[indexPath.row];
-   NSString* instanceRef = (NSString*)eventArray[2];
-   [self.events removeObjectAtIndex:indexPath.row];
+   FaunaResource *resource = self.messages[indexPath.row];
+   NSString* instanceRef = resource.reference;
+   [self.messages removeObject:resource];
    
    // Remove instance from Timeline.
    [Fauna.client removeInstance:instanceRef fromTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
@@ -162,32 +139,14 @@
    }];
    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
  }
- }
+}
  
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSArray* eventArray = self.events[indexPath.row];
-  NSString* ref = (NSString*)eventArray[2];
-  NSDictionary* messageInstance = (NSDictionary*)[self.currentTimelineResponse.references objectForKey:ref];
+  NSDictionary* messageInstance = self.messages[indexPath.row];
   
   FaunaExampleReplyViewController *detailViewController = [[FaunaExampleReplyViewController alloc] initWithNibName:@"FaunaExampleReplyViewController" bundle:nil];
   detailViewController.timelineResource = self.timelineResource;

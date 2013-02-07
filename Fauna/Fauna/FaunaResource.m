@@ -50,7 +50,8 @@
   return [n boolValue];
 }
 
-+ (Class)resolveResourceType:(NSString*)ref resource:(NSDictionary*)resource {
++ (Class)resolveResourceType:(NSDictionary*)resource {
+  NSString* ref = resource[@"ref"];
   if(ref) {
     NSError* error;
     NSRegularExpression *regex = [NSRegularExpression
@@ -68,7 +69,7 @@
 + (FaunaResource*)deserialize:(NSDictionary*)faunaResource {
   // ensure it's a mutable dictionary
   NSMutableDictionary *resource = [faunaResource isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary*)faunaResource : [[NSMutableDictionary alloc] initWithDictionary:faunaResource];
-  return [[[self resolveResourceType:faunaResource[@"ref"] resource:faunaResource] alloc] initWithDictionary:resource];
+  return [[[self resolveResourceType:faunaResource] alloc] initWithDictionary:resource];
 }
 
 + (FaunaResource*)get:(NSString *)ref error:(NSError**)error {

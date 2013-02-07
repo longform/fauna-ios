@@ -36,10 +36,22 @@
  */
 @property (nonatomic, strong, readonly) NSMutableDictionary *resourceDictionary;
 
+/*!
+ Retrieves a Resource from the Server.
+ @param ref Resource Reference.
+ */
 + (FaunaResource*)get:(NSString *)ref error:(NSError**)error;
 
-+ (Class)resolveResourceType:(NSString*)ref resource:(NSDictionary*)resource;
+/*!
+ Resolves a Resource Type for the Given Resource Dictionary.
+ @param resource Fauna resource represented by a dictionary. ref and class keys will be queried.
+ */
++ (Class)resolveResourceType:(NSDictionary*)resource;
 
+/*!
+ Deserialize the typed derived class from FaunaResource for the given resource dictionary.
+ @param faunaResource Fauna Resource.
+ */
 + (FaunaResource*)deserialize:(NSDictionary*)faunaResource;
 
 @end

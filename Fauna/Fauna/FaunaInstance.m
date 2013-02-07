@@ -8,7 +8,46 @@
 
 #import "FaunaInstance.h"
 
+#define kExternalIdKey @"external_id"
+#define kClassKey @"class"
+#define kReferencesKey @"references"
+#define kDataKey @"data"
+
 @implementation FaunaInstance
+
+
+- (void)setExternalId:(NSString *)externalId {
+  [self.resourceDictionary setValue:externalId forKey:kExternalIdKey];
+}
+
+- (NSString*)externalId {
+  return [self.resourceDictionary valueForKey:kExternalIdKey];
+}
+
+- (void)setClassName:(NSString *)className {
+  [self.resourceDictionary setValue:className forKey:kClassKey];
+}
+
+- (NSString*)className {
+  return [self.resourceDictionary valueForKey:kClassKey];
+}
+
+- (void)setReferences:(NSDictionary *)references {
+  [self.resourceDictionary setValue:references forKey:kReferencesKey];
+}
+
+- (NSDictionary*)references {
+  return [self.resourceDictionary valueForKey:kReferencesKey];
+}
+
+- (void)setData:(NSDictionary *)data {
+  [self.resourceDictionary setValue:data forKey:kDataKey];
+}
+
+- (NSDictionary*)data {
+  return [self.resourceDictionary valueForKey:kDataKey];
+}
+
 
 + (FaunaInstance*)get:(NSString *)ref error:(NSError**)error {
   NSParameterAssert(ref);

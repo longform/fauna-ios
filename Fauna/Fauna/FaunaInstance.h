@@ -11,6 +11,31 @@
 
 @interface FaunaInstance : FaunaResource
 
+/*!
+ Retrieves a FaunaInstance
+ @param ref Instance Reference. E.g: instances/123456789
+ */
 + (FaunaInstance*)get:(NSString *)ref error:(NSError**)error;
+
+/*!
+ External ID of the Instance.
+ */
+@property (nonatomic, strong) NSString *externalId;
+
+/*!
+ Class Name.
+ */
+@property (nonatomic, strong) NSString *className;
+
+/*!
+ References of the instance.
+ */
+@property (nonatomic, strong) NSDictionary *references;
+
+/*!
+ User Defined Data.
+ */
+@property (nonatomic, strong) NSDictionary *data;
+
 
 @end
