@@ -83,4 +83,8 @@ path:(NSString *)path parameters:(NSDictionary *)parameters;
 - (NSMutableURLRequest *)userRequestWithMethod:(NSString *)method
                                                path:(NSString *)path parameters:(NSDictionary *)parameters;
 
+#pragma mark - Resources
+
+- (NSDictionary*)getResource:(NSString*)ref error:(NSError*__autoreleasing*)error;
+
 @end

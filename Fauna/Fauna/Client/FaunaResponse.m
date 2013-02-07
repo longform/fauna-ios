@@ -38,7 +38,7 @@
     if(!_resources && _resource) {
       _resources = @[_resource];
     }
-    if(!_resource) {
+    if(!_resource && _resources.count > 0) {
       _resource = _resources[0];
     }
     self.references = responseDictionary[kReferencesKey];

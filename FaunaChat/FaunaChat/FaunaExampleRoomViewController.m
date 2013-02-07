@@ -37,6 +37,20 @@
         // ... then return error, failure callback will be executed.
         return error;
       }
+      NSArray * incomingEvents = response.resource[@"events"];
+      for (NSArray* eventArray in incomingEvents) {
+        if([@"create" isEqualToString:eventArray[1]]) {
+          NSString* ref = (NSString*)eventArray[2];
+          NSLog(@"Resolving Class %@",ref);
+          NSError* error;
+          id res = [FaunaResource get:ref error:&error];
+          if(error) {
+            NSLog(@"Error ocurred resolving Class %@: %@",ref, error);
+          } else {
+            NSLog(@"Ref: %@", res);
+          }
+        }
+      }
       
       // ... otherwise return the response, success callback will be executed.
       return response;

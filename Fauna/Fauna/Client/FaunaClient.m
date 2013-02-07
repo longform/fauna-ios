@@ -39,6 +39,8 @@
 
 - (FaunaResponse*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error;
 
+- (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError*__autoreleasing*)error;
+
 @end
 
 @implementation FaunaClient
@@ -358,5 +360,44 @@
   return response;
 }
 
+- (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError*__autoreleasing*)error {
+  FaunaCache * cache = self.cache;
+  NSString * responsePath = [FaunaResponse requestPathFromPath:path andMethod:method];
+  if(![FaunaCache shouldIgnoreCache]) {
+    // if response is cached, return it.
+    FaunaResponse * response = [cache loadResponse:responsePath];
+    if(response) {
+      return response.resource;
+    }
+  }
+  NSError __autoreleasing *requestError;
+  NSURLResponse *httpResponse;
+  NSMutableURLRequest * request = [self userRequestWithMethod:method path:path parameters:parameters];
+  [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", @"utf-8"] forHTTPHeaderField:@"Content-Type"];
+  NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&httpResponse error:&requestError];
+  if(requestError) {
+    // if there is an error, return from cache if current policy allow it.
+    if(![FaunaCache shouldIgnoreCache] && requestError.shouldRespondFromCache) {
+      FaunaResponse *response = [_cache loadResponse:responsePath];
+      if(response) {
+        return response.resource;
+      }
+    }
+    error = &requestError;
+    return nil;
+  }
+  NSError *jsonError;
+  id responseObject = FaunaAFJSONDecode(data, &jsonError);
+  
+  FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
+  [cache saveResponse:response];
+  return response.resource;
+}
+
+- (NSDictionary*)getResource:(NSString*)ref error:(NSError*__autoreleasing*)error {
+  NSAssert(ref, @"ref is required");
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, ref];
+  return [self performOperationWithPath:path method:@"GET" parameters:nil error:error];
+}
 
 @end

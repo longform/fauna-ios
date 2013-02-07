@@ -9,11 +9,6 @@
 #import "FaunaTimeline.h"
 #import "FaunaContext.h"
 #import "FaunaCache.h"
-
-#define kRefKey @"ref"
-#define kCountKey @"count"
-#define kBeforeKey @"before"
-#define kAfterKey @"after"
 #import "FaunaAFNetworking.h"
 
 @implementation FaunaTimeline

@@ -30,6 +30,10 @@
 		07B60628167AD39100CD6604 /* FaunaAFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60622167AD39100CD6604 /* FaunaAFHTTPClient.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		07B60629167AD39100CD6604 /* FaunaAFJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B60624167AD39100CD6604 /* FaunaAFJSONUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		07E2459316A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2459216A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m */; };
+		07F28A6616C36FEF006EE2A8 /* FaunaInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */; };
+		07F28A6916C37143006EE2A8 /* FaunaResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6816C37143006EE2A8 /* FaunaResource.m */; };
+		07F28A6A16C37B17006EE2A8 /* FaunaInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */; };
+		07F28A6B16C37B17006EE2A8 /* FaunaResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6716C37143006EE2A8 /* FaunaResource.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +43,8 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				07F28A6A16C37B17006EE2A8 /* FaunaInstance.h in CopyFiles */,
+				07F28A6B16C37B17006EE2A8 /* FaunaResource.h in CopyFiles */,
 				075959FE16C1C12E00426133 /* FaunaTimeline.h in CopyFiles */,
 				075959FA16C16A1300426133 /* FaunaContext.h in CopyFiles */,
 				0710493216B5956F0015DC98 /* NSError+FaunaErrors.h in CopyFiles */,
@@ -85,6 +91,10 @@
 		07B60624167AD39100CD6604 /* FaunaAFJSONUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaAFJSONUtilities.m; sourceTree = "<group>"; };
 		07E2459116A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h"; sourceTree = "<group>"; };
 		07E2459216A315D2007B6CFE /* FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.m"; sourceTree = "<group>"; };
+		07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaInstance.h; sourceTree = "<group>"; };
+		07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
+		07F28A6716C37143006EE2A8 /* FaunaResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResource.h; sourceTree = "<group>"; };
+		07F28A6816C37143006EE2A8 /* FaunaResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +150,10 @@
 				075959F816C167FD00426133 /* FaunaContext.m */,
 				075959FB16C1B77D00426133 /* FaunaTimeline.h */,
 				075959FC16C1B77D00426133 /* FaunaTimeline.m */,
+				07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */,
+				07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */,
+				07F28A6716C37143006EE2A8 /* FaunaResource.h */,
+				07F28A6816C37143006EE2A8 /* FaunaResource.m */,
 			);
 			path = Fauna;
 			sourceTree = "<group>";
@@ -258,6 +272,8 @@
 				0710493016B592010015DC98 /* NSError+FaunaErrors.m in Sources */,
 				075959F916C167FD00426133 /* FaunaContext.m in Sources */,
 				075959FD16C1B77E00426133 /* FaunaTimeline.m in Sources */,
+				07F28A6616C36FEF006EE2A8 /* FaunaInstance.m in Sources */,
+				07F28A6916C37143006EE2A8 /* FaunaResource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
