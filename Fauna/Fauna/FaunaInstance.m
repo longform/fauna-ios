@@ -7,6 +7,7 @@
 //
 
 #import "FaunaInstance.h"
+#import "FaunaContext.h"
 
 #define kExternalIdKey @"external_id"
 #define kClassKey @"class"
@@ -48,7 +49,6 @@
   return [self.resourceDictionary valueForKey:kDataKey];
 }
 
-
 + (FaunaInstance*)get:(NSString *)ref error:(NSError**)error {
   NSParameterAssert(ref);
   NSArray * arr = [ref componentsSeparatedByString:@"/"];
@@ -56,6 +56,17 @@
   // E.g. "123445678" and also for "instances/123445678"
   NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
   return (FaunaInstance*)[FaunaResource get:resourcePath error:error];
+}
+
++ (BOOL)create:(FaunaInstance *)resource error:(NSError**)error {
+  FaunaContext * context = FaunaContext.current;
+  FaunaClient * client = context.client;
+  NSDictionary * resourceDictionary = [client createInstance:resource.resourceDictionary error:error];
+  if(*error || !resourceDictionary) {
+    return NO;
+  }
+  resource.resourceDictionary = [[NSMutableDictionary alloc] initWithDictionary:resourceDictionary];
+  return YES;
 }
 
 @end

@@ -13,4 +13,11 @@
 
 + (FaunaResponse*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
 
+/*!
+ Adds an instance to the given timeline.
+ @param ref Class Instance Reference.
+ @param timelineRef Timeline Reference.
+ */
++ (BOOL)addInstance:(NSString*)ref toTimeline:(NSString*)timelineRef error:(NSError**)error;
+
 @end

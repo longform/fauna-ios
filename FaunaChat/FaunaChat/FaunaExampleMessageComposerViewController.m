@@ -33,30 +33,29 @@
 }
 
 - (void)sendAction:(id)sender {
-  NSDictionary *newInstance = @{
-    @"class" : @"message",
-    @"data": @{
-      @"body" : self.messageField.text
-    }
-  };
-  [Fauna.client createInstance:newInstance callback:^(FaunaResponse *response, NSError *error) {
+  NSString * message = self.messageField.text;
+  [FaunaContext background:^id{
+    NSError *error;
+    FaunaInstance *instance = [[FaunaInstance alloc] init];
+    instance.className = @"message";
+    instance.data = @{
+                      @"body" : message
+                    };
+    [FaunaInstance create:instance error:&error];
     if(error) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
-    } else {
-      NSLog(@"Instance saved successfully: %@", response.resource);
-      NSDictionary *instance = response.resource;
-      [Fauna.client addInstance:instance[@"ref"] toTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
-        if(error) {
-          NSLog(@"Timeline add error: %@", error);
-          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-          [alert show];
-        } else {
-          NSLog(@"Added to timeline successfully: %@", response.resource[@"ref"]);
-          [self.navigationController dismissModalViewControllerAnimated:YES];
-        }
-      }];
+      return error;
     }
+    [FaunaTimeline addInstance:instance.reference toTimeline:self.timelineResource error:&error];
+    if(error) {
+      return error;
+    }
+    return nil;
+  } success:^(id results) {
+    NSLog(@"Added to timeline successfully");
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+  } failure:^(NSError *error) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
   }];
 }
 

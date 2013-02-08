@@ -386,8 +386,11 @@
     error = &requestError;
     return nil;
   }
-  NSError *jsonError;
+  NSError __autoreleasing*jsonError;
   id responseObject = FaunaAFJSONDecode(data, &jsonError);
+  if(jsonError) {
+    error = &jsonError;
+  }
   
   FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
   [cache saveResponse:response];
@@ -398,6 +401,18 @@
   NSAssert(ref, @"ref is required");
   NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, ref];
   return [self performOperationWithPath:path method:@"GET" parameters:nil error:error];
+}
+
+- (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference error:(NSError**)error {
+  NSDictionary *sendParams = @{kResourceKey : instanceReference};
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
+  [self performOperationWithPath:path method:@"POST" parameters:sendParams error:error];
+}
+
+- (NSDictionary*)createInstance:(NSDictionary*)resource error:(NSError*__autoreleasing*)error {
+  NSParameterAssert(resource);
+  NSString * path = [NSString stringWithFormat:@"/%@/instances", FaunaAPIVersion];
+  return [self performOperationWithPath:path method:@"POST" parameters:resource error:error];
 }
 
 @end

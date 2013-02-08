@@ -16,8 +16,15 @@
 
 @implementation FaunaResource
 
+- (id)init {
+  if(self = [self initWithDictionary:[[NSMutableDictionary alloc] init]]) {
+    
+  }
+  return self;
+}
+
 - (id)initWithDictionary:(NSMutableDictionary*)dictionary {
-  if(self = [self init]) {
+  if(self = [super init]) {
     _resourceDictionary = dictionary;
   }
   return self;

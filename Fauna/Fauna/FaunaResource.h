@@ -10,6 +10,8 @@
 
 @interface FaunaResource : NSObject
 
+- (id)init;
+
 /*!
  Initialize the Resource in the Default Fauna Context (FaunaContext.current) and the given dictionary.
  @param dictionary Dictionary with values to initialize this resource.
@@ -34,7 +36,7 @@
 /*!
  Returns the internal dictionary for the Fauna Resource
  */
-@property (nonatomic, strong, readonly) NSMutableDictionary *resourceDictionary;
+@property (nonatomic, strong) NSMutableDictionary *resourceDictionary;
 
 /*!
  Retrieves a Resource from the Server.

@@ -23,4 +23,14 @@
   return [client pageFromTimeline:timelineReference withCount:count error:error];
 }
 
++ (BOOL)addInstance:(NSString*)ref toTimeline:(NSString*)timelineRef error:(NSError**)error {
+  FaunaContext * context = FaunaContext.current;
+  FaunaClient * client = context.client;
+  [client addInstance:ref toTimeline:timelineRef error:error];
+  if(*error) {
+    return NO;
+  }
+  return YES;
+}
+
 @end

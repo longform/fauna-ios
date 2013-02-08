@@ -40,12 +40,17 @@
 
 - (void)instanceDetails:(NSString*)ref callback:(FaunaResponseResultBlock)block;
 
+- (NSDictionary*)createInstance:(NSDictionary*)resource error:(NSError*__autoreleasing*)error;
+
+
 #pragma mark - Timelines
 
 
 #pragma mark - Maintainance
 
 - (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
+
+- (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference error:(NSError**)error;
 
 - (void)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
 

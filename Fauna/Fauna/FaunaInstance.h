@@ -18,6 +18,12 @@
 + (FaunaInstance*)get:(NSString *)ref error:(NSError**)error;
 
 /*!
+ Creates a FaunaInstance
+ @param instance Instance to Create
+ */
++ (BOOL)create:(FaunaInstance*)instance error:(NSError**)error;
+
+/*!
  External ID of the Instance.
  */
 @property (nonatomic, strong) NSString *externalId;
