@@ -31,13 +31,13 @@
   [FaunaCache ignoreCache:^{
     [FaunaContext background:^id{
       NSError *error;
-      FaunaResponse *response = [FaunaTimeline pageFromTimeline:self.timelineResource withCount:kEventsPageSize error:&error];
+      FaunaTimelinePage *page = [FaunaTimeline pageFromTimeline:self.timelineResource withCount:kEventsPageSize error:&error];
       // if there is an error in my background block
       if(error) {
         // ... then return error, failure callback will be executed.
         return error;
       }
-      NSArray * incomingEvents = response.resource[@"events"];
+      NSArray * incomingEvents = page.events;
       _messages = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
       
       // filter for "create" event only.

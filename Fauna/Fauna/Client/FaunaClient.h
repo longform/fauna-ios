@@ -64,7 +64,7 @@
 
 - (void)pageFromTimeline:(NSString*)timelineReference after:(NSDate*)after withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
 
-- (FaunaResponse*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
+- (NSDictionary*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
 
 #pragma mark - Users
 

@@ -37,7 +37,7 @@
 
 - (void)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after callback:(FaunaResponseResultBlock)block;
 
-- (FaunaResponse*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error;
+- (NSDictionary*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error;
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError*__autoreleasing*)error;
 
@@ -309,12 +309,11 @@
 }
 
 
-- (FaunaResponse*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
+- (NSDictionary*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
   return [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil error:error];
 }
 
-- (FaunaResponse*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError*__autoreleasing*)error {
-  FaunaCache * cache = self.cache;
+- (NSDictionary*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError*__autoreleasing*)error {
   
   NSMutableDictionary *sendParams = [[NSMutableDictionary alloc] initWithCapacity:3];
   if(count) {
@@ -327,37 +326,7 @@
     [sendParams setObject:[NSNumber numberWithDouble:[after timeIntervalSince1970]] forKey:kAfterKey];
   }
   NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
-  NSString * responsePath = [FaunaResponse requestPathFromPath:path andMethod:@"GET"];
-  if(![FaunaCache shouldIgnoreCache]) {
-    // if response is cached, return it.
-    FaunaResponse * response = [cache loadResponse:responsePath];
-    if(response) {
-      return response;
-    }
-  }
-  NSError __autoreleasing *requestError;
-  NSURLResponse *httpResponse;
-  NSMutableURLRequest * request = [self userRequestWithMethod:@"GET" path:path parameters:nil];
-  [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", @"utf-8"] forHTTPHeaderField:@"Content-Type"];
-  //[request setHTTPBody:[AFJSONStringFromParameters(parameters) dataUsingEncoding:@"utf-8"]];
-  NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&httpResponse error:&requestError];
-  if(requestError) {
-    // if there is an error, return from cache if current policy allow it.
-    if(![FaunaCache shouldIgnoreCache] && requestError.shouldRespondFromCache) {
-      FaunaResponse *response = [_cache loadResponse:responsePath];
-      if(response) {
-        return response;
-      }
-    }
-    error = &requestError;
-    return nil;
-  }
-  NSError *jsonError;
-  id responseObject = FaunaAFJSONDecode(data, &jsonError);
-  
-  FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
-  [cache saveResponse:response];
-  return response;
+  return [self performOperationWithPath:path method:@"POST" parameters:sendParams error:error];
 }
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError*__autoreleasing*)error {

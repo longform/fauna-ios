@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaResponse.h"
+#import "FaunaTimelinePage.h"
 
 @interface FaunaTimeline : NSObject
 
-+ (FaunaResponse*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
 
 /*!
  Adds an instance to the given timeline.

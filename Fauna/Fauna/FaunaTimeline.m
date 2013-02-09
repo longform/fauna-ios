@@ -13,14 +13,14 @@
 
 @implementation FaunaTimeline
 
-+ (FaunaResponse*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
   return [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil error:error];
 }
 
-+ (FaunaResponse*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error {
++ (FaunaTimelinePage*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error {
   FaunaContext * context = FaunaContext.current;
   FaunaClient * client = context.client;
-  return [client pageFromTimeline:timelineReference withCount:count error:error];
+  return (FaunaTimelinePage*)[FaunaResource deserialize:[client pageFromTimeline:timelineReference withCount:count error:error]];
 }
 
 + (BOOL)addInstance:(NSString*)ref toTimeline:(NSString*)timelineRef error:(NSError**)error {
