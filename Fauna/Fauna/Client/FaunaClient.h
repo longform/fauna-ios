@@ -52,6 +52,8 @@
 
 - (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference error:(NSError**)error;
 
+- (BOOL)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference error:(NSError**)error;
+
 - (void)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
 
 - (void)pageFromTimeline:(NSString*)timelineReference withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;

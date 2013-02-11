@@ -116,26 +116,28 @@
    NSString* instanceRef = resource.reference;
    [self.messages removeObject:resource];
    
-   // Remove instance from Timeline.
-   [Fauna.client removeInstance:instanceRef fromTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
+   [FaunaContext background:^id{
+     NSError *error;
+     [FaunaTimeline removeInstance:instanceRef fromTimeline:self.timelineResource error:&error];
      if(error) {
-       NSLog(@"Message Remove from Timeline error: %@", error);
-       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-       [alert show];
-     } else {
-       NSLog(@"Message Removed from timeline successfully: %@", response.resource);
-       
-       // Destroy the instance of 'message'.
-       [Fauna.client destroyInstance:instanceRef callback:^(NSError *error) {
-         if(error) {
-           NSLog(@"Message Instance destroy error: %@", error);
-           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-           [alert show];
-         } else {
-           NSLog(@"Message Instance destroyed successfully");
-         }
-       }];
+       return error;
      }
+     return nil;
+   } success:^(id results) {
+     // Destroy the instance of 'message'.
+     [Fauna.client destroyInstance:instanceRef callback:^(NSError *error) {
+       if(error) {
+         NSLog(@"Message Instance destroy error: %@", error);
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+         [alert show];
+       } else {
+         NSLog(@"Message Instance destroyed successfully");
+       }
+     }];
+   } failure:^(NSError *error) {
+     NSLog(@"Message Remove from Timeline error: %@", error);
+     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+     [alert show];
    }];
    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
  }

@@ -9,6 +9,7 @@
 #import "FaunaClient.h"
 #import "FaunaAFNetworking.h"
 #import "FaunaAFJSONUtilities.h"
+
 #define kFaunaTokenUserKey @"FaunaContextUserToken"
 #define kCacheName @"client"
 #import "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h"
@@ -20,6 +21,8 @@
 #define kPassword @"password"
 #define kNewPassword @"new_password"
 #define kNewPasswordConfirmation @"new_password_confirmation"
+
+extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 @interface FaunaClient ()
 
@@ -39,7 +42,11 @@
 
 - (NSDictionary*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error;
 
-- (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError*__autoreleasing*)error;
+- (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError**)error;
+
+- (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body error:(NSError**)error;
+
+- (NSData*)performRawOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body response:(NSURLResponse**)httpResponse error:(NSError**)error;
 
 @end
 
@@ -199,6 +206,18 @@
   }];
 }
 
+- (BOOL)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference error:(NSError**)error {
+  NSAssert(instanceReference, @"instanceReference is required");
+  NSAssert(timelineReference, @"timelineReference is required");
+  NSDictionary *sendParams = @{kResourceKey : instanceReference};
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
+  [self performOperationWithPath:path method:@"DELETE" parameters:nil body:sendParams error:error];
+  if(*error) {
+    return NO;
+  }
+  return YES;
+}
+
 - (void)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block {
   [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil callback:block];
 }
@@ -314,7 +333,6 @@
   return [self performOperationWithPath:path method:@"POST" parameters:params error:error];
 }
 
-
 - (NSDictionary*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
   return [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil error:error];
 }
@@ -336,6 +354,10 @@
 }
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError*__autoreleasing*)error {
+  return [self performOperationWithPath:path method:method parameters:parameters body:nil error:error];
+}
+
+- (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body error:(NSError*__autoreleasing*)error {
   FaunaCache * cache = self.cache;
   NSString * responsePath = [FaunaResponse requestPathFromPath:path andMethod:method];
   if(![FaunaCache shouldIgnoreCache]) {
@@ -345,12 +367,10 @@
       return response.resource;
     }
   }
-  NSError __autoreleasing *requestError;
   NSURLResponse *httpResponse;
-  NSMutableURLRequest * request = [self userRequestWithMethod:method path:path parameters:parameters];
-  [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", @"utf-8"] forHTTPHeaderField:@"Content-Type"];
-  NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&httpResponse error:&requestError];
-  if(requestError) {
+  NSData* data = [self performRawOperationWithPath:path method:method parameters:parameters body:body response:&httpResponse error:error];
+  NSError __autoreleasing* requestError;
+  if(*error) {
     // if there is an error, return from cache if current policy allow it.
     if(![FaunaCache shouldIgnoreCache] && requestError.shouldRespondFromCache) {
       FaunaResponse *response = [_cache loadResponse:responsePath];
@@ -358,18 +378,27 @@
         return response.resource;
       }
     }
-    error = &requestError;
     return nil;
   }
-  NSError __autoreleasing*jsonError;
-  id responseObject = FaunaAFJSONDecode(data, &jsonError);
-  if(jsonError) {
-    error = &jsonError;
+  id responseObject = FaunaAFJSONDecode(data, error);
+  if(*error) {
+    return nil;
   }
-  
   FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
   [cache saveResponse:response];
   return response.resource;
+}
+
+- (NSData*)performRawOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body response:(NSURLResponse**)httpResponse error:(NSError**)error {
+  NSMutableURLRequest * request = [self userRequestWithMethod:method path:path parameters:parameters];
+  NSString *charset = (NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(@"utf-8"));
+  
+  if(body) {
+    [request setHTTPBody:[AFJSONStringFromParameters(body) dataUsingEncoding:@"utf-8"]];
+  }
+  
+  [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
+  return [NSURLConnection sendSynchronousRequest:request returningResponse:httpResponse error:error];
 }
 
 - (NSDictionary*)getResource:(NSString*)ref error:(NSError*__autoreleasing*)error {

@@ -16,8 +16,15 @@
 /*!
  Adds an instance to the given timeline.
  @param ref Class Instance Reference.
- @param timelineRef Timeline Reference.
+ @param toTimeline Timeline Reference to add the given intance.
  */
 + (BOOL)addInstance:(NSString*)ref toTimeline:(NSString*)timelineRef error:(NSError**)error;
+
+/*!
+ Removes an instance from the given timeline.
+ @param ref Class Instance Reference.
+ @param fromTimeline Timeline Reference to remove the given instance from.
+ */
++ (BOOL)removeInstance:(NSString*)ref fromTimeline:(NSString*)timelineRef error:(NSError**)error;
 
 @end

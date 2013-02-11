@@ -33,4 +33,10 @@
   return YES;
 }
 
++ (BOOL)removeInstance:(NSString*)ref fromTimeline:(NSString*)timelineRef error:(NSError**)error {
+  FaunaContext * context = FaunaContext.current;
+  FaunaClient * client = context.client;
+  return [client removeInstance:ref fromTimeline:timelineRef error:error];
+}
+
 @end
