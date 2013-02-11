@@ -16,7 +16,7 @@
 
 - (void)showMessageDetails;
 
-@property (nonatomic, strong) IBOutlet NSDictionary * message;
+@property (nonatomic, strong) IBOutlet FaunaInstance * message;
 
 @end
 
@@ -42,22 +42,27 @@
 
 - (void)loadMessageDetails {
   [SVProgressHUD showWithStatus:@"Loading"];
-  [Fauna.client instanceDetails:self.messageRef callback:^(FaunaResponse *response, NSError *error) {
+  [FaunaContext background:^id{
+    NSError*error;
+    FaunaInstance *instance = [FaunaInstance get:self.messageRef error:&error];
     if(error) {
-      [SVProgressHUD dismiss];
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
-    } else {
-      NSLog(@"Instance details retrieved successfully: %@", response.resource);
-      self.message = response.resource;
-      [self showMessageDetails];
-      [SVProgressHUD showSuccessWithStatus:@"Done"];
+      return error;
     }
+    return instance;
+  } success:^(FaunaInstance* message) {
+    self.message = message;
+    NSLog(@"Instance details retrieved successfully: %@", self.message);
+    [SVProgressHUD showSuccessWithStatus:@"Done"];
+    [self showMessageDetails];
+  } failure:^(NSError *error) {
+    [SVProgressHUD dismiss];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
   }];
 }
 
 - (void)showMessageDetails {
-  self.txtMessage.text = [self.message valueForKeyPath:@"data.body"];
+  self.txtMessage.text = self.message.data[@"body"];
 }
 
 - (void)cancelAction:(id)sender {
@@ -65,20 +70,27 @@
 }
 
 - (IBAction)sendAction:(id)sender {
-  NSMutableDictionary * data = [NSMutableDictionary dictionaryWithDictionary: self.message[@"data"]];
+  [SVProgressHUD showWithStatus:@"Saving"];
+  NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithDictionary:self.message.data];
   data[@"body"] = self.txtMessage.text;
-  NSString *ref = self.message[@"ref"];
   NSDictionary *modifications = @{
-  @"data": data
+    @"data": data
   };
-  [Fauna.client updateInstance:ref changes:modifications callback:^(FaunaResponse *response, NSError *error) {
+  [FaunaContext background:^id{
+    NSError*error;
+    FaunaInstance *updatedInstance = [FaunaInstance update:self.message.reference changes:modifications error:&error];
     if(error) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
-    } else {
-      NSLog(@"Instance updated successfully: %@", response.resource);
-      [self.navigationController dismissModalViewControllerAnimated:YES];
+      return error;
     }
+    return updatedInstance;
+  } success:^(FaunaInstance* updatedInstance) {
+    [SVProgressHUD showSuccessWithStatus:@"Done"];
+    NSLog(@"Instance updated successfully: %@", updatedInstance.reference);
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+  } failure:^(NSError *error) {
+    [SVProgressHUD dismiss];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
   }];
 }
 

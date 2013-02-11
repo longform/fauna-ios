@@ -44,6 +44,8 @@
 
 - (BOOL)destroyInstance:(NSString*)ref error:(NSError**)error;
 
+- (NSDictionary*)updateInstance:(NSString*)ref changes:(NSDictionary*)changes error:(NSError**)error;
+
 #pragma mark - Timelines
 
 

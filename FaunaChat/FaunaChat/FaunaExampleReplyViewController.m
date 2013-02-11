@@ -8,7 +8,6 @@
 
 #import "FaunaExampleReplyViewController.h"
 #import "FaunaExampleMessageEditorViewController.h"
-#import <Fauna/Fauna.h>
 
 @implementation FaunaExampleReplyViewController
 
@@ -16,7 +15,7 @@
 {
   [super viewDidLoad];
   self.title = @"Reply";
-  self.lblMessage.text = [self.message valueForKeyPath:@"data.body"];
+  self.lblMessage.text = self.message.data[@"body"];
   
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(sendAction:)];
@@ -28,7 +27,7 @@
 
 - (void)editAction:(id)sender {
   FaunaExampleMessageEditorViewController *controller = [[FaunaExampleMessageEditorViewController alloc] initWithNibName:@"FaunaExampleMessageEditorViewController" bundle:nil];
-  controller.messageRef = self.message[@"ref"];
+  controller.messageRef = self.message.reference;
   [self.navigationController pushViewController:controller animated:YES];
 }
 

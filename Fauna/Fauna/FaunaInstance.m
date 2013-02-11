@@ -75,4 +75,10 @@
   return [client destroyInstance:ref error:error];
 }
 
++ (FaunaInstance*)update:(NSString*)ref changes:(NSDictionary*)changes error:(NSError**)error {
+  FaunaContext * context = FaunaContext.current;
+  FaunaClient * client = context.client;
+  return (FaunaInstance*)[FaunaResource deserialize:[client updateInstance:ref changes:changes error:error]];
+}
+
 @end

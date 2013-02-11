@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Fauna/Fauna.h>
 
 @interface FaunaExampleReplyViewController : UIViewController
 
@@ -14,7 +15,7 @@
 
 @property (nonatomic, strong) IBOutlet UITextField * txtMessage;
 
-@property (nonatomic, strong) IBOutlet NSDictionary * message;
+@property (nonatomic, strong) IBOutlet FaunaInstance * message;
 
 @property (nonatomic, strong) NSString* timelineResource;
 

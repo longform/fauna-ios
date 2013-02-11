@@ -434,4 +434,17 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   return [self performOperationWithPath:path method:@"POST" parameters:resource error:error];
 }
 
+- (NSDictionary*)updateInstance:(NSString*)ref changes:(NSDictionary*)changes error:(NSError**)error {
+  NSParameterAssert(ref);
+  NSParameterAssert(changes);
+  NSAssert(ref, @"ref is required");
+  NSArray * arr = [ref componentsSeparatedByString:@"/"];
+  
+  // works when ref is just the number of the instance.
+  // E.g. "123445678" and also for "instances/123445678"
+  NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, resourcePath];
+  return [self performOperationWithPath:path method:@"PUT" parameters:changes error:error];
+}
+
 @end

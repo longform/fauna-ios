@@ -144,7 +144,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSDictionary* messageInstance = self.messages[indexPath.row];
+  FaunaInstance* messageInstance = self.messages[indexPath.row];
   
   FaunaExampleReplyViewController *detailViewController = [[FaunaExampleReplyViewController alloc] initWithNibName:@"FaunaExampleReplyViewController" bundle:nil];
   detailViewController.timelineResource = self.timelineResource;
