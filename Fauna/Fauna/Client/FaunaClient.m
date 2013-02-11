@@ -366,7 +366,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
     [sendParams setObject:[NSNumber numberWithDouble:[after timeIntervalSince1970]] forKey:kAfterKey];
   }
   NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, timelineReference];
-  return [self performOperationWithPath:path method:@"POST" parameters:sendParams error:error];
+  return [self performOperationWithPath:path method:@"GET" parameters:sendParams error:error];
 }
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters error:(NSError*__autoreleasing*)error {
@@ -376,24 +376,23 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body error:(NSError*__autoreleasing*)error {
   FaunaCache * cache = self.cache;
   NSString * responsePath = [FaunaResponse requestPathFromPath:path andMethod:method];
-  if(![FaunaCache shouldIgnoreCache]) {
+  /*if(![FaunaCache shouldIgnoreCache]) {
     // if response is cached, return it.
     FaunaResponse * response = [cache loadResponse:responsePath];
     if(response) {
       return response.resource;
     }
-  }
+  }*/
   NSURLResponse *httpResponse;
   NSData* data = [self performRawOperationWithPath:path method:method parameters:parameters body:body response:&httpResponse error:error];
-  NSError __autoreleasing* requestError;
   if(*error) {
     // if there is an error, return from cache if current policy allow it.
-    if(![FaunaCache shouldIgnoreCache] && requestError.shouldRespondFromCache) {
+    /*if(![FaunaCache shouldIgnoreCache] && (*error).shouldRespondFromCache) {
       FaunaResponse *response = [_cache loadResponse:responsePath];
       if(response) {
         return response.resource;
       }
-    }
+    }*/
     return nil;
   }
   id responseObject = FaunaAFJSONDecode(data, error);
@@ -401,7 +400,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
     return nil;
   }
   FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
-  [cache saveResponse:response];
+  //[cache saveResponse:response];
   return response.resource;
 }
 
