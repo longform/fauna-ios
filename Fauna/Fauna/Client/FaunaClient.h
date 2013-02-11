@@ -80,6 +80,8 @@
 
 - (void)execute:(NSString*)commandName params:(NSDictionary*)params callback:(FaunaResponseResultBlock)block;
 
+- (NSDictionary*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error;
+
 #pragma mark - HTTP
 
 - (NSMutableURLRequest *)clientKeyRequestWithMethod:(NSString *)method

@@ -12,6 +12,7 @@
 #import "FaunaTimeline.h"
 #import "FaunaResource.h"
 #import "FaunaInstance.h"
+#import "FaunaCommand.h"
 
 /*!
  Fauna

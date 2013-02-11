@@ -33,24 +33,26 @@
 }
 
 - (IBAction)sendAction:(id)sender {
-  [Fauna.client execute:@"reply_message" params:@{@"body": self.txtMessage.text} callback:^(FaunaResponse *response, NSError *error) {
+  NSString * textMessage = self.txtMessage.text;
+  [FaunaContext background:^id{
+    NSError *error;
+    FaunaResource* messageResource = [FaunaCommand execute:@"reply_message" params:@{@"body": textMessage} error:&error];
     if(error) {
-      NSLog(@"Command execute error: %@", error);
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
-    } else {
-      NSLog(@"Command executed successfully: %@", response.resource);
-      [Fauna.client addInstance:response.resource[@"ref"] toTimeline:self.timelineResource callback:^(FaunaResponse *response, NSError *error) {
-        if(error) {
-          NSLog(@"Timeline add error: %@", error);
-          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-          [alert show];
-        } else {
-          NSLog(@"Added to timeline successfully: %@", response.resource[@"ref"]);
-          [self.navigationController dismissModalViewControllerAnimated:YES];
-        }
-      }];
+      return error;
     }
+    NSLog(@"Command executed successfully: %@", messageResource.reference);
+    [FaunaTimeline addInstance:messageResource.reference toTimeline:self.timelineResource error:&error];
+    if(error) {
+      return error;
+    }
+    NSLog(@"Added to timeline successfully");
+    return nil;
+  } success:^(id results) {
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+  } failure:^(NSError *error) {
+    NSLog(@"Command execute error: %@", error);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
   }];
 }
 

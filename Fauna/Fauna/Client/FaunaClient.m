@@ -308,6 +308,12 @@
   }];
 }
 
+- (NSDictionary*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error {
+  NSParameterAssert(commandName);
+  NSString * path = [NSString stringWithFormat:@"/%@/commands/%@", FaunaAPIVersion, commandName];
+  return [self performOperationWithPath:path method:@"POST" parameters:params error:error];
+}
+
 
 - (NSDictionary*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
   return [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil error:error];
