@@ -24,6 +24,12 @@
 + (BOOL)create:(FaunaInstance*)instance error:(NSError**)error;
 
 /*!
+ Destroys a FaunaInstance
+ @param ref Instance Reference to Destroy
+ */
++ (BOOL)destroy:(NSString*)ref error:(NSError**)error;
+
+/*!
  External ID of the Instance.
  */
 @property (nonatomic, strong) NSString *externalId;

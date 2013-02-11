@@ -42,6 +42,7 @@
 
 - (NSDictionary*)createInstance:(NSDictionary*)resource error:(NSError*__autoreleasing*)error;
 
+- (BOOL)destroyInstance:(NSString*)ref error:(NSError**)error;
 
 #pragma mark - Timelines
 

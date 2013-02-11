@@ -137,6 +137,22 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   }];
 }
 
+- (BOOL)destroyInstance:(NSString*)ref error:(NSError**)error {
+  NSAssert(ref, @"ref is required");
+  NSArray * arr = [ref componentsSeparatedByString:@"/"];
+  
+  // works when ref is just the number of the instance.
+  // E.g. "123445678" and also for "instances/123445678"
+  NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, resourcePath];
+  NSHTTPURLResponse *httpResponse;
+  [self performRawOperationWithPath:path method:@"DELETE" parameters:nil body:nil response:&httpResponse error:error];
+  if(*error) {
+    return NO;
+  }
+  return YES;
+}
+
 - (void)updateInstance:(NSString*)ref changes:(NSDictionary*)changes callback:(FaunaResponseResultBlock)block {
   NSAssert(ref, @"ref is required");
   NSArray * arr = [ref componentsSeparatedByString:@"/"];

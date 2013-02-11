@@ -122,20 +122,14 @@
      if(error) {
        return error;
      }
+     [FaunaInstance destroy:instanceRef error:&error];
+     if(error) {
+       return error;
+     }
      return nil;
    } success:^(id results) {
-     // Destroy the instance of 'message'.
-     [Fauna.client destroyInstance:instanceRef callback:^(NSError *error) {
-       if(error) {
-         NSLog(@"Message Instance destroy error: %@", error);
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-         [alert show];
-       } else {
-         NSLog(@"Message Instance destroyed successfully");
-       }
-     }];
+     // nop
    } failure:^(NSError *error) {
-     NSLog(@"Message Remove from Timeline error: %@", error);
      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
      [alert show];
    }];

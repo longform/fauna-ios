@@ -69,4 +69,10 @@
   return YES;
 }
 
++ (BOOL)destroy:(NSString*)ref error:(NSError**)error {
+  FaunaContext * context = FaunaContext.current;
+  FaunaClient * client = context.client;
+  return [client destroyInstance:ref error:error];
+}
+
 @end
