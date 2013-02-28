@@ -16,10 +16,6 @@
 
 #define FaunaAPIVersion @"v0"
 
-typedef void (^FaunaResponseResultBlock)(FaunaResponse* response, NSError *error);
-
-typedef void (^FaunaSimpleResultBlock)(NSError *error);
-
 typedef void (^FaunaBlock)();
 
 typedef id (^FaunaBackgroundBlock)();

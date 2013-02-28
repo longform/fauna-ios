@@ -13,14 +13,20 @@
 
 @implementation FaunaTimeline
 
-+ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error {
-  return [self pageFromTimeline:timelineReference count:[NSNumber numberWithInteger:count] before:nil after:nil error:error];
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference count:(NSInteger)count error:(NSError**)error {
+  return [self pageFromTimeline:timelineReference before:nil after:nil count:[NSNumber numberWithInteger:count] error:error];
 }
 
-+ (FaunaTimelinePage*)pageFromTimeline:(NSString*)timelineReference count:(NSNumber*)count before:(NSDate*)before after:(NSDate*)after error:(NSError**)error {
-  FaunaContext * context = FaunaContext.current;
-  FaunaClient * client = context.client;
-  return (FaunaTimelinePage*)[FaunaResource deserialize:[client pageFromTimeline:timelineReference withCount:count error:error]];
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference before:(NSDate*)before count:(NSInteger)count error:(NSError**)error {
+  return [self pageFromTimeline:timelineReference before:before after:nil count:[NSNumber numberWithInteger:count] error:error];
+}
+
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference after:(NSDate*)after count:(NSInteger)count error:(NSError**)error {
+  return [self pageFromTimeline:timelineReference before:nil after:after count:[NSNumber numberWithInteger:count] error:error];
+}
+
++ (FaunaTimelinePage*)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before after:(NSDate*)after count:(NSInteger)count error:(NSError**)error {
+  return (FaunaTimelinePage*)[FaunaResource deserialize:[FaunaContext.current.client pageFromTimeline:timelineReference before:before after:after count:[NSNumber numberWithInteger:count] error:error]];
 }
 
 + (BOOL)addInstance:(NSString*)ref toTimeline:(NSString*)timelineRef error:(NSError**)error {

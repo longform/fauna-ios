@@ -20,18 +20,25 @@
 
 - (void)changeAction:(id)sender {
   [SVProgressHUD showWithStatus:@"Processing"];
-  [Fauna.client changePassword:self.oldPasswordField.text newPassword:self.passwordField.text confirmation:self.confirmationField.text callback:^(NSError *error) {
-    if(error) {
-      [SVProgressHUD dismiss];
-      NSLog(@"Change Password error: %@", error);
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
-    } else {
-      [SVProgressHUD showSuccessWithStatus:@"Success"];
-      NSLog(@"Change Password successfully");
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Password Changed!" message:@"Your password was changed! You may need to sign in again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
+  NSString* oldPassword = self.oldPasswordField.text;
+  NSString* newPassword = self.passwordField.text;
+  NSString* confirmationPassword = self.confirmationField.text;
+  [FaunaContext background:^id{
+    NSError*error;
+    if(![FaunaUser changePassword:oldPassword newPassword:newPassword confirmation:confirmationPassword error:&error]) {
+      return error;
     }
+    return nil;
+  } success:^(id results) {
+    [SVProgressHUD showSuccessWithStatus:@"Success"];
+    NSLog(@"Change Password successfully");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Password Changed!" message:@"Your password was changed! You may need to sign in again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+  } failure:^(NSError *error) {
+    [SVProgressHUD dismiss];
+    NSLog(@"Change Password error: %@", error);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
   }];
 }
 

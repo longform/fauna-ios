@@ -32,7 +32,7 @@
   [SVProgressHUD showWithStatus:@"Loading"];
   [FaunaContext background:^id{
     NSError *error;
-    FaunaTimelinePage *page = [FaunaTimeline pageFromTimeline:self.timelineResource withCount:kEventsPageSize error:&error];
+    FaunaTimelinePage *page = [FaunaTimeline pageFromTimeline:self.timelineResource count:kEventsPageSize error:&error];
     // if there is an error in my background block
     if(error) {
       // ... then return error, failure callback will be executed.

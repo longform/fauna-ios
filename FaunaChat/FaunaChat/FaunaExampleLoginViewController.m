@@ -19,25 +19,22 @@
 }
 
 - (IBAction)loginAction:(id)sender {
-  NSDictionary *credentials = @{
-    @"email": self.emailField.text,
-    @"password": self.passwordField.text
-  };
-  [Fauna.client createToken:credentials block:^(FaunaResponse *response, NSError *error) {
-    if(error) {
-      UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
-    } else {
-      NSDictionary *tokenInfo = response.resource;
-      NSString * token = tokenInfo[@"token"];
-      
-      // set the token in the fauna context
-      Fauna.client.userToken = token;
-      
-      NSLog(@"Token: %@", token);
-      UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat!"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
+  NSString* email = self.emailField.text;
+  NSString* password = self.passwordField.text;
+  [FaunaContext background:^id{
+    NSError* error;
+    if(![FaunaUser loginWithEmail:email password:password error:&error]) {
+      return error;
     }
+    return nil;
+  } success:^(id results) {
+    NSLog(@"Token: %@", FaunaContext.current.client.userToken);
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat!"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+    [self.navigationController popViewControllerAnimated:YES];
+  } failure:^(NSError *error) {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
   }];
 }
 

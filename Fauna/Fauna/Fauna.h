@@ -13,6 +13,7 @@
 #import "FaunaResource.h"
 #import "FaunaInstance.h"
 #import "FaunaCommand.h"
+#import "FaunaUser.h"
 
 /*!
  Fauna

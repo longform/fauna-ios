@@ -32,15 +32,7 @@
 
 #pragma mark - Instances
 
-- (void)createInstance:(NSDictionary*)instance callback:(FaunaResponseResultBlock)block;
-
-- (void)destroyInstance:(NSString*)ref callback:(FaunaSimpleResultBlock)block;
-
-- (void)updateInstance:(NSString*)ref changes:(NSDictionary*)changes callback:(FaunaResponseResultBlock)block;
-
-- (void)instanceDetails:(NSString*)ref callback:(FaunaResponseResultBlock)block;
-
-- (NSDictionary*)createInstance:(NSDictionary*)resource error:(NSError*__autoreleasing*)error;
+- (NSDictionary*)createInstance:(NSDictionary*)resource error:(NSError**)error;
 
 - (BOOL)destroyInstance:(NSString*)ref error:(NSError**)error;
 
@@ -48,55 +40,28 @@
 
 #pragma mark - Timelines
 
-
-#pragma mark - Maintainance
-
-- (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
-
-- (void)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference error:(NSError**)error;
+- (NSDictionary*)addInstance:(NSString*)instanceReference toTimeline:(NSString*)timelineReference error:(NSError**)error;
 
 - (BOOL)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference error:(NSError**)error;
 
-- (void)removeInstance:(NSString*)instanceReference fromTimeline:(NSString*)timelineReference callback:(FaunaResponseResultBlock)block;
-
-- (void)pageFromTimeline:(NSString*)timelineReference withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
-
-- (void)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before callback:(FaunaResponseResultBlock)block;
-
-- (void)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
-
-- (void)pageFromTimeline:(NSString*)timelineReference after:(NSDate*)after callback:(FaunaResponseResultBlock)block;
-
-- (void)pageFromTimeline:(NSString*)timelineReference after:(NSDate*)after withCount:(NSInteger)count callback:(FaunaResponseResultBlock)block;
-
-- (NSDictionary*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
+- (NSDictionary*)pageFromTimeline:(NSString *)timelineReference before:(NSDate*)before after:(NSDate*)after count:(NSInteger)count error:(NSError**)error;
 
 #pragma mark - Users
 
-- (void)createUser:(NSDictionary*)user callback:(FaunaResponseResultBlock)block;
+- (NSDictionary*)createUser:(NSDictionary*)userInfo error:(NSError**)error;
 
-- (void)changePassword:(NSString*)oldPassword newPassword:(NSString*)newPassword confirmation:(NSString*)confirmation callback:(FaunaSimpleResultBlock)block;
+- (BOOL)changePassword:(NSString*)oldPassword newPassword:(NSString*)newPassword confirmation:(NSString*)confirmation error:(NSError**)error;
 
 #pragma mark - Tokens
 
-- (void)createToken:(NSDictionary*)credentials block:(FaunaResponseResultBlock)block;
+- (NSString*)createToken:(NSDictionary*)credentials error:(NSError**)error;
 
 #pragma mark - Commands
 
-- (void)execute:(NSString*)commandName params:(NSDictionary*)params callback:(FaunaResponseResultBlock)block;
-
 - (NSDictionary*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error;
-
-#pragma mark - HTTP
-
-- (NSMutableURLRequest *)clientKeyRequestWithMethod:(NSString *)method
-path:(NSString *)path parameters:(NSDictionary *)parameters;
-
-- (NSMutableURLRequest *)userRequestWithMethod:(NSString *)method
-                                               path:(NSString *)path parameters:(NSDictionary *)parameters;
 
 #pragma mark - Resources
 
-- (NSDictionary*)getResource:(NSString*)ref error:(NSError*__autoreleasing*)error;
+- (NSDictionary*)getResource:(NSString*)ref error:(NSError**)error;
 
 @end

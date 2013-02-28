@@ -11,7 +11,13 @@
 
 @interface FaunaTimeline : NSObject
 
-+ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference withCount:(NSInteger)count error:(NSError**)error;
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference count:(NSInteger)count error:(NSError**)error;
+
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference before:(NSDate*)before count:(NSInteger)count error:(NSError**)error;
+
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference after:(NSDate*)after count:(NSInteger)count error:(NSError**)error;
+
++ (FaunaTimelinePage*)pageFromTimeline:(NSString *)timelineReference before:(NSDate*)before after:(NSDate*)after count:(NSInteger)count error:(NSError**)error;
 
 /*!
  Adds an instance to the given timeline.

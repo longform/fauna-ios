@@ -23,7 +23,6 @@
 		074CF6D9167855AE00686606 /* FaunaExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF6D8167855AE00686606 /* FaunaExampleViewController.m */; };
 		074CF6DC167855AE00686606 /* FaunaExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6DA167855AE00686606 /* FaunaExampleViewController.xib */; };
 		074CF7CA16788F7800686606 /* fauna_logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CF7C916788F7800686606 /* fauna_logo_small.png */; };
-		07595A0016C1D1D100426133 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 075959FF16C1D1D100426133 /* libFauna.a */; };
 		07603C2D16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */; };
 		07603C2E16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */; };
 		077E22941682C3A900FB0B30 /* FaunaExampleSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */; };
@@ -31,6 +30,7 @@
 		0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693C16A8D96000B3639C /* libsqlite3.dylib */; };
 		07B9D8B916866913002956FF /* FaunaExampleLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */; };
 		07B9D8BA16866913002956FF /* FaunaExampleLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */; };
+		07D9FFB416DF583500D6173F /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D9FFB116DF581500D6173F /* libFauna.a */; };
 		07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */; };
 		07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */; };
 		07E2457C16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2457A16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m */; };
@@ -39,6 +39,23 @@
 		07E2458716A2D3D0007B6CFE /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */; };
 		07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E2458816A2D3EF007B6CFE /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		07D9FFB016DF581500D6173F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07D9FFAC16DF581400D6173F /* Fauna.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 074CF7901678713F00686606;
+			remoteInfo = Fauna;
+		};
+		07D9FFB216DF582900D6173F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07D9FFAC16DF581400D6173F /* Fauna.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 074CF78F1678713F00686606;
+			remoteInfo = Fauna;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0711CA0E168BD41C00CEEAA1 /* FaunaExampleRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleRoomViewController.h; sourceTree = "<group>"; };
@@ -64,7 +81,6 @@
 		074CF6D8167855AE00686606 /* FaunaExampleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleViewController.m; sourceTree = "<group>"; };
 		074CF6DB167855AE00686606 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FaunaExampleViewController.xib; sourceTree = "<group>"; };
 		074CF7C916788F7800686606 /* fauna_logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fauna_logo_small.png; sourceTree = "<group>"; };
-		075959FF16C1D1D100426133 /* libFauna.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libFauna.a; path = "../Fauna/build/Release-iphoneos/libFauna.a"; sourceTree = "<group>"; };
 		07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleChangePasswordViewController.h; sourceTree = "<group>"; };
 		07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleChangePasswordViewController.m; sourceTree = "<group>"; };
 		07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleChangePasswordViewController.xib; sourceTree = "<group>"; };
@@ -75,6 +91,7 @@
 		07B9D8B616866913002956FF /* FaunaExampleLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleLoginViewController.h; sourceTree = "<group>"; };
 		07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleLoginViewController.m; sourceTree = "<group>"; };
 		07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleLoginViewController.xib; sourceTree = "<group>"; };
+		07D9FFAC16DF581400D6173F /* Fauna.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fauna.xcodeproj; path = ../Fauna/Fauna.xcodeproj; sourceTree = "<group>"; };
 		07E2455F169F83FD007B6CFE /* FaunaExampleReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleReplyViewController.h; sourceTree = "<group>"; };
 		07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleReplyViewController.m; sourceTree = "<group>"; };
 		07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleReplyViewController.xib; sourceTree = "<group>"; };
@@ -92,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07595A0016C1D1D100426133 /* libFauna.a in Frameworks */,
+				07D9FFB416DF583500D6173F /* libFauna.a in Frameworks */,
 				0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */,
 				07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */,
 				074CF6C0167855AD00686606 /* UIKit.framework in Frameworks */,
@@ -107,7 +124,7 @@
 		074CF6B0167855AD00686606 = {
 			isa = PBXGroup;
 			children = (
-				075959FF16C1D1D100426133 /* libFauna.a */,
+				07D9FFAC16DF581400D6173F /* Fauna.xcodeproj */,
 				074CF6C5167855AD00686606 /* FaunaChat */,
 				074CF6BE167855AD00686606 /* Frameworks */,
 				074CF6BC167855AD00686606 /* Products */,
@@ -192,6 +209,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		07D9FFAD16DF581400D6173F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07D9FFB116DF581500D6173F /* libFauna.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		07E2457F16A2D275007B6CFE /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
@@ -224,6 +249,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				07D9FFB316DF582900D6173F /* PBXTargetDependency */,
 			);
 			name = FaunaChat;
 			productName = FaunaChat;
@@ -250,12 +276,28 @@
 			mainGroup = 074CF6B0167855AD00686606;
 			productRefGroup = 074CF6BC167855AD00686606 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 07D9FFAD16DF581400D6173F /* Products */;
+					ProjectRef = 07D9FFAC16DF581400D6173F /* Fauna.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				074CF6BA167855AD00686606 /* FaunaChat */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		07D9FFB116DF581500D6173F /* libFauna.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFauna.a;
+			remoteRef = 07D9FFB016DF581500D6173F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		074CF6B9167855AD00686606 /* Resources */ = {
@@ -301,6 +343,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		07D9FFB316DF582900D6173F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Fauna;
+			targetProxy = 07D9FFB216DF582900D6173F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		074CF6C8167855AD00686606 /* InfoPlist.strings */ = {
@@ -380,6 +430,7 @@
 				GCC_PREFIX_HEADER = "FaunaChat/FaunaChat-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "FaunaChat/FaunaChat-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Fauna-iOS-cvkwtjqxbgepvrfuaijnycbufhjm/Build/Products/Debug-iphoneos\"",
@@ -398,6 +449,7 @@
 				GCC_PREFIX_HEADER = "FaunaChat/FaunaChat-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "FaunaChat/FaunaChat-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Fauna-iOS-cvkwtjqxbgepvrfuaijnycbufhjm/Build/Products/Debug-iphoneos\"",

@@ -59,6 +59,7 @@
 
 + (Class)resolveResourceType:(NSDictionary*)resource {
   NSString* ref = resource[@"ref"];
+  NSUInteger refLength = ref.length;
   if(ref) {
     NSError* error;
     NSRegularExpression *regex = nil;
@@ -67,7 +68,7 @@
              regularExpressionWithPattern:@"^.+/timelines/[^/]+$"
              options:NSRegularExpressionCaseInsensitive
              error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, ref.length)].count > 0) {
+    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
       return NSClassFromString(@"FaunaTimelinePage");
     }
     
@@ -75,7 +76,7 @@
              regularExpressionWithPattern:@"^.+/changes$"
              options:NSRegularExpressionCaseInsensitive
              error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, ref.length)].count > 0) {
+    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
       return NSClassFromString(@"FaunaTimelinePage");
     }
     
@@ -83,7 +84,7 @@
              regularExpressionWithPattern:@"^.+/local$"
              options:NSRegularExpressionCaseInsensitive
              error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, ref.length)].count > 0) {
+    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
       return NSClassFromString(@"FaunaTimelinePage");
     }
     
@@ -91,7 +92,7 @@
              regularExpressionWithPattern:@"^.+/follows/[^/]+$"
              options:NSRegularExpressionCaseInsensitive
              error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, ref.length)].count > 0) {
+    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
       return NSClassFromString(@"FaunaTimelinePage");
     }
     
@@ -99,7 +100,7 @@
              regularExpressionWithPattern:@"^.+/followers/[^/]+$"
              options:NSRegularExpressionCaseInsensitive
              error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, ref.length)].count > 0) {
+    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
       return NSClassFromString(@"FaunaTimelinePage");
     }
     
@@ -107,7 +108,7 @@
              regularExpressionWithPattern:@"^.+/followers/[^/]+$"
              options:NSRegularExpressionCaseInsensitive
              error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, ref.length)].count > 0) {
+    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
       return NSClassFromString(@"FaunaTimelinePage");
     }
     
@@ -134,10 +135,10 @@
   FaunaContext * context = FaunaContext.current;
   FaunaClient * client = context.client;
   
-  NSError __autoreleasing *getError;
+  NSError  *getError;
   NSDictionary * resource = [client getResource:ref error:&getError];
   if(getError || !resource) {
-    error = &getError;
+    *error = getError;
     return nil;
   }
   return [self deserialize:resource];

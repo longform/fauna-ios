@@ -85,7 +85,6 @@ static FaunaContext* popContext() {
   NSParameterAssert(backgroundBlock);
   NSParameterAssert(successBlock);
   NSParameterAssert(failureBlock);
-  
   NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock: ^{
     id result = backgroundBlock();
     [[NSOperationQueue mainQueue] addOperationWithBlock: ^ {

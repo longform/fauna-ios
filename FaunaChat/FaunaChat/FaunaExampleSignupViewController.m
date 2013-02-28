@@ -23,21 +23,24 @@
 - (IBAction)signupAction:(id)sender {
   
   // prepare user info data
-  NSDictionary * newUserInfo = @{
-    @"email" : self.emailField.text,
-    @"password" : self.passwordField.text,
-    @"name" : self.nameField.text
-  };
+  FaunaUser* user = [[FaunaUser alloc] init];
+  user.email = self.emailField.text;
+  user.password = self.passwordField.text;
+  user.name = self.nameField.text;
   
-  [Fauna.client createUser:newUserInfo callback:^(FaunaResponse *response, NSError *error) {
-    if(error) {
-      UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
-    } else {
-      NSDictionary *userInfo = response.resource;
-      UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat %@", userInfo[@"name"]] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-      [alert show];
+  [FaunaContext background:^id{
+    NSError *error;
+    if(![FaunaUser create:user error:&error]) {
+      return error;
     }
+    return nil;
+  } success:^(id results) {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat %@", user.name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+    [self.navigationController popViewControllerAnimated:YES];
+  } failure:^(NSError *error) {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
   }];
 }
 
