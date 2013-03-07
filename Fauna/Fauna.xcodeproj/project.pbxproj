@@ -114,6 +114,7 @@
 		07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
 		07F28A6716C37143006EE2A8 /* FaunaResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResource.h; sourceTree = "<group>"; };
 		07F28A6816C37143006EE2A8 /* FaunaResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResource.m; sourceTree = "<group>"; };
+		ACC998AE16E9159900FDF963 /* fauna_test_config.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = fauna_test_config.rb; sourceTree = "<group>"; };
 		ACDEDB6816E80DC7005B2B73 /* Tests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACDEDB6916E80DC7005B2B73 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACDEDB6C16E80DC7005B2B73 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -272,6 +273,7 @@
 		ACDEDB6F16E80DC7005B2B73 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ACC998AE16E9159900FDF963 /* fauna_test_config.rb */,
 				ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */,
 				ACDEDB7016E80DC7005B2B73 /* Tests-Info.plist */,
 				ACDEDB7116E80DC7005B2B73 /* InfoPlist.strings */,
@@ -305,6 +307,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ACDEDB7C16E80DC7005B2B73 /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
+				ACDEDB9316E82110005B2B73 /* ShellScript */,
 				ACDEDB6416E80DC7005B2B73 /* Sources */,
 				ACDEDB6516E80DC7005B2B73 /* Frameworks */,
 				ACDEDB6616E80DC7005B2B73 /* Resources */,
@@ -356,6 +359,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ACDEDB9316E82110005B2B73 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/FaunaCredentials.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/bash -e";
+			shellScript = "# run the user's configured shell interactively in order to pull in their shell-configured environment (rbenv, etc)\n$SHELL -i -c 'ruby ${PROJECT_DIR}/Tests/fauna_test_config.rb ${DERIVED_FILE_DIR}/FaunaCredentials.h'";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		074CF78C1678713F00686606 /* Sources */ = {
@@ -560,6 +580,7 @@
 				ACDEDB7B16E80DC7005B2B73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
