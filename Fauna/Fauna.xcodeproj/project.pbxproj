@@ -38,6 +38,14 @@
 		07F28A6916C37143006EE2A8 /* FaunaResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6816C37143006EE2A8 /* FaunaResource.m */; };
 		07F28A6A16C37B17006EE2A8 /* FaunaInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */; };
 		07F28A6B16C37B17006EE2A8 /* FaunaResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6716C37143006EE2A8 /* FaunaResource.h */; };
+		ACDEDB6A16E80DC7005B2B73 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB6916E80DC7005B2B73 /* UIKit.framework */; };
+		ACDEDB6B16E80DC7005B2B73 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7931678713F00686606 /* Foundation.framework */; };
+		ACDEDB6D16E80DC7005B2B73 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB6C16E80DC7005B2B73 /* CoreGraphics.framework */; };
+		ACDEDB7316E80DC7005B2B73 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ACDEDB7116E80DC7005B2B73 /* InfoPlist.strings */; };
+		ACDEDB7516E80DC7005B2B73 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDEDB7416E80DC7005B2B73 /* main.m */; };
+		ACDEDB7E16E80DFB005B2B73 /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB7D16E80DFB005B2B73 /* GHUnitIOS.framework */; };
+		ACDEDB8216E80F57005B2B73 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */; };
+		ACDEDB8716E81030005B2B73 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -105,6 +113,16 @@
 		07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
 		07F28A6716C37143006EE2A8 /* FaunaResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResource.h; sourceTree = "<group>"; };
 		07F28A6816C37143006EE2A8 /* FaunaResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResource.m; sourceTree = "<group>"; };
+		ACDEDB6816E80DC7005B2B73 /* Tests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACDEDB6916E80DC7005B2B73 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		ACDEDB6C16E80DC7005B2B73 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		ACDEDB7016E80DC7005B2B73 /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
+		ACDEDB7216E80DC7005B2B73 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		ACDEDB7416E80DC7005B2B73 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		ACDEDB7616E80DC7005B2B73 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		ACDEDB7D16E80DFB005B2B73 /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = ../Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
+		ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +135,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACDEDB6516E80DC7005B2B73 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACDEDB8216E80F57005B2B73 /* QuartzCore.framework in Frameworks */,
+				ACDEDB6A16E80DC7005B2B73 /* UIKit.framework in Frameworks */,
+				ACDEDB6B16E80DC7005B2B73 /* Foundation.framework in Frameworks */,
+				ACDEDB6D16E80DC7005B2B73 /* CoreGraphics.framework in Frameworks */,
+				ACDEDB7E16E80DFB005B2B73 /* GHUnitIOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -124,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				074CF7951678713F00686606 /* Fauna */,
+				ACDEDB6E16E80DC7005B2B73 /* Tests */,
 				074CF7921678713F00686606 /* Frameworks */,
 				074CF7911678713F00686606 /* Products */,
 			);
@@ -133,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				074CF7901678713F00686606 /* libFauna.a */,
+				ACDEDB6816E80DC7005B2B73 /* Tests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,8 +172,12 @@
 		074CF7921678713F00686606 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */,
+				ACDEDB7D16E80DFB005B2B73 /* GHUnitIOS.framework */,
 				0786693916A8D74900B3639C /* libsqlite3.dylib */,
 				074CF7931678713F00686606 /* Foundation.framework */,
+				ACDEDB6916E80DC7005B2B73 /* UIKit.framework */,
+				ACDEDB6C16E80DC7005B2B73 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -222,6 +258,26 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
+		ACDEDB6E16E80DC7005B2B73 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				ACDEDB6F16E80DC7005B2B73 /* Supporting Files */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		ACDEDB6F16E80DC7005B2B73 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */,
+				ACDEDB7016E80DC7005B2B73 /* Tests-Info.plist */,
+				ACDEDB7116E80DC7005B2B73 /* InfoPlist.strings */,
+				ACDEDB7416E80DC7005B2B73 /* main.m */,
+				ACDEDB7616E80DC7005B2B73 /* Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -241,6 +297,23 @@
 			productName = Fauna;
 			productReference = 074CF7901678713F00686606 /* libFauna.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		ACDEDB6716E80DC7005B2B73 /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACDEDB7C16E80DC7005B2B73 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				ACDEDB6416E80DC7005B2B73 /* Sources */,
+				ACDEDB6516E80DC7005B2B73 /* Frameworks */,
+				ACDEDB6616E80DC7005B2B73 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = ACDEDB6816E80DC7005B2B73 /* Tests.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -264,9 +337,22 @@
 			projectRoot = "";
 			targets = (
 				074CF78F1678713F00686606 /* Fauna */,
+				ACDEDB6716E80DC7005B2B73 /* Tests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ACDEDB6616E80DC7005B2B73 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACDEDB7316E80DC7005B2B73 /* InfoPlist.strings in Resources */,
+				ACDEDB8716E81030005B2B73 /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		074CF78C1678713F00686606 /* Sources */ = {
@@ -293,7 +379,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACDEDB6416E80DC7005B2B73 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACDEDB7516E80DC7005B2B73 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		ACDEDB7116E80DC7005B2B73 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACDEDB7216E80DC7005B2B73 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		074CF79C1678713F00686606 /* Debug */ = {
@@ -373,6 +478,56 @@
 			};
 			name = Release;
 		};
+		ACDEDB7A16E80DC7005B2B73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../Vendor\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
+				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		ACDEDB7B16E80DC7005B2B73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../Vendor\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
+				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -393,6 +548,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		ACDEDB7C16E80DC7005B2B73 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACDEDB7A16E80DC7005B2B73 /* Debug */,
+				ACDEDB7B16E80DC7005B2B73 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
