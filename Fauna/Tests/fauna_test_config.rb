@@ -13,7 +13,7 @@ email = ENV["FAUNA_TEST_EMAIL"]
 password = ENV["FAUNA_TEST_PASSWORD"]
 
 if email && password
-  puts ">> Using Fauna account #{email} for fauna-ios tests."
+  puts "Using Fauna account #{email} for fauna-ios tests."
 else
   $stderr.puts ">> Fauna account not configured."
   $stderr.puts ">> FAUNA_TEST_EMAIL and FAUNA_TEST_PASSWORD must be defined in your environment to run tests."
@@ -28,6 +28,9 @@ root_conn.delete("everything")
 publisher_key = root_conn.post("keys/publisher")['resource']['key']
 client_key = root_conn.post("keys/client")['resource']['key']
 
+puts "Added publisher key #{publisher_key}"
+puts "Added client key #{client_key}"
+
 Fauna.schema do |f|
 
 end
@@ -35,6 +38,8 @@ end
 Fauna::Client.context(Fauna::Connection.new(:publisher_key => publisher_key)) do
   Fauna.migrate_schema!
 end
+
+puts "Writing credentials file #{creds_file}"
 
 File.open(creds_file, 'w') do |f|
   f.puts <<-EOF

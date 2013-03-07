@@ -38,6 +38,9 @@
 		07F28A6916C37143006EE2A8 /* FaunaResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6816C37143006EE2A8 /* FaunaResource.m */; };
 		07F28A6A16C37B17006EE2A8 /* FaunaInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */; };
 		07F28A6B16C37B17006EE2A8 /* FaunaResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6716C37143006EE2A8 /* FaunaResource.h */; };
+		ACB0B49116E925D400B6E7AA /* FaunaContextTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */; };
+		ACB0B4A816E92A4300B6E7AA /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7901678713F00686606 /* libFauna.a */; };
+		ACB0B4A916E92A6800B6E7AA /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
 		ACDEDB6A16E80DC7005B2B73 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB6916E80DC7005B2B73 /* UIKit.framework */; };
 		ACDEDB6B16E80DC7005B2B73 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7931678713F00686606 /* Foundation.framework */; };
 		ACDEDB6D16E80DC7005B2B73 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB6C16E80DC7005B2B73 /* CoreGraphics.framework */; };
@@ -46,8 +49,17 @@
 		ACDEDB7E16E80DFB005B2B73 /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB7D16E80DFB005B2B73 /* GHUnitIOS.framework */; };
 		ACDEDB8216E80F57005B2B73 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */; };
 		ACDEDB8716E81030005B2B73 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */; };
-		ACDEDB8A16E811A1005B2B73 /* FaunaUserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDEDB8916E811A1005B2B73 /* FaunaUserTest.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ACB0B4A616E929DD00B6E7AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 074CF7871678713F00686606 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 074CF78F1678713F00686606;
+			remoteInfo = Fauna;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		074CF78E1678713F00686606 /* CopyFiles */ = {
@@ -114,6 +126,7 @@
 		07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
 		07F28A6716C37143006EE2A8 /* FaunaResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResource.h; sourceTree = "<group>"; };
 		07F28A6816C37143006EE2A8 /* FaunaResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResource.m; sourceTree = "<group>"; };
+		ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaContextTest.m; sourceTree = "<group>"; };
 		ACC998AE16E9159900FDF963 /* fauna_test_config.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = fauna_test_config.rb; sourceTree = "<group>"; };
 		ACDEDB6816E80DC7005B2B73 /* Tests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACDEDB6916E80DC7005B2B73 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -125,7 +138,6 @@
 		ACDEDB7D16E80DFB005B2B73 /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = ../Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
 		ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		ACDEDB8916E811A1005B2B73 /* FaunaUserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaUserTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +154,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACB0B4A916E92A6800B6E7AA /* libsqlite3.dylib in Frameworks */,
+				ACB0B4A816E92A4300B6E7AA /* libFauna.a in Frameworks */,
 				ACDEDB8216E80F57005B2B73 /* QuartzCore.framework in Frameworks */,
 				ACDEDB6A16E80DC7005B2B73 /* UIKit.framework in Frameworks */,
 				ACDEDB6B16E80DC7005B2B73 /* Foundation.framework in Frameworks */,
@@ -265,7 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				ACDEDB6F16E80DC7005B2B73 /* Supporting Files */,
-				ACDEDB8916E811A1005B2B73 /* FaunaUserTest.m */,
+				ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -315,6 +329,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				ACB0B4A716E929DD00B6E7AA /* PBXTargetDependency */,
 			);
 			name = Tests;
 			productName = Tests;
@@ -407,11 +422,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACDEDB7516E80DC7005B2B73 /* main.m in Sources */,
-				ACDEDB8A16E811A1005B2B73 /* FaunaUserTest.m in Sources */,
+				ACB0B49116E925D400B6E7AA /* FaunaContextTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ACB0B4A716E929DD00B6E7AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 074CF78F1678713F00686606 /* Fauna */;
+			targetProxy = ACB0B4A616E929DD00B6E7AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		ACDEDB7116E80DC7005B2B73 /* InfoPlist.strings */ = {
@@ -516,7 +539,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -541,7 +564,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
 					"-ObjC",

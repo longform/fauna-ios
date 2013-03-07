@@ -13,7 +13,7 @@
 
 #import "NSError+FaunaErrors.h"
 
-#define FaunaAPIVersion @"v0"
+#define FaunaAPIVersion @"v1"
 
 typedef void (^FaunaBlock)();
 

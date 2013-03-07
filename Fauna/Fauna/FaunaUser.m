@@ -10,7 +10,7 @@
 #import "FaunaContext.h"
 
 #define kEmailKey @"email"
-#define kExternalIdKey @"external_id"
+#define kUniqueIdKey @"unique_id"
 #define kNameKey @"name"
 #define kPasswordKey @"password"
 #define kDataKey @"data"
@@ -26,12 +26,12 @@
   return [self.resourceDictionary valueForKey:kEmailKey];
 }
 
-- (void)setExternalId:(NSString *)externalId {
-  [self.resourceDictionary setValue:externalId forKey:kExternalIdKey];
+- (void)setUniqueId:(NSString *)uniqueId {
+  [self.resourceDictionary setValue:uniqueId forKey:kUniqueIdKey];
 }
 
-- (NSString*)externalId {
-  return [self.resourceDictionary valueForKey:kExternalIdKey];
+- (NSString*)uniqueId {
+  return [self.resourceDictionary valueForKey:kUniqueIdKey];
 }
 
 - (void)setPassword:(NSString *)password {
@@ -92,8 +92,8 @@
   return YES;
 }
 
-+ (BOOL)loginWithExternalId:(NSString*)externalId password:(NSString*)password error:(NSError**)error {
-  [FaunaContext.current.client createToken:@{kExternalIdKey: externalId, kPasswordKey: password} error:error];
++ (BOOL)loginWithUniqueId:(NSString*)uniqueId password:(NSString*)password error:(NSError**)error {
+  [FaunaContext.current.client createToken:@{kUniqueIdKey: uniqueId, kPasswordKey: password} error:error];
   if(*error) {
     return NO;
   }
