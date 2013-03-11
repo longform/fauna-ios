@@ -49,6 +49,10 @@
 		ACDEDB7516E80DC7005B2B73 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDEDB7416E80DC7005B2B73 /* main.m */; };
 		ACDEDB8216E80F57005B2B73 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */; };
 		ACDEDB8716E81030005B2B73 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */; };
+		ACE3EC7416EA7AF200E1C2B1 /* FaunaConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC7316EA7AF200E1C2B1 /* FaunaConnection.m */; };
+		ACE3EC7A16EC0BEB00E1C2B1 /* FaunaResult.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC7916EC0BEB00E1C2B1 /* FaunaResult.m */; };
+		ACE3EC7D16EC144300E1C2B1 /* FaunaMutableResult.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC7C16EC144300E1C2B1 /* FaunaMutableResult.m */; };
+		ACE3EC8616EC673300E1C2B1 /* FaunaError.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC8516EC673300E1C2B1 /* FaunaError.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +142,14 @@
 		ACDEDB7616E80DC7005B2B73 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		ACE3EC7216EA7AF200E1C2B1 /* FaunaConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaConnection.h; sourceTree = "<group>"; };
+		ACE3EC7316EA7AF200E1C2B1 /* FaunaConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaConnection.m; sourceTree = "<group>"; };
+		ACE3EC7816EC0BEB00E1C2B1 /* FaunaResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResult.h; sourceTree = "<group>"; };
+		ACE3EC7916EC0BEB00E1C2B1 /* FaunaResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResult.m; sourceTree = "<group>"; };
+		ACE3EC7B16EC144300E1C2B1 /* FaunaMutableResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaMutableResult.h; sourceTree = "<group>"; };
+		ACE3EC7C16EC144300E1C2B1 /* FaunaMutableResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaMutableResult.m; sourceTree = "<group>"; };
+		ACE3EC8416EC673300E1C2B1 /* FaunaError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaError.h; sourceTree = "<group>"; };
+		ACE3EC8516EC673300E1C2B1 /* FaunaError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaError.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,27 +214,27 @@
 		074CF7951678713F00686606 /* Fauna */ = {
 			isa = PBXGroup;
 			children = (
+				07B60619167AD36000CD6604 /* AFNetworking */,
 				0786693416A8CE7E00B3639C /* Cache */,
 				07603C3016A6445300A9A885 /* Client */,
-				07B60619167AD36000CD6604 /* AFNetworking */,
-				074CF7961678713F00686606 /* Supporting Files */,
 				074CF7981678713F00686606 /* Fauna.h */,
 				074CF79A1678713F00686606 /* Fauna.m */,
+				0708041A16C8818300141B72 /* FaunaCommand.h */,
+				0708041B16C8818300141B72 /* FaunaCommand.m */,
 				077E22A71682D57800FB0B30 /* FaunaConstants.h */,
 				075959F716C167FD00426133 /* FaunaContext.h */,
 				075959F816C167FD00426133 /* FaunaContext.m */,
-				075959FB16C1B77D00426133 /* FaunaTimeline.h */,
-				075959FC16C1B77D00426133 /* FaunaTimeline.m */,
 				07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */,
 				07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */,
 				07F28A6716C37143006EE2A8 /* FaunaResource.h */,
 				07F28A6816C37143006EE2A8 /* FaunaResource.m */,
+				075959FB16C1B77D00426133 /* FaunaTimeline.h */,
+				075959FC16C1B77D00426133 /* FaunaTimeline.m */,
 				07B618A916C61B6F001A5EA1 /* FaunaTimelinePage.h */,
 				07B618AA16C61B6F001A5EA1 /* FaunaTimelinePage.m */,
-				0708041A16C8818300141B72 /* FaunaCommand.h */,
-				0708041B16C8818300141B72 /* FaunaCommand.m */,
 				07D9FFA816DF34E100D6173F /* FaunaUser.h */,
 				07D9FFA916DF34E100D6173F /* FaunaUser.m */,
+				074CF7961678713F00686606 /* Supporting Files */,
 			);
 			path = Fauna;
 			sourceTree = "<group>";
@@ -240,6 +252,14 @@
 			children = (
 				07603C3316A646DF00A9A885 /* FaunaClient.h */,
 				07603C3416A646DF00A9A885 /* FaunaClient.m */,
+				ACE3EC7216EA7AF200E1C2B1 /* FaunaConnection.h */,
+				ACE3EC7316EA7AF200E1C2B1 /* FaunaConnection.m */,
+				ACE3EC8416EC673300E1C2B1 /* FaunaError.h */,
+				ACE3EC8516EC673300E1C2B1 /* FaunaError.m */,
+				ACE3EC7B16EC144300E1C2B1 /* FaunaMutableResult.h */,
+				ACE3EC7C16EC144300E1C2B1 /* FaunaMutableResult.m */,
+				ACE3EC7816EC0BEB00E1C2B1 /* FaunaResult.h */,
+				ACE3EC7916EC0BEB00E1C2B1 /* FaunaResult.m */,
 				0710492E16B592010015DC98 /* NSError+FaunaErrors.h */,
 				0710492F16B592010015DC98 /* NSError+FaunaErrors.m */,
 			);
@@ -414,6 +434,10 @@
 				07B618AB16C61B70001A5EA1 /* FaunaTimelinePage.m in Sources */,
 				0708041C16C8818300141B72 /* FaunaCommand.m in Sources */,
 				07D9FFAA16DF34E100D6173F /* FaunaUser.m in Sources */,
+				ACE3EC7416EA7AF200E1C2B1 /* FaunaConnection.m in Sources */,
+				ACE3EC7A16EC0BEB00E1C2B1 /* FaunaResult.m in Sources */,
+				ACE3EC7D16EC144300E1C2B1 /* FaunaMutableResult.m in Sources */,
+				ACE3EC8616EC673300E1C2B1 /* FaunaError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,7 +494,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -492,7 +516,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
