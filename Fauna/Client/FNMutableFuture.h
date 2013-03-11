@@ -14,9 +14,9 @@
 @property (readonly) NSError *error;
 @property (readonly) BOOL isCompleted;
 
-- (void)update:(id) value;
+- (void)update:(id)value;
 
-- (BOOL)updateIfEmpty:(id) value;
+- (BOOL)updateIfEmpty:(id)value;
 
 - (void)updateError:(NSError *)error;
 

@@ -33,7 +33,7 @@
 /*!
  Returns whether or not the operation has been completed.
  */
-- (BOOL) isCompleted;
+- (BOOL)isCompleted;
 
 # pragma mark Blocking API
 
@@ -47,35 +47,35 @@
 /*!
  Subscribe to both successful completion and error events.
  */
-- (void)onSuccess:(void (^)(id value)) succBlock onError:(void (^)(NSError *error)) errBlock;
+- (void)onSuccess:(void (^)(id value))succBlock onError:(void (^)(NSError *error))errBlock;
 
 /*!
  Subscribe to successful completion.
  */
-- (void)onSuccess:(void (^)(id value)) block;
+- (void)onSuccess:(void (^)(id value))block;
 
 /*!
  Subscribe to error event.
  */
-- (void)onError:(void (^)(NSError *error)) block;
+- (void)onError:(void (^)(NSError *error))block;
 
 /*!
  Subscribe to completion.
  */
-- (void)onCompletion:(void (^)(FNFuture *result)) block;
+- (void)onCompletion:(void (^)(FNFuture *result))block;
 
 /*!
  Return a new result object that, upon completion of this one, contains the value transformed with the provided block.
  */
-- (FNFuture *)map:(id (^)(id value)) block;
+- (FNFuture *)map:(id (^)(id value))block;
 
-- (FNFuture *)flattenMap:(FNFuture * (^)(id value)) block;
+- (FNFuture *)flattenMap:(FNFuture * (^)(id value))block;
 
 /*!
  Returns a new result object that attempts to recover from errors with the provided block. The block should return a new result object or nil (to propagate the error).
  */
-- (FNFuture *)rescue:(FNFuture * (^)(NSError *)) block;
+- (FNFuture *)rescue:(FNFuture * (^)(NSError *))block;
 
-- (FNFuture *)ensure:(void (^)(void)) block;
+- (FNFuture *)ensure:(void (^)(void))block;
 
 @end

@@ -15,8 +15,8 @@
 
 - (BOOL)isCompleted;
 
-- initWithValue:(id) value;
+- (id)initWithValue:(id)value;
 
-- initWithError:(NSError *)error;
+- (id)initWithError:(NSError *)error;
 
 @end
