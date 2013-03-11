@@ -50,13 +50,11 @@ puts "Writing credentials file #{creds_file}"
 
 File.open(creds_file, 'w') do |f|
   f.puts <<-EOF
-  #ifndef FAUNA_TEST_CREDENTIALS_h
-  #define FAUNA_TEST_CREDENTIALS_h
+  #ifndef FAUNA_CREDENTIALS_h
+  #define FAUNA_CREDENTIALS_h
 
-  #define FAUNA_TEST_EMAIL @"#{email}"
-  #define FAUNA_TEST_PASSWORD @"#{password}"
-  #define FAUNA_TEST_PUBLISHER_KEY @"#{publisher_key}"
-  #define FAUNA_TEST_CLIENT_KEY @"#{client_key}"
+  #define FAUNA_PUBLISHER_KEY @"#{publisher_key}"
+  #define FAUNA_CLIENT_KEY @"#{client_key}"
 
   #endif
   EOF

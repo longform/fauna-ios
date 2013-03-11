@@ -58,7 +58,7 @@
 #pragma mark - Fauna
 
 - (void)initializeFauna {
-  FaunaContext.applicationContext = [[FaunaContext alloc] initWithClientKeyString:FAUNA_TEST_CLIENT_KEY];
+  FaunaContext.applicationContext = [[FaunaContext alloc] initWithClientKeyString:FAUNA_CLIENT_KEY];
 }
 
 @end

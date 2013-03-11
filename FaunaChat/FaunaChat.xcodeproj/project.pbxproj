@@ -337,11 +337,11 @@
 			inputPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/FaunaTestCredentials.h",
+				"$(PROJECT_DIR)/FaunaChat/FaunaCredentials.h",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/bash -e";
-			shellScript = "# run the user's configured shell interactively in order to pull in their shell-configured environment (rbenv, etc)\n$SHELL -i -c 'ruby ${PROJECT_DIR}/FaunaChat/fauna_example_config.rb ${DERIVED_FILE_DIR}/FaunaTestCredentials.h'";
+			shellScript = "# run the user's configured shell interactively in order to pull in their shell-configured environment (rbenv, etc)\n$SHELL -i -c 'ruby ${PROJECT_DIR}/FaunaChat/fauna_example_config.rb ${PROJECT_DIR}/FaunaChat/FaunaCredentials.h'";
 		};
 /* End PBXShellScriptBuildPhase section */
 
