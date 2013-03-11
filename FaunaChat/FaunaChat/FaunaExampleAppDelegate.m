@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Fauna. All rights reserved.
 //
 
+#import "FaunaCredentials.h"
 #import "FaunaExampleAppDelegate.h"
 #import "FaunaExampleViewController.h"
 
@@ -57,9 +58,9 @@
 #pragma mark - Fauna
 
 - (void)initializeFauna {
-  FaunaContext.applicationContext = [[FaunaContext alloc] initWithClientKeyString:@"AQEARsraT2AAAABB9FVmsAAAbY0oke9aVrU2J4HEdI7poQ"];
+  FaunaContext.applicationContext = [[FaunaContext alloc] initWithClientKeyString:FAUNA_CLIENT_KEY];
   // Initializes the Fauna Environment with a Client Key  
-  Fauna.client = [[FaunaClient alloc] initWithClientKeyString:@"AQEARsraT2AAAABB9FVmsAAAbY0oke9aVrU2J4HEdI7poQ"];
+  Fauna.client = [[FaunaClient alloc] initWithClientKeyString:FAUNA_CLIENT_KEY];
 
 }
 

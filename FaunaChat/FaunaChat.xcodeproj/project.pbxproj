@@ -102,6 +102,8 @@
 		07E2458416A2D3D0007B6CFE /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		07E2458816A2D3EF007B6CFE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AC543AF716EE50E900EEB8E8 /* fauna_example_config.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = fauna_example_config.rb; sourceTree = "<group>"; };
+		AC543AF816EE526400EEB8E8 /* FaunaCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCredentials.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 				07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */,
 				07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */,
 				07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */,
+				AC543AF816EE526400EEB8E8 /* FaunaCredentials.h */,
 			);
 			path = FaunaChat;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 		074CF6C6167855AD00686606 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AC543AF716EE50E900EEB8E8 /* fauna_example_config.rb */,
 				074CF6C7167855AD00686606 /* FaunaChat-Info.plist */,
 				074CF6C8167855AD00686606 /* InfoPlist.strings */,
 				074CF6CB167855AD00686606 /* main.m */,
@@ -242,6 +246,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 074CF6DF167855AE00686606 /* Build configuration list for PBXNativeTarget "FaunaChat" */;
 			buildPhases = (
+				AC85682116EE50920007AF17 /* ShellScript */,
 				074CF6B7167855AD00686606 /* Sources */,
 				074CF6B8167855AD00686606 /* Frameworks */,
 				074CF6B9167855AD00686606 /* Resources */,
@@ -322,6 +327,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AC85682116EE50920007AF17 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/FaunaTestCredentials.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/bash -e";
+			shellScript = "# run the user's configured shell interactively in order to pull in their shell-configured environment (rbenv, etc)\n$SHELL -i -c 'ruby ${PROJECT_DIR}/FaunaChat/fauna_example_config.rb ${DERIVED_FILE_DIR}/FaunaTestCredentials.h'";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		074CF6B7167855AD00686606 /* Sources */ = {

@@ -32,7 +32,11 @@ puts "Added publisher key #{publisher_key}"
 puts "Added client key #{client_key}"
 
 Fauna.schema do |f|
+  class Message < Fauna::Class; end
 
+  with Message, :class_name => "classes/message" do
+    event_set "chat"
+  end
 end
 
 Fauna::Client.context(Fauna::Connection.new(:publisher_key => publisher_key)) do
@@ -43,13 +47,13 @@ puts "Writing credentials file #{creds_file}"
 
 File.open(creds_file, 'w') do |f|
   f.puts <<-EOF
-  #ifndef FaunaCredentials_h
-  #define FaunaCredentials_h
+  #ifndef FAUNA_TEST_CREDENTIALS_h
+  #define FAUNA_TEST_CREDENTIALS_h
 
   #define FAUNA_TEST_EMAIL @"#{email}"
   #define FAUNA_TEST_PASSWORD @"#{password}"
-  #define FAUNA_PUBLISHER_KEY @"#{publisher_key}"
-  #define FAUNA_CLIENT_KEY @"#{client_key}"
+  #define FAUNA_TEST_PUBLISHER_KEY @"#{publisher_key}"
+  #define FAUNA_TEST_CLIENT_KEY @"#{client_key}"
 
   #endif
   EOF
