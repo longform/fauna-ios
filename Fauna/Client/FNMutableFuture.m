@@ -1,33 +1,31 @@
 //
-//  FaunaMutableResult.m
+//  FNMutableFuture.m
 //  Fauna
 //
 //  Created by Matt Freels on 3/9/13.
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "FaunaMutableResult.h"
+#import "FNMutableFuture.h"
 
-@interface FaunaMutableResult ()
+@interface FNMutableFuture ()
 
 // Used as a signal for future completion
 @property (nonatomic, readonly) NSOperation *completionOp;
-@property (nonatomic, readonly) NSLock *lock;
 
-// make read-write
+// make read/write
 @property id value;
 @property NSError *error;
 @property BOOL isCompleted;
 
 @end
 
-@implementation FaunaMutableResult
+@implementation FNMutableFuture
 
 - (id)init {
   if (self = [super init]) {
     _completionOp = [NSOperation new];
-    _lock = [NSLock new];
-    self.isCompleted = NO;
+    NSLog(@"op: %@", _completionOp);
   }
 
   return self;
@@ -42,17 +40,16 @@
 
 # pragma mark Non-Blocking and Functional API
 
-- (void)onCompletion:(void (^)(FaunaResult *))block {
-  FaunaResult * __weak _self = self; // FIXME: use EXTScope's @weakify here
+- (void)onCompletion:(void (^)(FNFuture *))block {
   NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-    block(_self);
+    block(self);
   }];
 
   if (!self.isCompleted) {
-    [self.lock lock];
-    if (!self.isCompleted) [op addDependency:self.completionOp];
-    [[NSOperationQueue mainQueue] addOperation:op];
-    [self.lock unlock];
+    @synchronized(self) {
+      if (!self.isCompleted) [op addDependency:self.completionOp];
+      [[NSOperationQueue mainQueue] addOperation:op];
+    }
   } else {
     [[NSOperationQueue mainQueue] addOperation:op];
   }
@@ -68,7 +65,7 @@
 }
 
 - (void)updateError:(NSError *)error {
-  if ([self updateErrorIfEmpty:error]) {
+  if (![self updateErrorIfEmpty:error]) {
     NSAssert(NO, @"Result was already completed.");
   }
 }
@@ -84,21 +81,21 @@
 # pragma mark Private Methods
 
 - (void)operationWasCompleted {
-  [[NSOperationQueue mainQueue] addOperation:self.completionOp];
+  [self.completionOp start];
 }
 
 - (BOOL)completeIfEmpty:(id)value error:(NSError *)error {
   BOOL updated = NO;
 
   if (!self.isCompleted) {
-    [self.lock lock];
-    if (!self.isCompleted) {
-      self.value = value;
-      self.error = error;
-      self.isCompleted = YES;
-      updated = YES;
+    @synchronized(self) {
+      if (!self.isCompleted) {
+        self.value = value;
+        self.error = error;
+        self.isCompleted = YES;
+        updated = YES;
+      }
     }
-    [self.lock unlock];
   }
 
   if (updated) [self operationWasCompleted];

@@ -1,5 +1,5 @@
 //
-//  FaunaResult.h
+//  FNFuture.h
 //  Fauna
 //
 //  Created by Matt Freels on 3/9/13.
@@ -8,15 +8,32 @@
 
 #import <Foundation/Foundation.h>
 
-@interface FaunaResult : NSObject
+@interface FNFuture : NSObject
 
 # pragma mark Class Methods
 
-+ (FaunaResult *)value:(id)value;
++ (FNFuture *)value:(id)value;
 
-+ (FaunaResult *)error:(NSError *)error;
++ (FNFuture *)error:(NSError *)error;
 
-+ (FaunaResult *)background:(id (^)(void))block;
++ (FNFuture *)background:(id (^)(void))block;
+
+# pragma mark Accessors
+
+/*!
+ Returns the result of the operation represented by this object if set.
+ */
+- (id)value;
+
+/*!
+ Returns the error result of the operation represented by this object if set.
+ */
+- (NSError *)error;
+
+/*!
+ Returns whether or not the operation has been completed.
+ */
+- (BOOL) isCompleted;
 
 # pragma mark Blocking API
 
@@ -24,21 +41,6 @@
  Returns the result of the operation represented by this object or nil, if there was an error, blocking if necessary.
  */
 - (id)get;
-
-/*!
- Returns the result of the operation represented by this object if set.
- */
-@property (readonly) id value;
-
-/*!
- Returns the error result of the operation represented by this object if set.
- */
-@property (readonly) NSError *error;
-
-/*!
- Returns whether or not the operation has been completed.
- */
-@property (readonly) BOOL isCompleted;
 
 # pragma mark Non-Blocking and Functional API
 
@@ -60,20 +62,20 @@
 /*!
  Subscribe to completion.
  */
-- (void)onCompletion:(void (^)(FaunaResult *result)) block;
+- (void)onCompletion:(void (^)(FNFuture *result)) block;
 
 /*!
  Return a new result object that, upon completion of this one, contains the value transformed with the provided block.
  */
-- (FaunaResult *)map:(id (^)(id value)) block;
+- (FNFuture *)map:(id (^)(id value)) block;
 
-- (FaunaResult *)flattenMap:(FaunaResult * (^)(id value)) block;
+- (FNFuture *)flattenMap:(FNFuture * (^)(id value)) block;
 
 /*!
  Returns a new result object that attempts to recover from errors with the provided block. The block should return a new result object or nil (to propagate the error).
  */
-- (FaunaResult *)rescue:(FaunaResult * (^)(NSError *)) block;
+- (FNFuture *)rescue:(FNFuture * (^)(NSError *)) block;
 
-- (FaunaResult *)ensure:(void (^)(void)) block;
+- (FNFuture *)ensure:(void (^)(void)) block;
 
 @end

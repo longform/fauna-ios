@@ -38,6 +38,12 @@
 		07F28A6916C37143006EE2A8 /* FaunaResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6816C37143006EE2A8 /* FaunaResource.m */; };
 		07F28A6A16C37B17006EE2A8 /* FaunaInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */; };
 		07F28A6B16C37B17006EE2A8 /* FaunaResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6716C37143006EE2A8 /* FaunaResource.h */; };
+		AC06AA8916EE9336006BECBD /* FNFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8416EE9336006BECBD /* FNFuture.m */; };
+		AC06AA8A16EE9336006BECBD /* FNMutableFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8616EE9336006BECBD /* FNMutableFuture.m */; };
+		AC06AA8B16EE9336006BECBD /* FNValueFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8816EE9336006BECBD /* FNValueFuture.m */; };
+		AC06AA8D16EE934A006BECBD /* FNFutureTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8C16EE934A006BECBD /* FNFutureTest.m */; };
+		AC06AA8E16EE938D006BECBD /* FNFuture.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC06AA8316EE9336006BECBD /* FNFuture.h */; };
+		AC06AA8F16EE939B006BECBD /* FNMutableFuture.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC06AA8516EE9336006BECBD /* FNMutableFuture.h */; };
 		AC6C5FE116E937D3003A17DD /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */; };
 		AC6C5FE216E937DB003A17DD /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7901678713F00686606 /* libFauna.a */; };
 		ACB0B49116E925D400B6E7AA /* FaunaContextTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */; };
@@ -50,8 +56,6 @@
 		ACDEDB8216E80F57005B2B73 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */; };
 		ACDEDB8716E81030005B2B73 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */; };
 		ACE3EC7416EA7AF200E1C2B1 /* FaunaConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC7316EA7AF200E1C2B1 /* FaunaConnection.m */; };
-		ACE3EC7A16EC0BEB00E1C2B1 /* FaunaResult.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC7916EC0BEB00E1C2B1 /* FaunaResult.m */; };
-		ACE3EC7D16EC144300E1C2B1 /* FaunaMutableResult.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC7C16EC144300E1C2B1 /* FaunaMutableResult.m */; };
 		ACE3EC8616EC673300E1C2B1 /* FaunaError.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE3EC8516EC673300E1C2B1 /* FaunaError.m */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +76,8 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				AC06AA8F16EE939B006BECBD /* FNMutableFuture.h in CopyFiles */,
+				AC06AA8E16EE938D006BECBD /* FNFuture.h in CopyFiles */,
 				07D9FFAB16DF376400D6173F /* FaunaUser.h in CopyFiles */,
 				0708041D16C8854000141B72 /* FaunaCommand.h in CopyFiles */,
 				07B618AC16C61DA1001A5EA1 /* FaunaTimelinePage.h in CopyFiles */,
@@ -130,6 +136,13 @@
 		07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
 		07F28A6716C37143006EE2A8 /* FaunaResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResource.h; sourceTree = "<group>"; };
 		07F28A6816C37143006EE2A8 /* FaunaResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResource.m; sourceTree = "<group>"; };
+		AC06AA8316EE9336006BECBD /* FNFuture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFuture.h; sourceTree = "<group>"; };
+		AC06AA8416EE9336006BECBD /* FNFuture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNFuture.m; sourceTree = "<group>"; };
+		AC06AA8516EE9336006BECBD /* FNMutableFuture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNMutableFuture.h; sourceTree = "<group>"; };
+		AC06AA8616EE9336006BECBD /* FNMutableFuture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNMutableFuture.m; sourceTree = "<group>"; };
+		AC06AA8716EE9336006BECBD /* FNValueFuture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNValueFuture.h; sourceTree = "<group>"; };
+		AC06AA8816EE9336006BECBD /* FNValueFuture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNValueFuture.m; sourceTree = "<group>"; };
+		AC06AA8C16EE934A006BECBD /* FNFutureTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNFutureTest.m; sourceTree = "<group>"; };
 		AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
 		ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaContextTest.m; sourceTree = "<group>"; };
 		ACC998AE16E9159900FDF963 /* fauna_test_config.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = fauna_test_config.rb; sourceTree = "<group>"; };
@@ -144,10 +157,6 @@
 		ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		ACE3EC7216EA7AF200E1C2B1 /* FaunaConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaConnection.h; sourceTree = "<group>"; };
 		ACE3EC7316EA7AF200E1C2B1 /* FaunaConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaConnection.m; sourceTree = "<group>"; };
-		ACE3EC7816EC0BEB00E1C2B1 /* FaunaResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResult.h; sourceTree = "<group>"; };
-		ACE3EC7916EC0BEB00E1C2B1 /* FaunaResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResult.m; sourceTree = "<group>"; };
-		ACE3EC7B16EC144300E1C2B1 /* FaunaMutableResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaMutableResult.h; sourceTree = "<group>"; };
-		ACE3EC7C16EC144300E1C2B1 /* FaunaMutableResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaMutableResult.m; sourceTree = "<group>"; };
 		ACE3EC8416EC673300E1C2B1 /* FaunaError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaError.h; sourceTree = "<group>"; };
 		ACE3EC8516EC673300E1C2B1 /* FaunaError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaError.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -256,10 +265,12 @@
 				ACE3EC7316EA7AF200E1C2B1 /* FaunaConnection.m */,
 				ACE3EC8416EC673300E1C2B1 /* FaunaError.h */,
 				ACE3EC8516EC673300E1C2B1 /* FaunaError.m */,
-				ACE3EC7B16EC144300E1C2B1 /* FaunaMutableResult.h */,
-				ACE3EC7C16EC144300E1C2B1 /* FaunaMutableResult.m */,
-				ACE3EC7816EC0BEB00E1C2B1 /* FaunaResult.h */,
-				ACE3EC7916EC0BEB00E1C2B1 /* FaunaResult.m */,
+				AC06AA8316EE9336006BECBD /* FNFuture.h */,
+				AC06AA8416EE9336006BECBD /* FNFuture.m */,
+				AC06AA8516EE9336006BECBD /* FNMutableFuture.h */,
+				AC06AA8616EE9336006BECBD /* FNMutableFuture.m */,
+				AC06AA8716EE9336006BECBD /* FNValueFuture.h */,
+				AC06AA8816EE9336006BECBD /* FNValueFuture.m */,
 				0710492E16B592010015DC98 /* NSError+FaunaErrors.h */,
 				0710492F16B592010015DC98 /* NSError+FaunaErrors.m */,
 			);
@@ -298,8 +309,9 @@
 		ACDEDB6E16E80DC7005B2B73 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				ACDEDB6F16E80DC7005B2B73 /* Supporting Files */,
 				ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */,
+				AC06AA8C16EE934A006BECBD /* FNFutureTest.m */,
+				ACDEDB6F16E80DC7005B2B73 /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -404,7 +416,6 @@
 			inputPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/FaunaCredentials.h",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/bash -e";
@@ -435,9 +446,10 @@
 				0708041C16C8818300141B72 /* FaunaCommand.m in Sources */,
 				07D9FFAA16DF34E100D6173F /* FaunaUser.m in Sources */,
 				ACE3EC7416EA7AF200E1C2B1 /* FaunaConnection.m in Sources */,
-				ACE3EC7A16EC0BEB00E1C2B1 /* FaunaResult.m in Sources */,
-				ACE3EC7D16EC144300E1C2B1 /* FaunaMutableResult.m in Sources */,
 				ACE3EC8616EC673300E1C2B1 /* FaunaError.m in Sources */,
+				AC06AA8916EE9336006BECBD /* FNFuture.m in Sources */,
+				AC06AA8A16EE9336006BECBD /* FNMutableFuture.m in Sources */,
+				AC06AA8B16EE9336006BECBD /* FNValueFuture.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +459,7 @@
 			files = (
 				ACDEDB7516E80DC7005B2B73 /* main.m in Sources */,
 				ACB0B49116E925D400B6E7AA /* FaunaContextTest.m in Sources */,
+				AC06AA8D16EE934A006BECBD /* FNFutureTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
