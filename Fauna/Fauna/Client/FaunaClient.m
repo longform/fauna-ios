@@ -28,6 +28,8 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 + (FaunaAFHTTPClient*)createHTTPClient;
 
++ (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method;
+
 /*!
  Returns the HTTP Client enabled with Client Key.
  */
@@ -86,6 +88,12 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
     }
   }
   return self;
+}
+
++ (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method {
+  NSParameterAssert(path);
+  NSParameterAssert(method);
+  return [[NSString stringWithFormat:@"%@ %@", method, path] uppercaseString];
 }
 
 - (void)setUserToken:(NSString *)userToken {
@@ -164,7 +172,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body client:(FaunaAFHTTPClient*)client error:(NSError*__autoreleasing*)error {
   //FaunaCache * cache = self.cache;
-  NSString * responsePath = [FaunaResponse requestPathFromPath:path andMethod:method];
+  NSString * responsePath = [self.class requestPathFromPath:path andMethod:method];
   /*if(![FaunaCache shouldIgnoreCache]) {
     // if response is cached, return it.
     FaunaResponse * response = [cache loadResponse:responsePath];
@@ -184,13 +192,28 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
     }*/
     return nil;
   }
-  id responseObject = FaunaAFJSONDecode(data, error);
+  NSDictionary* responseObject = FaunaAFJSONDecode(data, error);
   if(*error) {
     return nil;
   }
-  FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];
+  //NSDictionary * references = [responseObject objectForKey:@"references"];
+  NSDictionary * resource = [responseObject objectForKey:@"resource"];
+  /*if(references) {
+    for (NSDictionary *resource in references.allValues) {
+      [self saveResource:resource];
+    }
+  }*/
+  /*FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];*/
+  /*
+   
+   // save references data separately
+   for (NSMutableDictionary *resource in response.references.allValues) {
+   [self saveResource:resource];
+   }
+
+   */
   //[cache saveResponse:response];
-  return response.resource;
+  return resource;
 }
 
 - (NSData*)performRawOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body response:(NSURLResponse**)httpResponse client:(FaunaAFHTTPClient*)client error:(NSError**)error {

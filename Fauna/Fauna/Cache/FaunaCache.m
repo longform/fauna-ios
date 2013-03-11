@@ -14,8 +14,8 @@
 
 #define kRefColumnOrdinal 1
 #define kDataColumnOrdinal 2
+#define kPathColumnOrdinal 3
 
-#define kPathColumnOrdinal 1
 #define kResourcesColumnOrdinal 2
 #define kReferencesColumnOrdinal 3
 #define kTLSCachePolicyKey @"FaunaCachePolicy"
@@ -28,6 +28,8 @@
 - (BOOL)createTables;
 
 - (int)stepQuery:(sqlite3_stmt *)stmt;
+
+- (NSDictionary*)loadResourceCore:(NSString*)identifier queryByRef:(BOOL)queryByRef;
 
 @end
 
@@ -46,8 +48,9 @@
     
     SQLITE_STATUS status = sqlite3_open([databasePath fileSystemRepresentation], &database);
     if(status != SQLITE_OK) {
-      NSLog(@"FaunaCache: Failed to open database with status %d", status);
-      return nil;
+      [[NSException exceptionWithName:@"FaunaCacheDatabaseException"
+                               reason:[NSString stringWithFormat:@"Failed to open database with status %i",status] userInfo:nil
+        ] raise];
     }
     if(mustCreateTables) {
       if(![self createTables]) {
@@ -59,6 +62,21 @@
   return self;
 }
 
+- (id)initTransient {
+  if(self = [super init]) {
+    SQLITE_STATUS status = sqlite3_open(":memory:", &database);
+    if(status != SQLITE_OK) {
+      [[NSException exceptionWithName:@"FaunaCacheDatabaseException"
+                               reason:[NSString stringWithFormat:@"Failed to open in memory database with status %i",status] userInfo:nil
+        ] raise];
+      return nil;
+    }
+    if(![self createTables]) {
+      return nil;
+    }
+  }
+  return self;
+}
 
 - (int)stepQuery:(sqlite3_stmt *)stmt
 {
@@ -81,14 +99,15 @@
   return ret;
 }
 
-- (void)saveResource:(NSDictionary*)resource {
+- (void)saveResource:(NSDictionary*)resource withPath:(NSString*)path {
   NSParameterAssert(resource);
+  NSParameterAssert(path);
   NSString *ref = resource[@"ref"];
   NSAssert(ref, @"resource ref is invalid");
   
   SQLITE_STATUS status;
   sqlite3_stmt *statement;
-  status = sqlite3_prepare_v2(database, "INSERT OR REPLACE INTO RESOURCES (REF, DATA) VALUES (?, ?)", -1, &statement, NULL);
+  status = sqlite3_prepare_v2(database, "INSERT OR REPLACE INTO RESOURCES (REF, DATA, PATH) VALUES (?, ?, ?)", -1, &statement, NULL);
   if(status != SQLITE_OK) {
     NSLog(@"FaunaCache: Failed to prepare insert statement with status %d", status);
     return;
@@ -104,7 +123,13 @@
   status = sqlite3_bind_blob(statement, kDataColumnOrdinal, [data bytes], [data length], SQLITE_TRANSIENT);
   if(status != SQLITE_OK) {
     sqlite3_finalize(statement);
-    NSLog(@"FaunaCache: Failed to bind blobk data column with status %d", status);
+    NSLog(@"FaunaCache: Failed to bind blob data column with status %d", status);
+    return;
+  }
+  status = sqlite3_bind_text(statement, kPathColumnOrdinal, [path UTF8String], -1, SQLITE_TRANSIENT);
+  if(status != SQLITE_OK) {
+    sqlite3_finalize(statement);
+    NSLog(@"FaunaCache: Failed to bind path column with status %d", status);
     return;
   }
   status = [self stepQuery:statement];
@@ -116,17 +141,20 @@
   sqlite3_finalize(statement);
 }
 
-- (NSDictionary*)loadResource:(NSString*)ref {
-  NSParameterAssert(ref);
-  
+- (void)saveResource:(NSDictionary*)resource {
+  [self saveResource:resource withPath:@""];
+}
+
+- (NSDictionary*)loadResourceCore:(NSString*)identifier queryByRef:(BOOL)queryByRef {
   SQLITE_STATUS status;
   sqlite3_stmt *statement;
-  status = sqlite3_prepare_v2(database, "SELECT ROWID, REF, DATA FROM RESOURCES WHERE REF = ?", -1, &statement, NULL);
+  NSString * query = [NSString stringWithFormat:@"SELECT ROWID, REF, DATA, PATH FROM RESOURCES WHERE %@ = ?", (queryByRef ? @"REF" : @"PATH")];
+  status = sqlite3_prepare_v2(database, [query UTF8String], -1, &statement, NULL);
   if(status != SQLITE_OK) {
-    NSLog(@"FaunaCache: Failed to prepare insert statement with status %d", status);
+    NSLog(@"FaunaCache: Failed to prepare select statement with status %d", status);
     return nil;
   }
-  status = sqlite3_bind_text(statement, kRefColumnOrdinal, [ref UTF8String], -1, SQLITE_TRANSIENT);
+  status = sqlite3_bind_text(statement, kRefColumnOrdinal, [identifier UTF8String], -1, SQLITE_TRANSIENT);
   if(status != SQLITE_OK) {
     sqlite3_finalize(statement);
     NSLog(@"FaunaCache: Failed to bind ref column with status %d", status);
@@ -142,20 +170,18 @@
   return data;
 }
 
+- (NSDictionary*)loadResource:(NSString*)ref {
+  NSParameterAssert(ref);
+  return [self loadResourceCore:ref queryByRef:YES];
+}
+
 - (BOOL)createTables {
   // Creates the Resources table.
   SQLITE_STATUS status = sqlite3_exec(database,
-               "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB)",
+               "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, PATH TEXT)",
                NULL, NULL, NULL);
   if(status != SQLITE_OK) {
     NSLog(@"FaunaCache: failed to create table");
-    return NO;
-  }
-  status = sqlite3_exec(database,
-                        "CREATE TABLE IF NOT EXISTS RESPONSES (PATH TEXT PRIMARY KEY, REFS BLOB, RESS BLOB)",
-                        NULL, NULL, NULL);
-  if(status != SQLITE_OK) {
-    NSLog(@"FaunaCache: failed to create table: %@", [NSString stringWithUTF8String:sqlite3_errmsg(database)]);
     return NO;
   }
   return YES;
@@ -168,118 +194,14 @@
   }
 }
 
-- (void)saveResponse:(FaunaResponse*)response {
-  NSParameterAssert(response);
-  
-  // save references data separately
-  for (NSMutableDictionary *resource in response.references.allValues) {
-    [self saveResource:resource];
-  }
-  NSMutableArray * resourcesRef = [[NSMutableArray alloc] initWithCapacity:response.resources.count];
-  
-  // save resources data separately
-  for (NSMutableDictionary *resource in response.resources) {
-    [self saveResource:resource];
-    [resourcesRef addObject:resource[@"ref"]];
-  }
-  
-  // only store ref strings of the references, we hydrate them later
-  NSArray *references = response.references.allKeys;
-  
-  NSString *requestPath = response.requestPath;
-  
-  SQLITE_STATUS status;
-  sqlite3_stmt *statement;
-  
-  status = sqlite3_prepare_v2(database, "INSERT OR REPLACE INTO RESPONSES (PATH, REFS, RESS) VALUES (?, ?, ?)", -1, &statement, NULL);
-  if(status != SQLITE_OK) {
-    NSLog(@"FaunaCache: Failed to prepare insert statement with status %d: %@", status, [NSString stringWithUTF8String:sqlite3_errmsg(database)]);
-    return;
-  }
-  
-  status = sqlite3_bind_text(statement, kPathColumnOrdinal, [requestPath UTF8String], -1, SQLITE_TRANSIENT);
-  if(status != SQLITE_OK) {
-    sqlite3_finalize(statement);
-    NSLog(@"FaunaCache: Failed to bind ref column with status %d", status);
-    return;
-  }
-  
-  NSData * referencesData = [NSKeyedArchiver archivedDataWithRootObject:references];
-  status = sqlite3_bind_blob(statement, kReferencesColumnOrdinal, [referencesData bytes], [referencesData length], SQLITE_TRANSIENT);
-  if(status != SQLITE_OK) {
-    sqlite3_finalize(statement);
-    NSLog(@"FaunaCache: Failed to bind references blob data column with status %d", status);
-    return;
-  }
-  
-  NSData * resourcesData = [NSKeyedArchiver archivedDataWithRootObject:resourcesRef];
-  status = sqlite3_bind_blob(statement, kResourcesColumnOrdinal, [resourcesData bytes], [resourcesData length], SQLITE_TRANSIENT);
-  if(status != SQLITE_OK) {
-    sqlite3_finalize(statement);
-    NSLog(@"FaunaCache: Failed to bind resources blob data column with status %d", status);
-    return;
-  }
-  
-  status = [self stepQuery:statement];
-  if(status != SQLITE_DONE) {
-    sqlite3_finalize(statement);
-    NSLog(@"FaunaCache: Failed to insert response in cache with status %d", status);
-    return;
-  }
-  sqlite3_finalize(statement);
-}
-
 static id readBlob(sqlite3_stmt *statement, int ordinal) {
   int bytes = sqlite3_column_bytes(statement, ordinal);
   NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(statement, ordinal) length:bytes];
   return [NSKeyedUnarchiver unarchiveObjectWithData:blobData];
 }
 
-- (FaunaResponse*)loadResponse:(NSString*)responsePath {
-  NSParameterAssert(responsePath);
-  SQLITE_STATUS status;
-  sqlite3_stmt *statement;
-  status = sqlite3_prepare_v2(database, "SELECT ROWID, PATH, REFS, RESS FROM RESPONSES WHERE PATH = ?", -1, &statement, NULL);
-  if(status != SQLITE_OK) {
-    NSLog(@"FaunaCache: Failed to prepare insert statement with status %d", status);
-    return nil;
-  }
-  status = sqlite3_bind_text(statement, kPathColumnOrdinal, [responsePath UTF8String], -1, SQLITE_TRANSIENT);
-  if(status != SQLITE_OK) {
-    sqlite3_finalize(statement);
-    NSLog(@"FaunaCache: Failed to bind path column with status %d", status);
-    return nil;
-  }
-  FaunaResponse * response = nil;
-  NSArray * referencesList = nil;
-  NSArray * resourcesList = nil;
-  NSString * cachedResponsePath = nil;
-  while([self stepQuery:statement] == SQLITE_ROW) {
-    cachedResponsePath = [NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, kPathColumnOrdinal)];
-    referencesList = readBlob(statement, kReferencesColumnOrdinal);
-    resourcesList = readBlob(statement, kResourcesColumnOrdinal);
-  }
-  sqlite3_finalize(statement);
-  if(!cachedResponsePath) {
-    return nil;
-  }
-  
-  // hydrate resources
-  NSMutableArray * resources = [[NSMutableArray alloc] initWithCapacity:resourcesList.count];
-  for (NSString* ref in resourcesList) {
-    NSDictionary * res = [self loadResource:ref];
-    [resources addObject:res];
-  }
-  
-  // hydrate references
-  NSMutableDictionary * references = [[NSMutableDictionary alloc] initWithCapacity:referencesList.count];
-  for (NSString* ref in referencesList) {
-    NSDictionary * refResource = [self loadResource:ref];
-    references[ref] = refResource;
-  }
-  
-  response = [FaunaResponse responseWithDictionary:@{@"resources" : resources, @"references": references} cached:YES requestPath:cachedResponsePath];
-  return response;
+- (NSDictionary*)loadResourceWithPath:(NSString*)path {
+  return [self loadResourceCore:path queryByRef:NO];
 }
 
 + (BOOL)shouldIgnoreCache {

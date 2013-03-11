@@ -7,21 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaResponse.h"
-
-typedef void (^FaunaCacheScopeBlock)();
+#import "FaunaConstants.h"
 
 @interface FaunaCache : NSObject
 
 - (id)initWithName:(NSString*)name;
 
+- (id)initTransient;
+
 - (void)saveResource:(NSDictionary*)resource;
+
+- (void)saveResource:(NSDictionary*)resource withPath:(NSString*)path;
 
 - (NSDictionary*)loadResource:(NSString*)ref;
 
-- (void)saveResponse:(FaunaResponse*)response;
-
-- (FaunaResponse*)loadResponse:(NSString*)responsePath;
+- (NSDictionary*)loadResourceWithPath:(NSString*)path;
 
 + (BOOL)shouldIgnoreCache;
 

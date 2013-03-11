@@ -11,7 +11,6 @@
 
 #define FaunaTLS [[NSThread currentThread] threadDictionary]
 
-#import "FaunaResponse.h"
 #import "NSError+FaunaErrors.h"
 
 #define FaunaAPIVersion @"v0"
@@ -23,5 +22,7 @@ typedef id (^FaunaBackgroundBlock)();
 typedef void (^FaunaResultsBlock)(id results);
 
 typedef void (^FaunaErrorBlock)(NSError *error);
+
+typedef void (^FaunaCacheScopeBlock)();
 
 #endif

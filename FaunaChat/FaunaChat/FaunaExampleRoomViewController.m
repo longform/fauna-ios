@@ -56,7 +56,7 @@
       }
     }
     return nil;
-  } success:^(FaunaResponse * response) {
+  } success:^(id response) {
     /*
      SUCCESS
      */
