@@ -32,9 +32,7 @@ puts "Added publisher key #{publisher_key}"
 puts "Added client key #{client_key}"
 
 Fauna.schema do |f|
-  class Message < Fauna::Class; end
-
-  with Message, :class_name => "classes/message" do
+  with :class_name => "classes/message" do
     event_set "chat"
   end
 end
