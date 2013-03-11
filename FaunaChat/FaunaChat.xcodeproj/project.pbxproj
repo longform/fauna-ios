@@ -337,7 +337,7 @@
 			inputPaths = (
 			);
 			outputPaths = (
-				"$(PROJECT_DIR)/FaunaChat/FaunaCredentials.h",
+				"${PROJECT_DIR}/FaunaChat/FaunaCredentials.h",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/bash -e";
