@@ -45,10 +45,10 @@
     if(error) {
       return error;
     }
-    [FaunaTimeline addInstance:instance.reference toTimeline:self.timelineResource error:&error];
+    /*[FaunaTimeline addInstance:instance.reference toTimeline:self.timelineResource error:&error];
     if(error) {
       return error;
-    }
+    }*/
     return nil;
   } success:^(id results) {
     NSLog(@"Added to timeline successfully");

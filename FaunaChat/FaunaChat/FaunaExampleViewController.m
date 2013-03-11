@@ -52,12 +52,12 @@
 }
 
 - (void)logoutAction:(id)sender {
-  Fauna.client.userToken = nil;
+  FaunaContext.applicationContext.client.userToken = nil;
   [self refreshUI];
 }
 
 - (void)refreshUI {
-  BOOL userIsAuthenticated = !!Fauna.client.userToken;
+  BOOL userIsAuthenticated = !!FaunaContext.applicationContext.client.userToken;
   for (UIButton * view in @[self.btnChatRoom, self.btnChangePassword, self.btnLogout]) {
     view.enabled = userIsAuthenticated;
   }

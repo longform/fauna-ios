@@ -18,7 +18,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.timelineResource = @"classes/message/timelines/chat";
+  self.timelineResource = @"classes/message/creates";
   self.title = @"Room";
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Post" style:UIBarStyleBlackTranslucent target:self action:@selector(postAction:)];
 }
@@ -41,18 +41,15 @@
     NSArray * incomingEvents = page.events;
     _messages = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
     
-    // filter for "create" event only.
-    for (NSArray * event in incomingEvents) {
-      if([@"create" isEqualToString:event[1]]) {
-        NSString* instanceRef = (NSString*)event[2];
-        NSError* error;
-        FaunaResource *resource = [FaunaResource get:instanceRef error:&error];
-        if(error) {
-          return error;
-        }
-        if(resource) {
-          [_messages addObject:resource];
-        }
+    for (NSDictionary * event in incomingEvents) {
+      NSString* instanceRef = (NSString*)event[@"resource"];
+      NSError* error;
+      FaunaResource *resource = [FaunaResource get:instanceRef error:&error];
+      if(error) {
+        return error;
+      }
+      if(resource) {
+        [_messages addObject:resource];
       }
     }
     return nil;

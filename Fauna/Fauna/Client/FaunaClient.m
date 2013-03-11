@@ -172,7 +172,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body client:(FaunaAFHTTPClient*)client error:(NSError*__autoreleasing*)error {
   //FaunaCache * cache = self.cache;
-  NSString * responsePath = [self.class requestPathFromPath:path andMethod:method];
+  //NSString * responsePath = [self.class requestPathFromPath:path andMethod:method];
   /*if(![FaunaCache shouldIgnoreCache]) {
     // if response is cached, return it.
     FaunaResponse * response = [cache loadResponse:responsePath];
@@ -182,6 +182,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   }*/
   NSURLResponse *httpResponse;
   NSData* data = [self performRawOperationWithPath:path method:method parameters:parameters body:body response:&httpResponse client:client error:error];
+  NSString * dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
   if(*error) {
     // if there is an error, return from cache if current policy allow it.
     /*if(![FaunaCache shouldIgnoreCache] && (*error).shouldRespondFromCache) {
@@ -242,7 +243,8 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 - (NSDictionary*)createInstance:(NSDictionary*)resource error:(NSError*__autoreleasing*)error {
   NSParameterAssert(resource);
-  NSString * path = [NSString stringWithFormat:@"/%@/instances", FaunaAPIVersion];
+  NSString * className = resource[@"class"];
+  NSString * path = [NSString stringWithFormat:@"/%@/classes/%@", FaunaAPIVersion, className];
   return [self performOperationWithPath:path method:@"POST" parameters:resource error:error];
 }
 
@@ -261,7 +263,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 - (NSDictionary*)createUser:(NSDictionary*)userInfo error:(NSError**)error {
   NSParameterAssert(userInfo);
   NSString * path = [NSString stringWithFormat:@"/%@/users", FaunaAPIVersion];
-  return [self performOperationWithPath:path method:@"POST" parameters:userInfo error:error];
+  return [self performOperationWithPath:path method:@"POST" parameters:userInfo client:_keyClient error:error];
 }
 
 - (BOOL)changePassword:(NSString*)oldPassword newPassword:(NSString*)newPassword confirmation:(NSString*)confirmation error:(NSError**)error {

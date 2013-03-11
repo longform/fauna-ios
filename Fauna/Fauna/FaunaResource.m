@@ -14,6 +14,8 @@
 #define kDeletedKey @"deleted"
 #define kDeletedDefaultValue NO
 
+NSString * const EventSetsClassName = @"sets";
+
 @implementation FaunaResource
 
 - (id)init {
@@ -58,6 +60,7 @@
 }
 
 + (Class)resolveResourceType:(NSDictionary*)resource {
+  NSString* className = resource[@"class"];
   NSString* ref = resource[@"ref"];
   NSUInteger refLength = ref.length;
   if(ref) {
@@ -65,62 +68,18 @@
     NSRegularExpression *regex = nil;
     
     regex = [NSRegularExpression
-             regularExpressionWithPattern:@"^.+/timelines/[^/]+$"
-             options:NSRegularExpressionCaseInsensitive
-             error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
-      return NSClassFromString(@"FaunaTimelinePage");
-    }
-    
-    regex = [NSRegularExpression
-             regularExpressionWithPattern:@"^.+/changes$"
-             options:NSRegularExpressionCaseInsensitive
-             error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
-      return NSClassFromString(@"FaunaTimelinePage");
-    }
-    
-    regex = [NSRegularExpression
-             regularExpressionWithPattern:@"^.+/local$"
-             options:NSRegularExpressionCaseInsensitive
-             error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
-      return NSClassFromString(@"FaunaTimelinePage");
-    }
-    
-    regex = [NSRegularExpression
-             regularExpressionWithPattern:@"^.+/follows/[^/]+$"
-             options:NSRegularExpressionCaseInsensitive
-             error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
-      return NSClassFromString(@"FaunaTimelinePage");
-    }
-    
-    regex = [NSRegularExpression
-             regularExpressionWithPattern:@"^.+/followers/[^/]+$"
-             options:NSRegularExpressionCaseInsensitive
-             error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
-      return NSClassFromString(@"FaunaTimelinePage");
-    }
-    
-    regex = [NSRegularExpression
-             regularExpressionWithPattern:@"^.+/followers/[^/]+$"
-             options:NSRegularExpressionCaseInsensitive
-             error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
-      return NSClassFromString(@"FaunaTimelinePage");
-    }
-    
-    
-    regex = [NSRegularExpression
              regularExpressionWithPattern:@"^instances/[^/]+$"
              options:NSRegularExpressionCaseInsensitive
              error:&error];
-    if([regex matchesInString:ref options:0 range:NSMakeRange(0, ref.length)].count > 0) {
+    if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
       //NSString* className = [NSString stringWithFormat:@"classes/%@", resource[@"class"]];
       return NSClassFromString(@"FaunaInstance");
     }
+    
+    if([EventSetsClassName isEqualToString:className]) {
+      return NSClassFromString(@"FaunaTimelinePage");
+    }
+    return NSClassFromString(@"FaunaInstance");
   }
   return [FaunaResource class];
 }
