@@ -25,7 +25,6 @@
 - (id)init {
   if (self = [super init]) {
     _completionOp = [NSOperation new];
-    NSLog(@"op: %@", _completionOp);
   }
 
   return self;
@@ -60,13 +59,13 @@
 
 - (void)update:(id)value {
   if (![self updateIfEmpty:value]) {
-    NSAssert(NO, @"Result was already completed.");
+    NSAssert(NO, @"Future was already completed.");
   }
 }
 
 - (void)updateError:(NSError *)error {
   if (![self updateErrorIfEmpty:error]) {
-    NSAssert(NO, @"Result was already completed.");
+    NSAssert(NO, @"Future was already completed.");
   }
 }
 
