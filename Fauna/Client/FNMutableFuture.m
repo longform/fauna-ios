@@ -12,6 +12,7 @@
 
 // Used as a signal for future completion
 @property (nonatomic, readonly) NSOperation *completionOp;
+@property (nonatomic, readonly) FNFuture *cancellationTarget;
 
 // make read/write
 @property id value;
@@ -30,11 +31,16 @@
   return self;
 }
 
-#pragma mark Blocking API
+# pragma mark Accessors
 
 - (id)get {
   [self.completionOp waitUntilFinished];
   return self.value;
+}
+
+- (void)cancel {
+  [super cancel];
+  [self.cancellationTarget cancel];
 }
 
 # pragma mark Non-Blocking and Functional API
@@ -44,13 +50,16 @@
     block(self);
   }];
 
+  NSOperationQueue *q = [NSOperationQueue currentQueue];
+  q = q ?: [NSOperationQueue mainQueue];
+
   if (!self.isCompleted) {
     @synchronized(self) {
       if (!self.isCompleted) [op addDependency:self.completionOp];
-      [[NSOperationQueue mainQueue] addOperation:op];
+      [q addOperation:op];
     }
   } else {
-    [[NSOperationQueue mainQueue] addOperation:op];
+    [q addOperation:op];
   }
 }
 
@@ -78,6 +87,10 @@
 }
 
 # pragma mark Private Methods
+
+- (void)forwardCancellationsTo:(FNFuture *)other {
+  _cancellationTarget = other;
+}
 
 - (void)operationWasCompleted {
   [self.completionOp start];

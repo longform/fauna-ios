@@ -10,6 +10,19 @@
 #import "FNFuture.h"
 #import "FNMutableFuture.h"
 #import "FNValueFuture.h"
+#import "NSOperationQueue+FNFutureOperations.h"
+
+@interface FNFuture ()
+
+@property BOOL isCancelled;
+
+@end
+
+@interface FNMutableFuture ()
+
+- (void)forwardCancellationsTo:(FNFuture *)other;
+
+@end
 
 @implementation FNFuture
 
@@ -23,22 +36,12 @@
   return [[FNValueFuture alloc] initWithError:error];
 }
 
-+ (FNFuture *)background:(id (^)(void))block {
-  FNMutableFuture *res = [FNMutableFuture new];
++ (FNFuture *)inBackground:(id (^)(void))block {
+  return [[FNFuture sharedOperationQueue] futureOperationWithBlock:block];
+}
 
-  [[FNFuture sharedOperationQueue] addOperationWithBlock:^{
-    id rv = block();
-
-    rv = rv ?: FaunaOperationFailed();
-
-    if ([rv isKindOfClass:[NSError class]]) {
-      [res updateError:rv];
-    } else {
-      [res update:rv];
-    }
-  }];
-
-  return res;
++ (FNFuture *)onMainThread:(id (^)(void))block {
+  return [[NSOperationQueue mainQueue] futureOperationWithBlock:block];
 }
 
 # pragma mark Abstract Methods
@@ -61,6 +64,10 @@
 
 - (void)onCompletion:(void (^)(FNFuture *))block {
 
+}
+
+- (void)cancel {
+  self.isCancelled = YES;
 }
 
 # pragma mark Non-Blocking and Functional API
@@ -88,49 +95,50 @@
 }
 
 - (FNFuture *)flattenMap:(FNFuture *(^)(id))block {
-  FNMutableFuture *res = [FNMutableFuture new];
-
-  [self onSuccess:^(id value){
-    [block(value) onCompletion:^(FNFuture *next){ [next propagateTo:res]; }];
-  } onError:^(NSError *error) {
-    [res updateError:error];
+  return [self transform:^FNFuture *(FNFuture *self) {
+    return self.value ? block(self.value) : self;
   }];
-
-  return res;
 }
 
-- (FNFuture *)rescue:(FNFuture * (^)(NSError *))block {
-  FNMutableFuture *res = [FNMutableFuture new];
-
-  [self onCompletion:^(FNFuture *self){
+- (FNFuture *)rescue:(FNFuture *(^)(NSError *))block {
+  return [self transform:^FNFuture *(FNFuture *self) {
     if (self.value) {
-      [res update:self.value];
+      return self;
     } else {
       FNFuture *next = block(self.error);
-
-      if (next) {
-        [next onCompletion:^(FNFuture *next) { [next propagateTo:res]; }];
-      } else {
-        [res updateError:self.error];
-      }
+      return next ? next : self;
     }
   }];
-
-  return res;
 }
 
 - (FNFuture *)ensure:(void (^)(void))block {
-  FNMutableFuture *res = [FNMutableFuture new];
-
-  [self onCompletion:^(FNFuture *self) {
+  return [self transform:^FNFuture *(FNFuture *self) {
     block();
-    [self propagateTo: res];
+    return self;
   }];
-
-  return res;
 }
 
 # pragma mark Private Methods/Helpers
+
+- (FNFuture *)transform:(FNFuture *(^)(FNFuture *))block {
+  FNMutableFuture *res = [FNMutableFuture new];
+
+  [self onCompletion:^(FNFuture *self) {
+    FNFuture *next = block(self);
+
+    if (next.isCompleted) {
+      [next propagateTo:res];
+    } else {
+      [next onCompletion:^(FNFuture *next) {
+        [next propagateTo:res];
+      }];
+    }
+  }];
+
+  [res forwardCancellationsTo:self];
+
+  return res;
+}
 
 - (void)propagateTo:(FNMutableFuture *)other {
   if (self.value) {

@@ -16,7 +16,9 @@
 
 + (FNFuture *)error:(NSError *)error;
 
-+ (FNFuture *)background:(id (^)(void))block;
++ (FNFuture *)inBackground:(id (^)(void))block;
+
++ (FNFuture *)onMainThread:(id (^)(void))block;
 
 # pragma mark Accessors
 
@@ -35,12 +37,20 @@
  */
 - (BOOL)isCompleted;
 
-# pragma mark Blocking API
+/*!
+ Returns whether or not the operation has been cancelled.
+ */
+- (BOOL)isCancelled;
 
 /*!
  Returns the result of the operation represented by this object or nil, if there was an error, blocking if necessary.
  */
 - (id)get;
+
+/*!
+ Sends a cancellation signal upstream. The future's source may or may not respond to the cancellation signal.
+ */
+- (void)cancel;
 
 # pragma mark Non-Blocking and Functional API
 

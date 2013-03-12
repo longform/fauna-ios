@@ -13,11 +13,14 @@
 
 FOUNDATION_EXPORT NSString * const FaunaErrorDomain;
 
+FOUNDATION_EXPORT NSInteger const FaunaErrorOperationCancelledCode;
 FOUNDATION_EXPORT NSInteger const FaunaErrorOperationFailedCode;
 FOUNDATION_EXPORT NSInteger const FaunaErrorRequestTimeoutCode;
 FOUNDATION_EXPORT NSInteger const FaunaErrorBadRequestCode;
 FOUNDATION_EXPORT NSInteger const FaunaErrorNotFoundCode;
 FOUNDATION_EXPORT NSInteger const FaunaErrorInternalServerErrorCode;
+
+NSError * FaunaOperationCancelled();
 
 NSError * FaunaOperationFailed();
 

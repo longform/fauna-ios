@@ -10,10 +10,6 @@
 
 @interface FNMutableFuture : FNFuture
 
-@property (readonly) id value;
-@property (readonly) NSError *error;
-@property (readonly) BOOL isCompleted;
-
 - (void)update:(id)value;
 
 - (BOOL)updateIfEmpty:(id)value;

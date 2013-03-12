@@ -8,13 +8,20 @@
 
 #import "FaunaError.h"
 
-NSString * const FaunaErrorDomain = @"FaunaError";
+NSString * const FaunaErrorDomain = @"org.fauna";
 
-NSInteger const FaunaErrorOperationFailedCode = 0;
-NSInteger const FaunaErrorRequestTimeoutCode = 1;
+NSInteger const FaunaErrorOperationCancelledCode = 0;
+NSInteger const FaunaErrorOperationFailedCode = 1;
+NSInteger const FaunaErrorRequestTimeoutCode = 2;
 NSInteger const FaunaErrorBadRequestCode = 400;
 NSInteger const FaunaErrorNotFoundCode = 404;
 NSInteger const FaunaErrorInternalServerErrorCode = 500;
+
+NSError *FaunaOperationCancelled() {
+  return [NSError errorWithDomain:FaunaErrorDomain
+                             code:FaunaErrorOperationCancelledCode
+                         userInfo:@{}];
+}
 
 NSError *FaunaOperationFailed() {
   return [NSError errorWithDomain:FaunaErrorDomain
