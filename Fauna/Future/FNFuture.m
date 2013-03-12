@@ -91,10 +91,10 @@
 }
 
 - (FNFuture *)map:(id (^)(id))block {
-  return [self flattenMap:^(id value){ return [FNFuture value:block(value)]; }];
+  return [self flatMap:^(id value){ return [FNFuture value:block(value)]; }];
 }
 
-- (FNFuture *)flattenMap:(FNFuture *(^)(id))block {
+- (FNFuture *)flatMap:(FNFuture *(^)(id))block {
   return [self transform:^FNFuture *(FNFuture *self) {
     return self.value ? block(self.value) : self;
   }];

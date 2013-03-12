@@ -79,7 +79,7 @@
  */
 - (FNFuture *)map:(id (^)(id value))block;
 
-- (FNFuture *)flattenMap:(FNFuture * (^)(id value))block;
+- (FNFuture *)flatMap:(FNFuture * (^)(id value))block;
 
 /*!
  Returns a new result object that attempts to recover from errors with the provided block. The block should return a new result object or nil (to propagate the error).

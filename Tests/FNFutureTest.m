@@ -81,17 +81,17 @@
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
 }
 
-- (void)testFlattenMap {
+- (void)testFlatMap {
   [self prepare];
 
-  [[[FNFuture value:@"foo"] flattenMap:^FNFuture *(id value) {
+  [[[FNFuture value:@"foo"] flatMap:^FNFuture *(id value) {
     return [FNFuture error:
             [NSError errorWithDomain:@"TestError"
                                 code:1
                             userInfo:@{@"reason": [NSString stringWithFormat:@"was %@", value]}]];
   }] onError:^(NSError *error) {
     if ([[error userInfo][@"reason"] isEqual:@"was foo"]) {
-      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testFlattenMap)];
+      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testFlatMap)];
     }
   }];
 
