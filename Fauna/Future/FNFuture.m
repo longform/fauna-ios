@@ -6,21 +6,12 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "FaunaError.h"
 #import "FNFuture.h"
-#import "FNMutableFuture.h"
-#import "FNValueFuture.h"
-#import "NSOperationQueue+FNFutureOperations.h"
+#import "FNFuture_Internal.h"
 
 @interface FNFuture ()
 
 @property BOOL isCancelled;
-
-@end
-
-@interface FNMutableFuture ()
-
-- (void)forwardCancellationsTo:(FNFuture *)other;
 
 @end
 
@@ -42,6 +33,10 @@
 
 + (FNFuture *)onMainThread:(id (^)(void))block {
   return [[NSOperationQueue mainQueue] futureOperationWithBlock:block];
+}
+
++ (FNFutureLocal *)currentScope {
+  return [FNFutureLocal current];
 }
 
 # pragma mark Abstract methods
@@ -76,8 +71,12 @@
 
 -(void)onSuccess:(void (^)(id))succBlock onError:(void (^)(NSError *))errBlock {
   [self onCompletion:^(FNFuture *self){
+    FNFutureLocal *scope = [FNFuture currentScope];
+    
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [FNFutureLocal setCurrent:scope];
       self.value ? succBlock(self.value) : errBlock(self.error);
+      [FNFutureLocal removeCurrent];
     }];
   }];
 }

@@ -8,6 +8,7 @@
 
 #import <pthread.h>
 #import "FNMutableFuture.h"
+#import "FNFuture_Internal.h"
 
 @interface FNMutableFuture ()
 
@@ -58,8 +59,11 @@
   if (self.isCompleted) {
     block(self);
   } else {
+    FNFutureLocal *scope = [FNFuture currentScope];
     NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+      [FNFutureLocal setCurrent:scope];
       block(self);
+      [FNFutureLocal removeCurrent];
     }];
 
     NSOperationQueue *q = [NSOperationQueue currentQueue];

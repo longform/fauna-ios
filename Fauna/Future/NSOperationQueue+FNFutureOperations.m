@@ -7,15 +7,16 @@
 //
 
 #import "NSOperationQueue+FNFutureOperations.h"
-#import "FNMutableFuture.h"
-#import "FaunaError.h"
+#import "FNFuture_Internal.h"
 
 @implementation NSOperationQueue (FNFutureOperations)
 
 - (FNFuture *)futureOperationWithBlock:(id (^)(void))block {
   FNMutableFuture *res = [FNMutableFuture new];
+  FNFutureLocal *scope = [FNFuture currentScope];
 
   [self addOperationWithBlock:^{
+    [FNFutureLocal setCurrent:scope];
     id rv = res.isCancelled ? FaunaOperationCancelled() : block();
 
     if (rv == nil) {
@@ -27,6 +28,7 @@
     } else {
       [res update:rv];
     }
+    [FNFutureLocal removeCurrent];
   }];
 
   return res;

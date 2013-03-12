@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
+#import "FNFutureLocal.h"
+
 @interface FNFuture : NSObject
 
 # pragma mark Class methods
@@ -29,6 +31,11 @@
  Runs a computation on the main thread and returns a future of the result. The provided block should return a non-nil value or an NSError if it failed.
  */
 + (FNFuture *)onMainThread:(id (^)(void))block;
+
+/*! 
+ Returns the future-local storage for the current scope. May be shared across threads.
+ */
++ (FNFutureLocal *)currentScope;
 
 # pragma mark Instance methods
 
