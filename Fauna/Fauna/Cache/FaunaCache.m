@@ -18,8 +18,34 @@
 
 #define kResourcesColumnOrdinal 2
 #define kReferencesColumnOrdinal 3
-#define kTLSCachePolicyKey @"FaunaCachePolicy"
 #define kMaxRetrySeconds 10
+
+#define kFaunaCacheTLSKey @"FaunaCache"
+
+static NSMutableArray* ensureCacheStack() {
+  NSMutableArray* stack = FaunaTLS[kFaunaCacheTLSKey];
+  if(stack) {
+    return stack;
+  }
+  stack = FaunaTLS[kFaunaCacheTLSKey] = [[NSMutableArray alloc] initWithCapacity:5];
+  return stack;
+}
+
+static FaunaCache* pushCache(FaunaCache* cache) {
+  NSMutableArray* stack = ensureCacheStack();
+  [stack addObject:cache];
+  return cache;
+}
+
+static FaunaCache* popCache() {
+  NSMutableArray* stack = ensureCacheStack();
+  if(stack.count == 0) {
+    return nil;
+  }
+  FaunaCache* cache = stack.lastObject;
+  [stack removeLastObject];
+  return cache;
+}
 
 @interface FaunaCache () {
   sqlite3 *database;
@@ -76,6 +102,19 @@
     }
   }
   return self;
+}
+
++ (FaunaCache*)scopeCache {
+  return ensureCacheStack().lastObject;
+}
+
+- (void)scoped:(FaunaBlock)block {
+  pushCache(self);
+  @try {
+    block(block);
+  }  @finally {
+    popCache();
+  }
 }
 
 - (int)stepQuery:(sqlite3_stmt *)stmt
@@ -202,17 +241,6 @@ static id readBlob(sqlite3_stmt *statement, int ordinal) {
 
 - (NSDictionary*)loadResourceWithPath:(NSString*)path {
   return [self loadResourceCore:path queryByRef:NO];
-}
-
-+ (BOOL)shouldIgnoreCache {
-  return [FaunaTLS[kTLSCachePolicyKey] boolValue];
-}
-
-+ (void)ignoreCache:(FaunaCacheScopeBlock)block {
-  NSParameterAssert(block);
-  FaunaTLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:YES];
-  block();
-  FaunaTLS[kTLSCachePolicyKey] = [NSNumber numberWithBool:NO];
 }
 
 @end

@@ -9,7 +9,7 @@
 #import "FaunaContext.h"
 #define kFaunaContextTLSKey @"FaunaContext"
 
-static FaunaContext *_defaultContext;
+static FaunaContext* _applicationContext;
 
 static NSMutableArray* ensureContextStack() {
   NSMutableArray* stack = FaunaTLS[kFaunaContextTLSKey];
@@ -51,13 +51,12 @@ static FaunaContext* popContext() {
 }
 
 + (FaunaContext*)applicationContext {
-  return _defaultContext;
+  return _applicationContext;
 }
 
 + (void)setApplicationContext:(FaunaContext*)context {
-  _defaultContext = context;
+  _applicationContext = context;
 }
-
 
 + (FaunaContext*)scopeContext {
   return ensureContextStack().lastObject;

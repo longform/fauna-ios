@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong, readonly) FaunaClient* client;
 
+@property (nonatomic, strong, readonly) FaunaCache* cache;
+
 /*!
  Initializes the Context with the given client key.
  @param keyString Client Key String
@@ -65,5 +67,6 @@
  */
 + (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock;
 
+- (void)cacheScope:(FaunaBlock)block;
 
 @end

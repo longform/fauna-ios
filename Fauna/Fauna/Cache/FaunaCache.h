@@ -23,8 +23,8 @@
 
 - (NSDictionary*)loadResourceWithPath:(NSString*)path;
 
-+ (BOOL)shouldIgnoreCache;
++ (FaunaCache*)scopeCache;
 
-+ (void)ignoreCache:(FaunaCacheScopeBlock)block;
+- (void)scoped:(FaunaBlock)block;
 
 @end
