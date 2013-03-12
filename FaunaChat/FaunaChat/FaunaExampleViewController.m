@@ -57,7 +57,7 @@
 }
 
 - (void)refreshUI {
-  BOOL userIsAuthenticated = !!FaunaContext.applicationContext.client.userToken;
+  BOOL userIsAuthenticated = !!FaunaContext.applicationContext.userToken;
   for (UIButton * view in @[self.btnChatRoom, self.btnChangePassword, self.btnLogout]) {
     view.enabled = userIsAuthenticated;
   }

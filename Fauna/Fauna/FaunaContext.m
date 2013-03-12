@@ -8,6 +8,7 @@
 
 #import "FaunaContext.h"
 #define kFaunaContextTLSKey @"FaunaContext"
+#define kFaunaTokenUserKey @"FaunaContextUserToken"
 
 static FaunaContext* _applicationContext;
 
@@ -36,18 +37,41 @@ static FaunaContext* popContext() {
   return context;
 }
 
+@interface FaunaContext()
+  
+- (NSString*)keyStringPreferenceKey:(NSString*)key;
+
+@end
+
 @implementation FaunaContext {
   NSOperationQueue *_queue;
 }
 
 - (id)initWithClientKeyString:(NSString*)keyString {
   if (self = [self init]) {
+    self.keyString = keyString;
     _queue = [[NSOperationQueue alloc] init];
     _queue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
     
     _client = [[FaunaClient alloc] initWithClientKeyString:keyString];
+    
+    // Load persisted user token
+    NSString *persistedTokenString = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyStringPreferenceKey:kFaunaTokenUserKey]];
+    self.userToken = persistedTokenString;
   }
   return self;
+}
+
+-(NSString*)keyStringPreferenceKey:(NSString*)key {
+  return [NSString stringWithFormat:@"%@-%@", self.keyString, key];
+}
+
+- (void)setUserToken:(NSString *)userToken {
+  _userToken = userToken;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:userToken forKey:[self keyStringPreferenceKey:kFaunaTokenUserKey]];
+  [defaults synchronize];
+  self.client.userToken = userToken;
 }
 
 + (FaunaContext*)applicationContext {

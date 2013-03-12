@@ -19,6 +19,10 @@
 
 @property (nonatomic, strong, readonly) FaunaCache* cache;
 
+@property (nonatomic, strong) NSString* userToken;
+
+@property (nonatomic, strong) NSString* keyString;
+
 /*!
  Initializes the Context with the given client key.
  @param keyString Client Key String
@@ -66,7 +70,5 @@
  @param failure The code block to execute when the background block fails. You can update your User Interface here.
  */
 + (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock;
-
-- (void)cacheScope:(FaunaBlock)block;
 
 @end

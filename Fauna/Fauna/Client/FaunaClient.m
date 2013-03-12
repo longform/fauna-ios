@@ -20,7 +20,6 @@
 #define kPassword @"password"
 #define kNewPassword @"new_password"
 #define kNewPasswordConfirmation @"new_password_confirmation"
-#define kFaunaTokenUserKey @"FaunaContextUserToken"
 
 extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
@@ -60,11 +59,6 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
     _cache = [[FaunaCache alloc] initWithName:kCacheName];
     _keyClient = [FaunaClient createHTTPClient];
     _userClient = [FaunaClient createHTTPClient];
-    
-    // Load persisted user token
-    NSString *persistedTokenString = [[NSUserDefaults standardUserDefaults] objectForKey:kFaunaTokenUserKey];
-    self.userToken = persistedTokenString;
-    
   }
   return self;
 }
@@ -90,18 +84,15 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   return self;
 }
 
+- (void)setUserToken:(NSString *)userToken {
+  [self.userClient setAuthorizationHeaderWithUsername:userToken password:nil];
+}
+
+
 + (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method {
   NSParameterAssert(path);
   NSParameterAssert(method);
   return [[NSString stringWithFormat:@"%@ %@", method, path] uppercaseString];
-}
-
-- (void)setUserToken:(NSString *)userToken {
-  _userToken = userToken;
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setObject:userToken forKey:kFaunaTokenUserKey];
-  [defaults synchronize];
-  [self.userClient setAuthorizationHeaderWithUsername:userToken password:nil];
 }
 
 - (BOOL)destroyInstance:(NSString*)ref error:(NSError**)error {
@@ -287,7 +278,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   if(*error) {
     return nil;
   }
-  return self.userToken = tokenInfo[@"token"];
+  return tokenInfo[@"token"];
 }
 
 @end

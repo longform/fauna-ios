@@ -85,18 +85,20 @@
 }
 
 + (BOOL)loginWithEmail:(NSString*)email password:(NSString*)password error:(NSError**)error {
-  [FaunaContext.current.client createToken:@{kEmailKey: email, kPasswordKey: password} error:error];
+  NSString* userToken = [FaunaContext.current.client createToken:@{kEmailKey: email, kPasswordKey: password} error:error];
   if(*error) {
     return NO;
   }
+  FaunaContext.current.userToken = userToken;
   return YES;
 }
 
 + (BOOL)loginWithExternalId:(NSString*)externalId password:(NSString*)password error:(NSError**)error {
-  [FaunaContext.current.client createToken:@{kExternalIdKey: externalId, kPasswordKey: password} error:error];
+  NSString* userToken = [FaunaContext.current.client createToken:@{kExternalIdKey: externalId, kPasswordKey: password} error:error];
   if(*error) {
     return NO;
   }
+  FaunaContext.current.userToken = userToken;
   return YES;
 }
 
