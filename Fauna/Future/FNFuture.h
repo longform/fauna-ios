@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface FNFuture : NSObject
 
 # pragma mark Class methods
