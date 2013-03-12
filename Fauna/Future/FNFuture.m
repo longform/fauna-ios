@@ -44,7 +44,7 @@
   return [[NSOperationQueue mainQueue] futureOperationWithBlock:block];
 }
 
-# pragma mark Abstract Methods
+# pragma mark Abstract methods
 
 - (id)value {
   return nil;
@@ -66,6 +66,8 @@
 
 }
 
+# pragma mark API methods
+
 - (void)cancel {
   self.isCancelled = YES;
 }
@@ -74,11 +76,9 @@
 
 -(void)onSuccess:(void (^)(id))succBlock onError:(void (^)(NSError *))errBlock {
   [self onCompletion:^(FNFuture *self){
-    if (self.value) {
-      succBlock(self.value);
-    } else {
-      errBlock(self.error);
-    }
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      self.value ? succBlock(self.value) : errBlock(self.error);
+    }];
   }];
 }
 
@@ -125,6 +125,10 @@
 
   [self onCompletion:^(FNFuture *self) {
     FNFuture *next = block(self);
+
+    if (next == nil) {
+      [NSException raise:@"Invalid future value." format:@"Result of future transformation cannot be nil."];
+    }
 
     if (next.isCompleted) {
       [next propagateTo:res];

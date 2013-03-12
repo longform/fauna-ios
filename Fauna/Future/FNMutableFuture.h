@@ -10,12 +10,24 @@
 
 @interface FNMutableFuture : FNFuture
 
+/*!
+ Complete the future with a successful result.
+ */
 - (void)update:(id)value;
 
+/*!
+ Complete the future with a failure result.
+ */
 - (BOOL)updateIfEmpty:(id)value;
 
+/*!
+ Complete the future with a successful result if it has not been completed already.
+ */
 - (void)updateError:(NSError *)error;
 
+/*!
+ Complete the future with a failure result if it has not been completed already.
+ */
 - (BOOL)updateErrorIfEmpty:(NSError *)error;
 
 @end

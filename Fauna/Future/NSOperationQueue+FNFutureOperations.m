@@ -17,7 +17,10 @@
 
   [self addOperationWithBlock:^{
     id rv = res.isCancelled ? FaunaOperationCancelled() : block();
-    rv = rv ?: FaunaOperationFailed();
+
+    if (rv == nil) {
+      [NSException raise:@"Invalid future value." format:@"Result of future operation cannot be nil."];
+    }
 
     if ([rv isKindOfClass:[NSError class]]) {
       [res updateError:rv];

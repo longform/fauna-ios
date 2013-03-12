@@ -10,30 +10,42 @@
 
 @interface FNFuture : NSObject
 
-# pragma mark Class Methods
-
-+ (FNFuture *)value:(id)value;
-
-+ (FNFuture *)error:(NSError *)error;
-
-+ (FNFuture *)inBackground:(id (^)(void))block;
-
-+ (FNFuture *)onMainThread:(id (^)(void))block;
-
-# pragma mark Accessors
+# pragma mark Class methods
 
 /*!
- Returns the result of the operation represented by this object if set.
+ Returns a successful future completed with the provided value. The provided value must not be nil.
+ */
++ (FNFuture *)value:(id)value;
+
+/*!
+ Returns a failed future completed with the provided error. The provided error must not be nil.
+ */
++ (FNFuture *)error:(NSError *)error;
+
+/*!
+ Runs a computation on a background thread and returns a future of the result. The provided block should return a non-nil value or an NSError if it failed.
+ */
++ (FNFuture *)inBackground:(id (^)(void))block;
+
+/*!
+ Runs a computation on the main thread and returns a future of the result. The provided block should return a non-nil value or an NSError if it failed.
+ */
++ (FNFuture *)onMainThread:(id (^)(void))block;
+
+# pragma mark Instance methods
+
+/*!
+ Returns the result of the future represented if set.
  */
 - (id)value;
 
 /*!
- Returns the error result of the operation represented by this object if set.
+ Returns the error result of the future represented if set.
  */
 - (NSError *)error;
 
 /*!
- Returns whether or not the operation has been completed.
+ Returns whether or not the future has been completed.
  */
 - (BOOL)isCompleted;
 
@@ -48,44 +60,50 @@
 - (id)get;
 
 /*!
- Sends a cancellation signal upstream. The future's source may or may not respond to the cancellation signal.
+ Sends a cancellation signal upstream. The future's source may or may not respond to cancellation.
  */
 - (void)cancel;
 
 # pragma mark Non-Blocking and Functional API
 
 /*!
- Subscribe to both successful completion and error events.
+ Add callbacks upon success or failure of the future. The applied callback will run on the main thread.
  */
 - (void)onSuccess:(void (^)(id value))succBlock onError:(void (^)(NSError *error))errBlock;
 
 /*!
- Subscribe to successful completion.
+ Add a callback to run upon success of the future. The callback will run on the main thread.
  */
 - (void)onSuccess:(void (^)(id value))block;
 
 /*!
- Subscribe to error event.
+ Add a callback to run upon failure of the future. The callback will run on the main thread.
  */
 - (void)onError:(void (^)(NSError *error))block;
 
 /*!
- Subscribe to completion.
+ Add a callback to run upon completion of the future. The callback will run on an unspecified thread.
  */
 - (void)onCompletion:(void (^)(FNFuture *result))block;
 
 /*!
- Return a new result object that, upon completion of this one, contains the value transformed with the provided block.
+ Returns a new future that contains this future's value transformed by the provided block. The block will run on an unspecified thread.
  */
 - (FNFuture *)map:(id (^)(id value))block;
 
+/*!
+ Returns a new future that contains the result of the future returned by the provided block if this future is successful, or this future's error. The block will run on an unspecified thread.
+ */
 - (FNFuture *)flatMap:(FNFuture * (^)(id value))block;
 
 /*!
- Returns a new result object that attempts to recover from errors with the provided block. The block should return a new result object or nil (to propagate the error).
+ Returns a new result object that attempts to recover from errors with the provided block. The block should return a new result object or nil (to propagate the error). The block will run on an unspecified thread.
  */
 - (FNFuture *)rescue:(FNFuture * (^)(NSError *))block;
 
+/*!
+ Returns a new future with the same eventual result this one, which is completed after running the provided block. The block will run on an unspecified thread.
+ */
 - (FNFuture *)ensure:(void (^)(void))block;
 
 @end

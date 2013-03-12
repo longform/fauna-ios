@@ -46,20 +46,20 @@
 # pragma mark Non-Blocking and Functional API
 
 - (void)onCompletion:(void (^)(FNFuture *))block {
-  NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+  if (self.isCompleted) {
     block(self);
-  }];
+  } else {
+    NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+      block(self);
+    }];
 
-  NSOperationQueue *q = [NSOperationQueue currentQueue];
-  q = q ?: [NSOperationQueue mainQueue];
+    NSOperationQueue *q = [NSOperationQueue currentQueue];
+    q = q ?: [NSOperationQueue mainQueue];
 
-  if (!self.isCompleted) {
     @synchronized(self) {
       if (!self.isCompleted) [op addDependency:self.completionOp];
       [q addOperation:op];
     }
-  } else {
-    [q addOperation:op];
   }
 }
 
@@ -68,13 +68,13 @@
 
 - (void)update:(id)value {
   if (![self updateIfEmpty:value]) {
-    NSAssert(NO, @"Future was already completed.");
+    [NSException raise:@"Future already completed." format:@"Future was already completed, but update was called with %@.", value];
   }
 }
 
 - (void)updateError:(NSError *)error {
   if (![self updateErrorIfEmpty:error]) {
-    NSAssert(NO, @"Future was already completed.");
+    [NSException raise:@"Future already completed." format:@"Future was already completed, but updateError was called with %@.", error];
   }
 }
 

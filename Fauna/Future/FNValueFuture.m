@@ -20,10 +20,16 @@
 }
 
 - (id)initWithValue:(id)value {
+  if (value == nil) {
+    [NSException raise:@"Invalid future value." format:@"Futures cannot contain a nil value."];
+  }
   return [self initWithValue:value andError:nil];
 }
 
 - (id)initWithError:(NSError *)error {
+  if (error == nil) {
+    [NSException raise:@"Invalid future value." format:@"Futures cannot contain a nil error."];
+  }
   return [self initWithValue:nil andError:error];
 }
 
@@ -36,9 +42,7 @@
 }
 
 - (void)onCompletion:(void (^)(FNFuture *))block {
-  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    block(self);
-  }];
+  block(self);
 }
 
 @end
