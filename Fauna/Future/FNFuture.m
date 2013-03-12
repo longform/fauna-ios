@@ -35,8 +35,8 @@
   return [[NSOperationQueue mainQueue] futureOperationWithBlock:block];
 }
 
-+ (FNFutureLocal *)currentScope {
-  return [FNFutureLocal current];
++ (NSMutableDictionary *)currentScope {
+  return [FNFutureScope currentScope];
 }
 
 # pragma mark Abstract methods
@@ -71,12 +71,12 @@
 
 -(void)onSuccess:(void (^)(id))succBlock onError:(void (^)(NSError *))errBlock {
   [self onCompletion:^(FNFuture *self){
-    FNFutureLocal *scope = [FNFuture currentScope];
+    NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [FNFutureLocal setCurrent:scope];
+      [FNFutureScope restoreCurrent:scope];
       self.value ? succBlock(self.value) : errBlock(self.error);
-      [FNFutureLocal removeCurrent];
+      [FNFutureScope removeCurrent];
     }];
   }];
 }

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "FNFutureLocal.h"
+#import "FNFutureScope.h"
 
 @interface FNFuture : NSObject
 
@@ -35,7 +35,7 @@
 /*! 
  Returns the future-local storage for the current scope. May be shared across threads.
  */
-+ (FNFutureLocal *)currentScope;
++ (NSMutableDictionary *)currentScope;
 
 # pragma mark Instance methods
 

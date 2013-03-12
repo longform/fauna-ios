@@ -13,8 +13,6 @@
 @property (nonatomic, readonly) id value;
 @property (nonatomic, readonly) NSError *error;
 
-- (BOOL)isCompleted;
-
 - (id)initWithValue:(id)value;
 
 - (id)initWithError:(NSError *)error;

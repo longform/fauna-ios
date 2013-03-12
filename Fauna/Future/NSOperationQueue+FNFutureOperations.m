@@ -13,10 +13,10 @@
 
 - (FNFuture *)futureOperationWithBlock:(id (^)(void))block {
   FNMutableFuture *res = [FNMutableFuture new];
-  FNFutureLocal *scope = [FNFuture currentScope];
+  NSMutableDictionary *scope = [FNFutureScope saveCurrent];
 
   [self addOperationWithBlock:^{
-    [FNFutureLocal setCurrent:scope];
+    [FNFutureScope restoreCurrent:scope];
     id rv = res.isCancelled ? FaunaOperationCancelled() : block();
 
     if (rv == nil) {
@@ -28,7 +28,7 @@
     } else {
       [res update:rv];
     }
-    [FNFutureLocal removeCurrent];
+    [FNFutureScope removeCurrent];
   }];
 
   return res;

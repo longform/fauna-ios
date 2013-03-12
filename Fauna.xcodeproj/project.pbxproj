@@ -48,7 +48,10 @@
 		AC279F4916EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */; };
 		AC6C5FE116E937D3003A17DD /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */; };
 		AC6C5FE216E937DB003A17DD /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7901678713F00686606 /* libFauna.a */; };
-		AC896F4A16EFD279008C6F7B /* FNFutureLocal.m in Sources */ = {isa = PBXBuildFile; fileRef = AC896F4916EFD279008C6F7B /* FNFutureLocal.m */; };
+		AC896F4A16EFD279008C6F7B /* FNFutureScope.m in Sources */ = {isa = PBXBuildFile; fileRef = AC896F4916EFD279008C6F7B /* FNFutureScope.m */; };
+		AC896F4B16EFE5EF008C6F7B /* NSOperationQueue+FNFutureOperations.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC279F4716EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.h */; };
+		AC896F4C16EFE5EF008C6F7B /* FNFutureScope.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC896F4816EFD279008C6F7B /* FNFutureScope.h */; };
+		AC896F4D16EFE5F9008C6F7B /* FNValueFuture.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC06AA8716EE9336006BECBD /* FNValueFuture.h */; };
 		ACB0B49116E925D400B6E7AA /* FaunaContextTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */; };
 		ACB0B4A916E92A6800B6E7AA /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
 		ACDEDB6A16E80DC7005B2B73 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB6916E80DC7005B2B73 /* UIKit.framework */; };
@@ -79,6 +82,9 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				AC896F4D16EFE5F9008C6F7B /* FNValueFuture.h in CopyFiles */,
+				AC896F4B16EFE5EF008C6F7B /* NSOperationQueue+FNFutureOperations.h in CopyFiles */,
+				AC896F4C16EFE5EF008C6F7B /* FNFutureScope.h in CopyFiles */,
 				AC279F4616EEE83100B8EE6A /* FaunaError.h in CopyFiles */,
 				AC06AA8F16EE939B006BECBD /* FNMutableFuture.h in CopyFiles */,
 				AC06AA8E16EE938D006BECBD /* FNFuture.h in CopyFiles */,
@@ -151,8 +157,8 @@
 		AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOperationQueue+FNFutureOperations.m"; sourceTree = "<group>"; };
 		AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
 		AC896F4716EFCE67008C6F7B /* FNFuture_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFuture_Internal.h; sourceTree = "<group>"; };
-		AC896F4816EFD279008C6F7B /* FNFutureLocal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFutureLocal.h; sourceTree = "<group>"; };
-		AC896F4916EFD279008C6F7B /* FNFutureLocal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNFutureLocal.m; sourceTree = "<group>"; };
+		AC896F4816EFD279008C6F7B /* FNFutureScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFutureScope.h; sourceTree = "<group>"; };
+		AC896F4916EFD279008C6F7B /* FNFutureScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNFutureScope.m; sourceTree = "<group>"; };
 		ACB0B49016E925D400B6E7AA /* FaunaContextTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaContextTest.m; sourceTree = "<group>"; };
 		ACC998AE16E9159900FDF963 /* fauna_test_config.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = fauna_test_config.rb; sourceTree = "<group>"; };
 		ACDEDB6816E80DC7005B2B73 /* Tests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tests.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -322,8 +328,8 @@
 				AC279F4716EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.h */,
 				AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */,
 				AC896F4716EFCE67008C6F7B /* FNFuture_Internal.h */,
-				AC896F4816EFD279008C6F7B /* FNFutureLocal.h */,
-				AC896F4916EFD279008C6F7B /* FNFutureLocal.m */,
+				AC896F4816EFD279008C6F7B /* FNFutureScope.h */,
+				AC896F4916EFD279008C6F7B /* FNFutureScope.m */,
 			);
 			path = Future;
 			sourceTree = "<group>";
@@ -474,7 +480,7 @@
 				AC06AA8A16EE9336006BECBD /* FNMutableFuture.m in Sources */,
 				AC06AA8B16EE9336006BECBD /* FNValueFuture.m in Sources */,
 				AC279F4916EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m in Sources */,
-				AC896F4A16EFD279008C6F7B /* FNFutureLocal.m in Sources */,
+				AC896F4A16EFD279008C6F7B /* FNFutureScope.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

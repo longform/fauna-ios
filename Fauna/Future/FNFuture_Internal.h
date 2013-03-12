@@ -10,7 +10,7 @@
 #import "FNFuture.h"
 #import "FNMutableFuture.h"
 #import "FNValueFuture.h"
-#import "FNFutureLocal.h"
+#import "FNFutureScope.h"
 #import "NSOperationQueue+FNFutureOperations.h"
 
 @interface FNMutableFuture ()
@@ -19,10 +19,10 @@
 
 @end
 
-@interface FNFutureLocal ()
+@interface FNFutureScope ()
 
-+ (FNFutureLocal *)current;
-+ (void)setCurrent:(FNFutureLocal *)scope;
++ (NSMutableDictionary *)saveCurrent;
++ (void)restoreCurrent:(NSMutableDictionary *)scope;
 + (void)removeCurrent;
 
 @end

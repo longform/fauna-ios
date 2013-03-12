@@ -59,11 +59,11 @@
   if (self.isCompleted) {
     block(self);
   } else {
-    FNFutureLocal *scope = [FNFuture currentScope];
+    NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-      [FNFutureLocal setCurrent:scope];
+      [FNFutureScope restoreCurrent:scope];
       block(self);
-      [FNFutureLocal removeCurrent];
+      [FNFutureScope removeCurrent];
     }];
 
     NSOperationQueue *q = [NSOperationQueue currentQueue];

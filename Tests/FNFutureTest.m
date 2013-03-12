@@ -125,4 +125,23 @@
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
 }
 
+- (void)testFutureScope {
+  [self prepare];
+
+  FNFuture.currentScope[@"val"] = @"right";
+
+  [[FNFuture inBackground:^{
+    usleep(10000);
+    return FNFuture.currentScope[@"val"];
+  }] onSuccess:^(id value) {
+    if ([value isEqual:@"right"]) {
+      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testFutureScope)];
+    }
+  }];
+
+  FNFuture.currentScope[@"val"] = @"wrong";
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
+}
+
 @end
