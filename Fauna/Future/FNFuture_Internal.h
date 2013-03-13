@@ -18,11 +18,3 @@
 - (void)forwardCancellationsTo:(FNFuture *)other;
 
 @end
-
-@interface FNFutureScope ()
-
-+ (NSMutableDictionary *)saveCurrent;
-+ (void)restoreCurrent:(NSMutableDictionary *)scope;
-+ (void)removeCurrent;
-
-@end

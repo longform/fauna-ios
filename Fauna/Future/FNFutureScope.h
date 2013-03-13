@@ -11,5 +11,8 @@
 @interface FNFutureScope : NSObject
 
 + (NSMutableDictionary *)currentScope;
++ (NSMutableDictionary *)saveCurrent;
++ (void)restoreCurrent:(NSMutableDictionary *)scope;
++ (void)removeCurrent;
 
 @end

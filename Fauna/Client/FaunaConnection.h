@@ -11,15 +11,8 @@
 @interface FaunaConnection : NSObject
 
 /*!
- Returns the version of the Fauna API the library supports.
- */
-+ (NSString *)APIVersion;
-
-/*!
  Returns the global shared connection instance.
  */
 + (FaunaConnection *)sharedConnection;
-
-- (id)init;
 
 @end
