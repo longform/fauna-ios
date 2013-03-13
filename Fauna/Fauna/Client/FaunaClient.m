@@ -94,12 +94,7 @@ NSString* extractResourcePath(NSString* path) {
 
 - (BOOL)destroyInstance:(NSString*)ref error:(NSError**)error {
   NSParameterAssert(ref);
-  NSArray * arr = [ref componentsSeparatedByString:@"/"];
-  
-  // works when ref is just the number of the instance.
-  // E.g. "123445678" and also for "instances/123445678"
-  NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
-  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, resourcePath];
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, ref];
   NSHTTPURLResponse *httpResponse;
   [self performRawOperationWithPath:path method:@"DELETE" parameters:nil body:nil response:&httpResponse client:_userClient error:error];
   if(*error) {
@@ -240,12 +235,7 @@ NSString* extractResourcePath(NSString* path) {
 - (NSDictionary*)updateInstance:(NSString*)ref changes:(NSDictionary*)changes error:(NSError**)error {
   NSParameterAssert(ref);
   NSParameterAssert(changes);
-  NSArray * arr = [ref componentsSeparatedByString:@"/"];
-  
-  // works when ref is just the number of the instance.
-  // E.g. "123445678" and also for "instances/123445678"
-  NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
-  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, resourcePath];
+  NSString * path = [NSString stringWithFormat:@"/%@/%@", FaunaAPIVersion, ref];
   return [self performOperationWithPath:path method:@"PUT" parameters:changes error:error];
 }
 

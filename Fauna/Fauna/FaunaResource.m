@@ -72,7 +72,6 @@ NSString * const EventSetsClassName = @"sets";
              options:NSRegularExpressionCaseInsensitive
              error:&error];
     if([regex matchesInString:ref options:0 range:NSMakeRange(0, refLength)].count > 0) {
-      //NSString* className = [NSString stringWithFormat:@"classes/%@", resource[@"class"]];
       return NSClassFromString(@"FaunaInstance");
     }
     

@@ -39,11 +39,12 @@
     if(error) {
       return error;
     }
+    /*
     NSLog(@"Command executed successfully: %@", messageResource.reference);
     [FaunaTimeline addInstance:messageResource.reference toTimeline:self.timelineResource error:&error];
     if(error) {
       return error;
-    }
+    }*/
     NSLog(@"Added to timeline successfully");
     return nil;
   } success:^(id results) {
