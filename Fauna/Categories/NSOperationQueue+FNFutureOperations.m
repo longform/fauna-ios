@@ -7,7 +7,8 @@
 //
 
 #import "NSOperationQueue+FNFutureOperations.h"
-#import "FNFuture_Internal.h"
+#import "FNMutableFuture.h"
+#import "FaunaError.h"
 
 @implementation NSOperationQueue (FNFutureOperations)
 

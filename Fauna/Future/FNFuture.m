@@ -7,11 +7,19 @@
 //
 
 #import "FNFuture.h"
-#import "FNFuture_Internal.h"
+#import "FNMutableFuture.h"
+#import "FNValueFuture.h"
+#import "NSOperationQueue+FNFutureOperations.h"
 
 @interface FNFuture ()
 
 @property BOOL isCancelled;
+
+@end
+
+@interface FNMutableFuture ()
+
+- (void)forwardCancellationsTo:(FNFuture *)other;
 
 @end
 

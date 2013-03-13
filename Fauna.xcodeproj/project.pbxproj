@@ -157,7 +157,6 @@
 		AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
 		AC72123916F1043500190261 /* NSObject+FNBlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+FNBlockObservation.h"; path = "Categories/NSObject+FNBlockObservation.h"; sourceTree = "<group>"; };
 		AC72123A16F1043500190261 /* NSObject+FNBlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+FNBlockObservation.m"; path = "Categories/NSObject+FNBlockObservation.m"; sourceTree = "<group>"; };
-		AC896F4716EFCE67008C6F7B /* FNFuture_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFuture_Internal.h; sourceTree = "<group>"; };
 		AC896F4816EFD279008C6F7B /* FNFutureScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFutureScope.h; sourceTree = "<group>"; };
 		AC896F4916EFD279008C6F7B /* FNFutureScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNFutureScope.m; sourceTree = "<group>"; };
 		AC896F4E16EFFD6C008C6F7B /* NSString+FNBase64Encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+FNBase64Encoding.h"; path = "Categories/NSString+FNBase64Encoding.h"; sourceTree = "<group>"; };
@@ -323,7 +322,6 @@
 			children = (
 				AC06AA8316EE9336006BECBD /* FNFuture.h */,
 				AC06AA8416EE9336006BECBD /* FNFuture.m */,
-				AC896F4716EFCE67008C6F7B /* FNFuture_Internal.h */,
 				AC896F4816EFD279008C6F7B /* FNFutureScope.h */,
 				AC896F4916EFD279008C6F7B /* FNFutureScope.m */,
 				AC06AA8516EE9336006BECBD /* FNMutableFuture.h */,
@@ -337,12 +335,12 @@
 		AC72123816F1027800190261 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				AC72123916F1043500190261 /* NSObject+FNBlockObservation.h */,
+				AC72123A16F1043500190261 /* NSObject+FNBlockObservation.m */,
 				AC279F4716EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.h */,
 				AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */,
 				AC896F4E16EFFD6C008C6F7B /* NSString+FNBase64Encoding.h */,
 				AC896F4F16EFFD6C008C6F7B /* NSString+FNBase64Encoding.m */,
-				AC72123916F1043500190261 /* NSObject+FNBlockObservation.h */,
-				AC72123A16F1043500190261 /* NSObject+FNBlockObservation.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";

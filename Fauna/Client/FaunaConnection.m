@@ -15,8 +15,8 @@
 #import "FNMutableFuture.h"
 #import "NSObject+FNBlockObservation.h"
 
-#define FaunaAPIBaseURL @"https://rest.fauna.org"
-#define FaunaAPIVersion @"v1"
+NSString * const FaunaAPIBaseURL = @"https://rest.fauna.org";
+NSString * const FaunaAPIVersion = @"v1";
 
 @interface FaunaConnection ()
 

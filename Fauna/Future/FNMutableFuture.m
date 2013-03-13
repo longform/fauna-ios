@@ -8,7 +8,6 @@
 
 #import <pthread.h>
 #import "FNMutableFuture.h"
-#import "FNFuture_Internal.h"
 
 @interface FNMutableFuture ()
 
