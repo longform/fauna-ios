@@ -27,4 +27,6 @@
 
 - (void)scoped:(FaunaBlock)block;
 
++ (void)transient:(FaunaBlock)block;
+
 @end

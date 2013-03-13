@@ -41,6 +41,8 @@ static FaunaContext* popContext() {
   
 - (NSString*)keyStringPreferenceKey:(NSString*)key;
 
+- (void)reloadCache;
+
 @end
 
 @implementation FaunaContext {
@@ -62,6 +64,14 @@ static FaunaContext* popContext() {
   return self;
 }
 
+- (void)reloadCache {
+  if(self.userToken) {
+    _cache = [[FaunaCache alloc] initWithName:self.userToken];
+  } else {
+    _cache = [[FaunaCache alloc] initWithName:self.keyString];
+  }
+}
+
 -(NSString*)keyStringPreferenceKey:(NSString*)key {
   return [NSString stringWithFormat:@"%@-%@", self.keyString, key];
 }
@@ -72,6 +82,7 @@ static FaunaContext* popContext() {
   [defaults setObject:userToken forKey:[self keyStringPreferenceKey:kFaunaTokenUserKey]];
   [defaults synchronize];
   self.client.userToken = userToken;
+  [self reloadCache];
 }
 
 + (FaunaContext*)applicationContext {
@@ -109,7 +120,9 @@ static FaunaContext* popContext() {
   NSParameterAssert(successBlock);
   NSParameterAssert(failureBlock);
   NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock: ^{
-    id result = backgroundBlock();
+    id result = [self wrap:^id{
+      return backgroundBlock();
+    }];
     [[NSOperationQueue mainQueue] addOperationWithBlock: ^ {
       if([result isKindOfClass:[NSError class]]) {
         failureBlock(result);
@@ -120,6 +133,21 @@ static FaunaContext* popContext() {
   }];
   [_queue addOperation:op];
   return op;
+}
+
+- (id)wrap:(FaunaResultBlock)block {
+  NSParameterAssert(block);
+  FaunaCache* scopeCache = [FaunaCache scopeCache];
+  BOOL requiresCacheScope = !scopeCache;
+  if(requiresCacheScope && self.cache) {
+    id __block result = nil;
+    [self.cache scoped:^{
+      result = block();
+    }];
+    return result;
+  } else {
+    return block();
+  }
 }
 
 @end

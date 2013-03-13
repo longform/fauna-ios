@@ -117,6 +117,13 @@ static FaunaCache* popCache() {
   }
 }
 
++ (void)transient:(FaunaBlock)block {
+  FaunaCache *cache = [[FaunaCache alloc] initTransient];
+  [cache scoped:^{
+    block();
+  }];
+}
+
 - (int)stepQuery:(sqlite3_stmt *)stmt
 {
   int ret;

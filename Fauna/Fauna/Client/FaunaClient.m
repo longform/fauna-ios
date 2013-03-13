@@ -88,7 +88,6 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   [self.userClient setAuthorizationHeaderWithUsername:userToken password:nil];
 }
 
-
 + (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method {
   NSParameterAssert(path);
   NSParameterAssert(method);
@@ -162,49 +161,35 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 }
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body client:(FaunaAFHTTPClient*)client error:(NSError*__autoreleasing*)error {
-  //FaunaCache * cache = self.cache;
-  //NSString * responsePath = [self.class requestPathFromPath:path andMethod:method];
-  /*if(![FaunaCache shouldIgnoreCache]) {
-    // if response is cached, return it.
-    FaunaResponse * response = [cache loadResponse:responsePath];
-    if(response) {
-      return response.resource;
-    }
-  }*/
+  FaunaCache * cache = [FaunaCache scopeCache];
+  NSString * responsePath = [self.class requestPathFromPath:path andMethod:method];
+  // if response is cached, return it.
+  NSDictionary * resource = [cache loadResourceWithPath:responsePath];
+  if(resource) {
+    return resource;
+  }
   NSURLResponse *httpResponse;
   NSData* data = [self performRawOperationWithPath:path method:method parameters:parameters body:body response:&httpResponse client:client error:error];
   NSString * dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
   if(*error) {
-    // if there is an error, return from cache if current policy allow it.
-    /*if(![FaunaCache shouldIgnoreCache] && (*error).shouldRespondFromCache) {
-      FaunaResponse *response = [_cache loadResponse:responsePath];
-      if(response) {
-        return response.resource;
-      }
-    }*/
+    NSLog(@"Fauna HTTP Error: %@, response: %@", *error, dataString);
     return nil;
   }
   NSDictionary* responseObject = FaunaAFJSONDecode(data, error);
   if(*error) {
+    NSLog(@"Fauna JSON Error: %@, response: %@", *error, dataString);
     return nil;
   }
-  //NSDictionary * references = [responseObject objectForKey:@"references"];
-  NSDictionary * resource = [responseObject objectForKey:@"resource"];
-  /*if(references) {
+  NSDictionary * references = [responseObject objectForKey:@"references"];
+  resource = [responseObject objectForKey:@"resource"];
+  if(resource) {
+    [cache saveResource:resource withPath:responsePath];
+  }
+  if(references) {
     for (NSDictionary *resource in references.allValues) {
-      [self saveResource:resource];
+      [cache saveResource:resource];
     }
-  }*/
-  /*FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];*/
-  /*
-   
-   // save references data separately
-   for (NSMutableDictionary *resource in response.references.allValues) {
-   [self saveResource:resource];
-   }
-
-   */
-  //[cache saveResponse:response];
+  }
   return resource;
 }
 

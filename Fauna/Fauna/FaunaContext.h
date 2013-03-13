@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FaunaConstants.h"
 #import "FaunaClient.h"
+#import "FaunaCache.h"
 
 /*!
  Fauna API Context
@@ -70,5 +71,7 @@
  @param failure The code block to execute when the background block fails. You can update your User Interface here.
  */
 + (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock;
+
+- (id)wrap:(FaunaResultBlock)block;
 
 @end

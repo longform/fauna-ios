@@ -26,23 +26,29 @@
 }
 
 + (FaunaTimelinePage*)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before after:(NSDate*)after count:(NSInteger)count error:(NSError**)error {
-  return (FaunaTimelinePage*)[FaunaResource deserialize:[FaunaContext.current.client pageFromTimeline:timelineReference before:before after:after count:[NSNumber numberWithInteger:count] error:error]];
+  return [FaunaContext.current wrap:^{
+    return (FaunaTimelinePage*)[FaunaResource deserialize:[FaunaContext.current.client pageFromTimeline:timelineReference before:before after:after count:[NSNumber numberWithInteger:count] error:error]];
+  }];
 }
 
 + (BOOL)addInstance:(NSString*)ref toTimeline:(NSString*)timelineRef error:(NSError**)error {
   FaunaContext * context = FaunaContext.current;
   FaunaClient * client = context.client;
-  [client addInstance:ref toTimeline:timelineRef error:error];
-  if(*error) {
-    return NO;
-  }
-  return YES;
+  return [[FaunaContext.current wrap:^{
+    [client addInstance:ref toTimeline:timelineRef error:error];
+    if(*error) {
+      return @NO;
+    }
+    return @YES;
+  }] boolValue];
 }
 
 + (BOOL)removeInstance:(NSString*)ref fromTimeline:(NSString*)timelineRef error:(NSError**)error {
   FaunaContext * context = FaunaContext.current;
   FaunaClient * client = context.client;
-  return [client removeInstance:ref fromTimeline:timelineRef error:error];
+  return [[FaunaContext.current wrap:^{
+    return @([client removeInstance:ref fromTimeline:timelineRef error:error]);
+  }] boolValue];
 }
 
 @end
