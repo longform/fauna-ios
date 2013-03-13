@@ -87,14 +87,12 @@
 
 - (FNFuture *)performRequest:(NSURLRequest *)request {
   FNMutableFuture *res = [FNMutableFuture new];
-  NSMutableDictionary *scope = [FNFutureScope saveCurrent];
-
   FaunaAFJSONRequestOperation *op = [FaunaAFJSONRequestOperation new];
-  FaunaAFJSONRequestOperation * __weak wkOp = op;
 
+  FaunaAFJSONRequestOperation * __weak wkOp = op;
+  
   op.completionBlock = ^{
     FaunaAFJSONRequestOperation *op = wkOp;
-    [FNFutureScope restoreCurrent:scope];
 
     if (op.isCancelled) {
       [res updateError:FaunaOperationCancelled()];
@@ -110,7 +108,6 @@
         [res update:json];
       }
     }
-    [FNFutureScope removeCurrent];
   };
 
   [self.httpClient enqueueHTTPRequestOperation:op];

@@ -11,7 +11,6 @@
 #import "FaunaAFJSONUtilities.h"
 
 #define kCacheName @"client"
-#import "FaunaAFHTTPClient+FaunaAFHTTPClient+DeleteBody.h"
 #define kResourceKey @"resource"
 #define kRefKey @"ref"
 #define kCountKey @"count"

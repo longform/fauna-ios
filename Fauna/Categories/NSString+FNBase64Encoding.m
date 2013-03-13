@@ -1,14 +1,14 @@
 //
-//  NSString+Base64Encoding.m
+//  NSString+FNBase64Encoding.m
 //  Fauna
 //
 //  Created by Matt Freels on 3/12/13.
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "NSString+Base64Encoding.h"
+#import "NSString+FNBase64Encoding.h"
 
-@implementation NSString (Base64Encoding)
+@implementation NSString (FNBase64Encoding)
 
 - (NSString *)base64Encoded {
   static uint8_t const kEncodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
