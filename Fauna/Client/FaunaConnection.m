@@ -13,6 +13,7 @@
 #import "FaunaError.h"
 #import "FNFuture.h"
 #import "FNMutableFuture.h"
+#import "NSObject+FNBlockObservation.h"
 
 #define FaunaAPIBaseURL @"https://rest.fauna.org"
 #define FaunaAPIVersion @"v1"
@@ -88,8 +89,11 @@
 - (FNFuture *)performRequest:(NSURLRequest *)request {
   FNMutableFuture *res = [FNMutableFuture new];
   FaunaAFJSONRequestOperation *op = [FaunaAFJSONRequestOperation new];
-
   FaunaAFJSONRequestOperation * __weak wkOp = op;
+
+  [res addObserverForKeyPath:@"isCancelled" task:^(FNFuture *res, NSDictionary *change) {
+    if (res.isCancelled) [wkOp cancel];
+  }];
   
   op.completionBlock = ^{
     FaunaAFJSONRequestOperation *op = wkOp;
