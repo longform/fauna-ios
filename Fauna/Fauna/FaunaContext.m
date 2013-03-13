@@ -146,7 +146,14 @@ static FaunaContext* popContext() {
     }];
     return result;
   } else {
-    return block();
+    FaunaCache * originalContextCache = scopeCache.parentContextCache;
+    @try {
+      scopeCache.parentContextCache = self.cache;
+      return block();
+    }
+    @finally {
+      scopeCache.parentContextCache = originalContextCache;
+    }
   }
 }
 

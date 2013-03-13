@@ -11,17 +11,19 @@
 
 @interface FaunaCache : NSObject
 
+@property (nonatomic, readonly) NSString * name;
+
+@property (nonatomic, readonly) BOOL isTransient;
+
+@property (nonatomic, strong) FaunaCache * parentContextCache;
+
 - (id)initWithName:(NSString*)name;
 
 - (id)initTransient;
 
 - (void)saveResource:(NSDictionary*)resource;
 
-- (void)saveResource:(NSDictionary*)resource withPath:(NSString*)path;
-
 - (NSDictionary*)loadResource:(NSString*)ref;
-
-- (NSDictionary*)loadResourceWithPath:(NSString*)path;
 
 + (FaunaCache*)scopeCache;
 

@@ -22,12 +22,16 @@
 #define kNewPasswordConfirmation @"new_password_confirmation"
 
 extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
+NSString * const GetMethod = @"GET";
+
+NSString* extractResourcePath(NSString* path) {
+  // extract the fauna api version and the leading and trailing slash
+  return [path substringFromIndex:FaunaAPIVersion.length + 2];
+}
 
 @interface FaunaClient ()
 
 + (FaunaAFHTTPClient*)createHTTPClient;
-
-+ (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method;
 
 /*!
  Returns the HTTP Client enabled with Client Key.
@@ -86,12 +90,6 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 - (void)setUserToken:(NSString *)userToken {
   [self.userClient setAuthorizationHeaderWithUsername:userToken password:nil];
-}
-
-+ (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method {
-  NSParameterAssert(path);
-  NSParameterAssert(method);
-  return [[NSString stringWithFormat:@"%@ %@", method, path] uppercaseString];
 }
 
 - (BOOL)destroyInstance:(NSString*)ref error:(NSError**)error {
@@ -162,12 +160,19 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body client:(FaunaAFHTTPClient*)client error:(NSError*__autoreleasing*)error {
   FaunaCache * cache = [FaunaCache scopeCache];
-  NSString * responsePath = [self.class requestPathFromPath:path andMethod:method];
-  // if response is cached, return it.
-  NSDictionary * resource = [cache loadResourceWithPath:responsePath];
-  if(resource) {
-    return resource;
+  NSString * resourcePath = extractResourcePath(path);
+  
+  NSDictionary * resource = nil;
+  BOOL useResourceCache = [GetMethod isEqualToString:method];
+  if(useResourceCache) {
+    // if response is cached, return it.
+    resource = [cache loadResource:resourcePath];
+    if(resource) {
+      NSLog(@"FaunaCache(Read): %@", resourcePath);
+      return resource;
+    }
   }
+  NSLog(@"FaunaRemote: %@", resourcePath);
   NSURLResponse *httpResponse;
   NSData* data = [self performRawOperationWithPath:path method:method parameters:parameters body:body response:&httpResponse client:client error:error];
   NSString * dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -182,12 +187,20 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   }
   NSDictionary * references = [responseObject objectForKey:@"references"];
   resource = [responseObject objectForKey:@"resource"];
-  if(resource) {
-    [cache saveResource:resource withPath:responsePath];
+  if(resource && useResourceCache) {
+    [cache saveResource:resource];
+    if(cache.isTransient) {
+      [cache.parentContextCache saveResource:resource];
+    }
   }
   if(references) {
     for (NSDictionary *resource in references.allValues) {
+      NSLog(@"FaunaCache (Write): %@", resource[@"ref"]);
       [cache saveResource:resource];
+      if(cache.isTransient) {
+        NSLog(@"FaunaCache (Write-Context): %@", resource[@"ref"]);
+        [cache.parentContextCache saveResource:resource];
+      }
     }
   }
   return resource;
