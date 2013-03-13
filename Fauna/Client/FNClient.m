@@ -1,12 +1,12 @@
 //
-//  FaunaConnection.m
+//  FNClient.m
 //  Fauna
 //
 //  Created by Matt Freels on 3/8/13.
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "FaunaConnection.h"
+#import "FNClient.h"
 #import "FaunaAFNetworking.h"
 #import "FaunaAFJSONRequestOperation.h"
 #import "FaunaAFJSONUtilities.h"
@@ -18,7 +18,7 @@
 NSString * const FaunaAPIBaseURL = @"https://rest.fauna.org";
 NSString * const FaunaAPIVersion = @"v1";
 
-@interface FaunaConnection ()
+@interface FNClient ()
 
 /*!
  Underlying HTTP client.
@@ -27,13 +27,13 @@ NSString * const FaunaAPIVersion = @"v1";
 
 @end
 
-@implementation FaunaConnection
+@implementation FNClient
 
 #pragma mark lifecycle
 
 - (id)init {
   if (self = [super init]) {
-    _httpClient = [FaunaConnection createHTTPClient];
+    _httpClient = [FNClient createHTTPClient];
   }
 
   return self;
@@ -41,8 +41,8 @@ NSString * const FaunaAPIVersion = @"v1";
 
 #pragma mark Public methods
 
-+ (FaunaConnection *)sharedConnection {
-  static FaunaConnection *shared = nil;
++ (FNClient *)sharedConnection {
+  static FNClient *shared = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     shared = [self new];
@@ -74,7 +74,9 @@ NSString * const FaunaAPIVersion = @"v1";
 # pragma mark Private methods
 
 + (FaunaAFHTTPClient *)createHTTPClient {
-  NSString *baseURL = [NSString stringWithFormat:@"https://%@/%@", FaunaAPIBaseURL, FaunaAPIVersion];
+  NSString *baseURL = [NSString stringWithFormat:@"%@/%@", FaunaAPIBaseURL, FaunaAPIVersion];
+
+  LOG(@"Creating client with base url: %@", baseURL);
 
   FaunaAFHTTPClient *client = [[FaunaAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString: baseURL]];
 
@@ -88,15 +90,16 @@ NSString * const FaunaAPIVersion = @"v1";
 
 - (FNFuture *)performRequest:(NSURLRequest *)request {
   FNMutableFuture *res = [FNMutableFuture new];
-  FaunaAFJSONRequestOperation *op = [FaunaAFJSONRequestOperation new];
+  FaunaAFJSONRequestOperation *op = [[FaunaAFJSONRequestOperation alloc] initWithRequest:request];
   FaunaAFJSONRequestOperation * __weak wkOp = op;
 
-  [res addObserverForKeyPath:@"isCancelled" task:^(FNFuture *res, NSDictionary *change) {
+  id cancelledToken = [res addObserverForKeyPath:@"isCancelled" task:^(FNFuture *res, NSDictionary *change) {
     if (res.isCancelled) [wkOp cancel];
   }];
   
   op.completionBlock = ^{
     FaunaAFJSONRequestOperation *op = wkOp;
+    [res removeObserverWithBlockToken:cancelledToken];
 
     if (op.isCancelled) {
       [res updateError:FaunaOperationCancelled()];
