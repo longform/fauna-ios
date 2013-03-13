@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FaunaConstants.h"
 #import "FaunaClient.h"
+#import "FaunaCache.h"
 
 /*!
  Fauna API Context
@@ -16,6 +17,12 @@
 @interface FaunaContext : NSObject
 
 @property (nonatomic, strong, readonly) FaunaClient* client;
+
+@property (nonatomic, strong, readonly) FaunaCache* cache;
+
+@property (nonatomic, strong) NSString* userToken;
+
+@property (nonatomic, strong) NSString* keyString;
 
 /*!
  Initializes the Context with the given client key.
@@ -65,5 +72,6 @@
  */
 + (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock;
 
+- (id)wrap:(FaunaResultBlock)block;
 
 @end

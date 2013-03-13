@@ -32,15 +32,15 @@
 /*!
  Destroys a FaunaInstance
  @param ref Instance Reference to Update
- @param changes A dictionary with changes to apply. Keys can be unique_id, references and data.
+ @param changes A dictionary with changes to apply. Keys can be external_id, references and data.
  */
 + (FaunaInstance*)update:(NSString*)ref changes:(NSDictionary*)changes error:(NSError**)error;
 
 
 /*!
- Unique ID of the Instance.
+ External ID of the Instance.
  */
-@property (nonatomic, strong) NSString *uniqueId;
+@property (nonatomic, strong) NSString *externalId;
 
 /*!
  Class Name.

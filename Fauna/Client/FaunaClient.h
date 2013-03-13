@@ -20,10 +20,7 @@
  */
 - (id)initWithClientKeyString:(NSString *)keyString;
 
-/*!
- User Token currently associated with this context.
- */
-@property (nonatomic, strong) NSString *userToken;
+- (void)setUserToken:(NSString *)userToken;
 
 /*!
  Returns FaunaCache instance in use by the client.

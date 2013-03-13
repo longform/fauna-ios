@@ -41,7 +41,7 @@ NSString * const FaunaAPIVersion = @"v1";
 
 #pragma mark Public methods
 
-+ (FNClient *)sharedConnection {
++ (FNClient *)sharedClient {
   static FNClient *shared = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -49,43 +49,6 @@ NSString * const FaunaAPIVersion = @"v1";
   });
 
   return shared;
-}
-
-- (FNFuture *)get:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers {
-  NSMutableURLRequest *req = [self requestWithMethod:@"GET" path:path parameters:parameters headers:headers];
-  return [self performRequest:req];
-}
-
-- (FNFuture *)post:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers {
-  NSMutableURLRequest *req = [self requestWithMethod:@"POST" path:path parameters:parameters headers:headers];
-  return [self performRequest:req];
-}
-
-- (FNFuture *)put:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers {
-  NSMutableURLRequest *req = [self requestWithMethod:@"PUT" path:path parameters:parameters headers:headers];
-  return [self performRequest:req];
-}
-
-- (FNFuture *)delete:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers {
-  NSMutableURLRequest *req = [self requestWithMethod:@"DELETE" path:path parameters:parameters headers:headers];
-  return [self performRequest:req];
-}
-
-# pragma mark Private methods
-
-+ (FaunaAFHTTPClient *)createHTTPClient {
-  NSString *baseURL = [NSString stringWithFormat:@"%@/%@", FaunaAPIBaseURL, FaunaAPIVersion];
-
-  LOG(@"Creating client with base url: %@", baseURL);
-
-  FaunaAFHTTPClient *client = [[FaunaAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString: baseURL]];
-
-  [client setDefaultHeader:@"Accept" value:@"application/json"];
-  [client registerHTTPOperationClass:[FaunaAFJSONRequestOperation class]];
-  client.stringEncoding = NSUnicodeStringEncoding;
-  client.parameterEncoding = FaunaAFJSONParameterEncoding;
-
-  return client;
 }
 
 - (FNFuture *)performRequest:(NSURLRequest *)request {
@@ -96,7 +59,7 @@ NSString * const FaunaAPIVersion = @"v1";
   id cancelledToken = [res addObserverForKeyPath:@"isCancelled" task:^(FNFuture *res, NSDictionary *change) {
     if (res.isCancelled) [wkOp cancel];
   }];
-  
+
   op.completionBlock = ^{
     FaunaAFJSONRequestOperation *op = wkOp;
     [res removeObserverWithBlockToken:cancelledToken];
@@ -118,7 +81,7 @@ NSString * const FaunaAPIVersion = @"v1";
   };
 
   [self.httpClient enqueueHTTPRequestOperation:op];
-  
+
   return res;
 }
 
@@ -140,8 +103,25 @@ NSString * const FaunaAPIVersion = @"v1";
   [headers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
     [req setValue:obj forHTTPHeaderField:key];
   }];
-
+  
   return req;
+}
+
+# pragma mark Private methods
+
++ (FaunaAFHTTPClient *)createHTTPClient {
+  NSString *baseURL = [NSString stringWithFormat:@"%@/%@", FaunaAPIBaseURL, FaunaAPIVersion];
+
+  LOG(@"Creating client with base url: %@", baseURL);
+
+  FaunaAFHTTPClient *client = [[FaunaAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString: baseURL]];
+
+  [client setDefaultHeader:@"Accept" value:@"application/json"];
+  [client registerHTTPOperationClass:[FaunaAFJSONRequestOperation class]];
+  client.stringEncoding = NSUnicodeStringEncoding;
+  client.parameterEncoding = FaunaAFJSONParameterEncoding;
+
+  return client;
 }
 
 @end

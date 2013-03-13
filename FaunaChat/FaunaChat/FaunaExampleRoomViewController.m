@@ -18,7 +18,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.timelineResource = @"classes/message/timelines/chat";
+  self.timelineResource = @"classes/message/creates";
   self.title = @"Room";
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Post" style:UIBarStyleBlackTranslucent target:self action:@selector(postAction:)];
 }
@@ -31,8 +31,11 @@
 - (void)reloadTimeline {
   [SVProgressHUD showWithStatus:@"Loading"];
   [FaunaContext background:^id{
-    NSError *error;
-    FaunaTimelinePage *page = [FaunaTimeline pageFromTimeline:self.timelineResource count:kEventsPageSize error:&error];
+    NSError * __block error;
+    FaunaTimelinePage * __block page = nil;
+    [FaunaCache transient:^{
+      page = [FaunaTimeline pageFromTimeline:self.timelineResource count:kEventsPageSize error:&error];
+    }];
     // if there is an error in my background block
     if(error) {
       // ... then return error, failure callback will be executed.
@@ -41,18 +44,15 @@
     NSArray * incomingEvents = page.events;
     _messages = [[NSMutableArray alloc] initWithCapacity:incomingEvents.count];
     
-    // filter for "create" event only.
-    for (NSArray * event in incomingEvents) {
-      if([@"create" isEqualToString:event[1]]) {
-        NSString* instanceRef = (NSString*)event[2];
-        NSError* error;
-        FaunaResource *resource = [FaunaResource get:instanceRef error:&error];
-        if(error) {
-          return error;
-        }
-        if(resource) {
-          [_messages addObject:resource];
-        }
+    for (NSDictionary * event in incomingEvents) {
+      NSString* instanceRef = (NSString*)event[@"resource"];
+      NSError* error;
+      FaunaResource *resource = [FaunaResource get:instanceRef error:&error];
+      if(error) {
+        return error;
+      }
+      if(resource) {
+        [_messages addObject:resource];
       }
     }
     return nil;

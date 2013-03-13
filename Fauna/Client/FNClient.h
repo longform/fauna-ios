@@ -16,14 +16,13 @@ FOUNDATION_EXPORT NSString * const FaunaAPIVersion;
 /*!
  Returns the global shared connection instance.
  */
-+ (FNClient *)sharedConnection;
++ (FNClient *)sharedClient;
 
-- (FNFuture *)get:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers;
+- (FNFuture *)performRequest:(NSURLRequest *)request;
 
-- (FNFuture *)post:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers;
-
-- (FNFuture *)put:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers;
-
-- (FNFuture *)delete:(NSString *)path parameters:(NSDictionary *)parameters headers:(NSDictionary *)headers;
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method
+                                      path:(NSString *)path
+                                parameters:(NSDictionary *)parameters
+                                   headers:(NSDictionary *)headers;
 
 @end

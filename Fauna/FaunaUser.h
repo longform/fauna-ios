@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) NSString *email;
 
-@property (nonatomic, strong) NSString *uniqueId;
+@property (nonatomic, strong) NSString *externalId;
 
 @property (nonatomic, strong) NSString *password;
 
@@ -29,6 +29,6 @@
 
 + (BOOL)loginWithEmail:(NSString*)email password:(NSString*)password error:(NSError**)error;
 
-+ (BOOL)loginWithUniqueId:(NSString*)uniqueId password:(NSString*)password error:(NSError**)error;
++ (BOOL)loginWithExternalId:(NSString*)externalId password:(NSString*)password error:(NSError**)error;
 
 @end

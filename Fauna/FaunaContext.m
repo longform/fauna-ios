@@ -8,8 +8,9 @@
 
 #import "FaunaContext.h"
 #define kFaunaContextTLSKey @"FaunaContext"
+#define kFaunaTokenUserKey @"FaunaContextUserToken"
 
-static FaunaContext *_defaultContext;
+static FaunaContext* _applicationContext;
 
 static NSMutableArray* ensureContextStack() {
   NSMutableArray* stack = FaunaTLS[kFaunaContextTLSKey];
@@ -36,28 +37,61 @@ static FaunaContext* popContext() {
   return context;
 }
 
+@interface FaunaContext()
+  
+- (NSString*)keyStringPreferenceKey:(NSString*)key;
+
+- (void)reloadCache;
+
+@end
+
 @implementation FaunaContext {
   NSOperationQueue *_queue;
 }
 
 - (id)initWithClientKeyString:(NSString*)keyString {
   if (self = [self init]) {
+    self.keyString = keyString;
     _queue = [[NSOperationQueue alloc] init];
     _queue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
     
     _client = [[FaunaClient alloc] initWithClientKeyString:keyString];
+    
+    // Load persisted user token
+    NSString *persistedTokenString = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyStringPreferenceKey:kFaunaTokenUserKey]];
+    self.userToken = persistedTokenString;
   }
   return self;
 }
 
+- (void)reloadCache {
+  if(self.userToken) {
+    _cache = [[FaunaCache alloc] initWithName:self.userToken];
+  } else {
+    _cache = [[FaunaCache alloc] initWithName:self.keyString];
+  }
+}
+
+-(NSString*)keyStringPreferenceKey:(NSString*)key {
+  return [NSString stringWithFormat:@"%@-%@", self.keyString, key];
+}
+
+- (void)setUserToken:(NSString *)userToken {
+  _userToken = userToken;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:userToken forKey:[self keyStringPreferenceKey:kFaunaTokenUserKey]];
+  [defaults synchronize];
+  self.client.userToken = userToken;
+  [self reloadCache];
+}
+
 + (FaunaContext*)applicationContext {
-  return _defaultContext;
+  return _applicationContext;
 }
 
 + (void)setApplicationContext:(FaunaContext*)context {
-  _defaultContext = context;
+  _applicationContext = context;
 }
-
 
 + (FaunaContext*)scopeContext {
   return ensureContextStack().lastObject;
@@ -86,7 +120,9 @@ static FaunaContext* popContext() {
   NSParameterAssert(successBlock);
   NSParameterAssert(failureBlock);
   NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock: ^{
-    id result = backgroundBlock();
+    id result = [self wrap:^id{
+      return backgroundBlock();
+    }];
     [[NSOperationQueue mainQueue] addOperationWithBlock: ^ {
       if([result isKindOfClass:[NSError class]]) {
         failureBlock(result);
@@ -97,6 +133,28 @@ static FaunaContext* popContext() {
   }];
   [_queue addOperation:op];
   return op;
+}
+
+- (id)wrap:(FaunaResultBlock)block {
+  NSParameterAssert(block);
+  FaunaCache* scopeCache = [FaunaCache scopeCache];
+  BOOL requiresCacheScope = !scopeCache;
+  if(requiresCacheScope && self.cache) {
+    id __block result = nil;
+    [self.cache scoped:^{
+      result = block();
+    }];
+    return result;
+  } else {
+    FaunaCache * originalContextCache = scopeCache.parentContextCache;
+    @try {
+      scopeCache.parentContextCache = self.cache;
+      return block();
+    }
+    @finally {
+      scopeCache.parentContextCache = originalContextCache;
+    }
+  }
 }
 
 @end

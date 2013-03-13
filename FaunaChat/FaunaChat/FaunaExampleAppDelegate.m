@@ -59,9 +59,6 @@
 
 - (void)initializeFauna {
   FaunaContext.applicationContext = [[FaunaContext alloc] initWithClientKeyString:FAUNA_CLIENT_KEY];
-  // Initializes the Fauna Environment with a Client Key  
-  Fauna.client = [[FaunaClient alloc] initWithClientKeyString:FAUNA_CLIENT_KEY];
-
 }
 
 @end

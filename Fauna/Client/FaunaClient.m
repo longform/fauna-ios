@@ -19,15 +19,18 @@
 #define kPassword @"password"
 #define kNewPassword @"new_password"
 #define kNewPasswordConfirmation @"new_password_confirmation"
-#define kFaunaTokenUserKey @"FaunaContextUserToken"
 
 extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
+NSString * const GetMethod = @"GET";
+
+NSString* extractResourcePath(NSString* path) {
+  // extract the fauna api version and the leading and trailing slash
+  return [path substringFromIndex:FaunaAPIVersion.length + 2];
+}
 
 @interface FaunaClient ()
 
 + (FaunaAFHTTPClient*)createHTTPClient;
-
-+ (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method;
 
 /*!
  Returns the HTTP Client enabled with Client Key.
@@ -59,11 +62,6 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
     _cache = [[FaunaCache alloc] initWithName:kCacheName];
     _keyClient = [FaunaClient createHTTPClient];
     _userClient = [FaunaClient createHTTPClient];
-    
-    // Load persisted user token
-    NSString *persistedTokenString = [[NSUserDefaults standardUserDefaults] objectForKey:kFaunaTokenUserKey];
-    self.userToken = persistedTokenString;
-    
   }
   return self;
 }
@@ -89,17 +87,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   return self;
 }
 
-+ (NSString*) requestPathFromPath:(NSString*)path andMethod:(NSString*)method {
-  NSParameterAssert(path);
-  NSParameterAssert(method);
-  return [[NSString stringWithFormat:@"%@ %@", method, path] uppercaseString];
-}
-
 - (void)setUserToken:(NSString *)userToken {
-  _userToken = userToken;
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setObject:userToken forKey:kFaunaTokenUserKey];
-  [defaults synchronize];
   [self.userClient setAuthorizationHeaderWithUsername:userToken password:nil];
 }
 
@@ -170,48 +158,50 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 }
 
 - (NSDictionary*)performOperationWithPath:(NSString*)path method:(NSString*)method parameters:(NSDictionary*)parameters body:(NSDictionary*)body client:(FaunaAFHTTPClient*)client error:(NSError*__autoreleasing*)error {
-  //FaunaCache * cache = self.cache;
-  NSString * responsePath = [self.class requestPathFromPath:path andMethod:method];
-  /*if(![FaunaCache shouldIgnoreCache]) {
+  FaunaCache * cache = [FaunaCache scopeCache];
+  NSString * resourcePath = extractResourcePath(path);
+  
+  NSDictionary * resource = nil;
+  BOOL useResourceCache = [GetMethod isEqualToString:method];
+  if(useResourceCache) {
     // if response is cached, return it.
-    FaunaResponse * response = [cache loadResponse:responsePath];
-    if(response) {
-      return response.resource;
+    resource = [cache loadResource:resourcePath];
+    if(resource) {
+      NSLog(@"FaunaCache(Read): %@", resourcePath);
+      return resource;
     }
-  }*/
+  }
+  NSLog(@"FaunaRemote: %@", resourcePath);
   NSURLResponse *httpResponse;
   NSData* data = [self performRawOperationWithPath:path method:method parameters:parameters body:body response:&httpResponse client:client error:error];
+  NSString * dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
   if(*error) {
-    // if there is an error, return from cache if current policy allow it.
-    /*if(![FaunaCache shouldIgnoreCache] && (*error).shouldRespondFromCache) {
-      FaunaResponse *response = [_cache loadResponse:responsePath];
-      if(response) {
-        return response.resource;
-      }
-    }*/
+    NSLog(@"Fauna HTTP Error: %@, response: %@", *error, dataString);
     return nil;
   }
   NSDictionary* responseObject = FaunaAFJSONDecode(data, error);
   if(*error) {
+    NSLog(@"Fauna JSON Error: %@, response: %@", *error, dataString);
     return nil;
   }
-  //NSDictionary * references = [responseObject objectForKey:@"references"];
-  NSDictionary * resource = [responseObject objectForKey:@"resource"];
-  /*if(references) {
-    for (NSDictionary *resource in references.allValues) {
-      [self saveResource:resource];
+  NSDictionary * references = [responseObject objectForKey:@"references"];
+  resource = [responseObject objectForKey:@"resource"];
+  if(resource && useResourceCache) {
+    [cache saveResource:resource];
+    if(cache.isTransient) {
+      [cache.parentContextCache saveResource:resource];
     }
-  }*/
-  /*FaunaResponse *response = [FaunaResponse responseWithDictionary:responseObject cached:NO requestPath:responsePath];*/
-  /*
-   
-   // save references data separately
-   for (NSMutableDictionary *resource in response.references.allValues) {
-   [self saveResource:resource];
-   }
-
-   */
-  //[cache saveResponse:response];
+  }
+  if(references) {
+    for (NSDictionary *resource in references.allValues) {
+      NSLog(@"FaunaCache (Write): %@", resource[@"ref"]);
+      [cache saveResource:resource];
+      if(cache.isTransient) {
+        NSLog(@"FaunaCache (Write-Context): %@", resource[@"ref"]);
+        [cache.parentContextCache saveResource:resource];
+      }
+    }
+  }
   return resource;
 }
 
@@ -241,7 +231,8 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 
 - (NSDictionary*)createInstance:(NSDictionary*)resource error:(NSError*__autoreleasing*)error {
   NSParameterAssert(resource);
-  NSString * path = [NSString stringWithFormat:@"/%@/instances", FaunaAPIVersion];
+  NSString * className = resource[@"class"];
+  NSString * path = [NSString stringWithFormat:@"/%@/classes/%@", FaunaAPIVersion, className];
   return [self performOperationWithPath:path method:@"POST" parameters:resource error:error];
 }
 
@@ -260,7 +251,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
 - (NSDictionary*)createUser:(NSDictionary*)userInfo error:(NSError**)error {
   NSParameterAssert(userInfo);
   NSString * path = [NSString stringWithFormat:@"/%@/users", FaunaAPIVersion];
-  return [self performOperationWithPath:path method:@"POST" parameters:userInfo error:error];
+  return [self performOperationWithPath:path method:@"POST" parameters:userInfo client:_keyClient error:error];
 }
 
 - (BOOL)changePassword:(NSString*)oldPassword newPassword:(NSString*)newPassword confirmation:(NSString*)confirmation error:(NSError**)error {
@@ -284,7 +275,7 @@ extern NSString * AFJSONStringFromParameters(NSDictionary *parameters);
   if(*error) {
     return nil;
   }
-  return self.userToken = tokenInfo[@"token"];
+  return tokenInfo[@"token"];
 }
 
 @end

@@ -18,9 +18,11 @@
 
 - (void)testGet {
   [self prepare];
-  FNClient *conn = [FNClient sharedConnection];
+  FNClient *client = [FNClient sharedClient];
 
-  [[conn get:@"users" parameters:@{} headers:@{}] onError:^(NSError *error) {
+  NSURLRequest *req = [client requestWithMethod:@"GET" path:@"users" parameters:@{} headers:@{}];
+
+  [[client performRequest:req] onError:^(NSError *error) {
     NSHTTPURLResponse *res = error.userInfo[FaunaAFNetworkingOperationFailingURLResponseErrorKey];
 
     if (res.statusCode == 401) {

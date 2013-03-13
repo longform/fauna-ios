@@ -9,7 +9,7 @@
 #import "FaunaInstance.h"
 #import "FaunaContext.h"
 
-#define kUniqueIdKey @"unique_id"
+#define kExternalIdKey @"external_id"
 #define kClassKey @"class"
 #define kReferencesKey @"references"
 #define kDataKey @"data"
@@ -17,12 +17,12 @@
 @implementation FaunaInstance
 
 
-- (void)setUniqueId:(NSString *)uniqueId {
-  [self.resourceDictionary setValue:uniqueId forKey:kUniqueIdKey];
+- (void)setExternalId:(NSString *)externalId {
+  [self.resourceDictionary setValue:externalId forKey:kExternalIdKey];
 }
 
-- (NSString*)uniqueId {
-  return [self.resourceDictionary valueForKey:kUniqueIdKey];
+- (NSString*)externalId {
+  return [self.resourceDictionary valueForKey:kExternalIdKey];
 }
 
 - (void)setClassName:(NSString *)className {

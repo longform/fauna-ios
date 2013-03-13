@@ -28,7 +28,7 @@
     }
     return nil;
   } success:^(id results) {
-    NSLog(@"Token: %@", FaunaContext.current.client.userToken);
+    NSLog(@"Token: %@", FaunaContext.current.userToken);
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat!"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
     [self.navigationController popViewControllerAnimated:YES];

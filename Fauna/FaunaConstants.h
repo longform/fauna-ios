@@ -17,6 +17,8 @@
 
 typedef void (^FaunaBlock)();
 
+typedef id (^FaunaResultBlock)();
+
 typedef id (^FaunaBackgroundBlock)();
 
 typedef void (^FaunaResultsBlock)(id results);
