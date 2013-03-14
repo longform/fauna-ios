@@ -13,7 +13,7 @@
 - (id)init;
 
 /*!
- Initialize the Resource in the Default Fauna Context (FaunaContext.current) and the given dictionary.
+ Initialize the Resource in the Default Fauna Context (FNContext.current) and the given dictionary.
  @param dictionary Dictionary with values to initialize this resource.
  */
 - (id)initWithDictionary:(NSMutableDictionary*)dictionary;

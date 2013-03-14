@@ -7,7 +7,7 @@
 //
 
 #import "FaunaResource.h"
-#import "FaunaContext.h"
+#import "FNContext.h"
 
 #define kRefIdKey @"ref"
 #define kTimestampKey @"ts"
@@ -91,7 +91,7 @@ NSString * const EventSetsClassName = @"sets";
 }
 
 + (FaunaResource*)get:(NSString *)ref error:(NSError**)error {
-  FaunaContext * context = FaunaContext.current;
+  FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
   
   NSError  *getError;

@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaClient.h"
-#import "FaunaContext.h"
+#import "FNFuture.h"
+#import "FNClient.h"
+#import "FNContext.h"
 #import "FaunaTimeline.h"
 #import "FaunaResource.h"
 #import "FaunaInstance.h"

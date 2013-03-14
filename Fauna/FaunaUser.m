@@ -7,7 +7,7 @@
 //
 
 #import "FaunaUser.h"
-#import "FaunaContext.h"
+#import "FNContext.h"
 
 #define kEmailKey @"email"
 #define kExternalIdKey @"external_id"
@@ -69,7 +69,7 @@
 
 + (BOOL)create:(FaunaUser*)user error:(NSError**)error {
   NSParameterAssert(user);
-  NSDictionary * resourceDictionary = [FaunaContext.current.client createUser:user.resourceDictionary error:error];
+  NSDictionary * resourceDictionary = [FNContext.current.client createUser:user.resourceDictionary error:error];
   if(*error || !resourceDictionary) {
     return NO;
   }
@@ -81,24 +81,24 @@
   NSParameterAssert(oldPassword);
   NSParameterAssert(newPassword);
   NSParameterAssert(confirmation);
-  return [FaunaContext.current.client changePassword:oldPassword newPassword:newPassword confirmation:confirmation error:error];
+  return [FNContext.current.client changePassword:oldPassword newPassword:newPassword confirmation:confirmation error:error];
 }
 
 + (BOOL)loginWithEmail:(NSString*)email password:(NSString*)password error:(NSError**)error {
-  NSString* userToken = [FaunaContext.current.client createToken:@{kEmailKey: email, kPasswordKey: password} error:error];
+  NSString* userToken = [FNContext.current.client createToken:@{kEmailKey: email, kPasswordKey: password} error:error];
   if(*error) {
     return NO;
   }
-  FaunaContext.current.userToken = userToken;
+  FNContext.current.userToken = userToken;
   return YES;
 }
 
 + (BOOL)loginWithExternalId:(NSString*)externalId password:(NSString*)password error:(NSError**)error {
-  NSString* userToken = [FaunaContext.current.client createToken:@{kExternalIdKey: externalId, kPasswordKey: password} error:error];
+  NSString* userToken = [FNContext.current.client createToken:@{kExternalIdKey: externalId, kPasswordKey: password} error:error];
   if(*error) {
     return NO;
   }
-  FaunaContext.current.userToken = userToken;
+  FNContext.current.userToken = userToken;
   return YES;
 }
 

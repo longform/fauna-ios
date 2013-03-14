@@ -7,7 +7,7 @@
 //
 
 #import "FaunaCommand.h"
-#import "FaunaContext.h"
+#import "FNContext.h"
 
 @implementation FaunaCommand
 
@@ -17,7 +17,7 @@
 
 + (FaunaResource*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error {
   NSParameterAssert(commandName);
-  FaunaContext * context = FaunaContext.current;
+  FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
   NSDictionary * resourceDictionary = [client execute:commandName params:params error:error];
   if(*error || !resourceDictionary) {

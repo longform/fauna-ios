@@ -8,7 +8,7 @@
 
 #import "NSOperationQueue+FNFutureOperations.h"
 #import "FNMutableFuture.h"
-#import "FaunaError.h"
+#import "FNError.h"
 
 @implementation NSOperationQueue (FNFutureOperations)
 
@@ -18,7 +18,7 @@
 
   [self addOperationWithBlock:^{
     [FNFutureScope restoreCurrent:scope];
-    id rv = res.isCancelled ? FaunaOperationCancelled() : block();
+    id rv = res.isCancelled ? FNOperationCancelled() : block();
 
     if (rv == nil) {
       [NSException raise:@"Invalid future value." format:@"Result of future operation cannot be nil."];

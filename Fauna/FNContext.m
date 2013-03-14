@@ -1,27 +1,27 @@
 //
-//  FaunaContext.m
+//  FNContext.m
 //  Fauna
 //
 //  Created by Johan Hernandez on 2/5/13.
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "FaunaContext.h"
+#import "FNContext.h"
 #import "FNFuture.h"
 #import "FNClient.h"
 #import "NSString+FNBase64Encoding.h"
 
 NSString * const FNFutureScopeContextKey = @"FNContext";
 
-static FaunaContext* _defaultContext;
+static FNContext* _defaultContext;
 
-@interface FaunaContext ()
+@interface FNContext ()
 
 @property (nonatomic, readonly) FNClient *client;
 
 @end
 
-@implementation FaunaContext
+@implementation FNContext
 
 # pragma mark lifecycle
 
@@ -51,15 +51,15 @@ static FaunaContext* _defaultContext;
   return [[self.class alloc] initWithClient:[self.client asUser:userRef]];
 }
 
-+ (FaunaContext *)defaultContext {
++ (FNContext *)defaultContext {
   return _defaultContext;
 }
 
-+ (void)setDefaultContext:(FaunaContext *)context {
++ (void)setDefaultContext:(FNContext *)context {
   _defaultContext = context;
 }
 
-+ (FaunaContext *)currentContext {
++ (FNContext *)currentContext {
   return self.scopedContext ?: self.defaultContext;
 }
 
@@ -74,47 +74,55 @@ static FaunaContext* _defaultContext;
 }
 
 - (void)performInContext:(void (^)(void))block {
-  FaunaContext *prev = self.class.scopedContext;
+  FNContext *prev = self.class.scopedContext;
   self.class.scopedContext = self;
   block();
   self.class.scopedContext = prev;
 }
 
-- (FNFuture *)get:(NSString *)path
++ (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters {
-  return [[self.client get:path parameters:parameters] map:^(FNResponse *response) {
+  return [[self.currentContext.client get:path
+                               parameters:parameters]
+          map:^(FNResponse *response) {
     return response.resource;
   }];
 }
 
-- (FNFuture *)post:(NSString *)path
++ (FNFuture *)post:(NSString *)path
         parameters:(NSDictionary *)parameters {
-  return [[self.client post:path parameters:parameters] map:^(FNResponse *response) {
+  return [[self.currentContext.client post:path
+                                parameters:parameters]
+          map:^(FNResponse *response) {
     return response.resource;
   }];
 }
 
-- (FNFuture *)put:(NSString *)path
++ (FNFuture *)put:(NSString *)path
        parameters:(NSDictionary *)parameters {
-  return [[self.client put:path parameters:parameters] map:^(FNResponse *response) {
+  return [[self.currentContext.client put:path
+                               parameters:parameters]
+          map:^(FNResponse *response) {
     return response.resource;
   }];
 }
 
-- (FNFuture *)delete:(NSString *)path
++ (FNFuture *)delete:(NSString *)path
           parameters:(NSDictionary *)parameters {
-  return [[self.client delete:path parameters:parameters] map:^(FNResponse *response) {
-    return response.resource;
+  return [[self.currentContext.client delete:path
+                                  parameters:parameters]
+          map:^(FNResponse *response) {
+            return response.resource;
   }];
 }
 
 # pragma mark Private methods
 
-+ (FaunaContext *)scopedContext {
++ (FNContext *)scopedContext {
   return FNFuture.currentScope[FNFutureScopeContextKey];
 }
 
-+ (void)setScopedContext:(FaunaContext *)ctx {
++ (void)setScopedContext:(FNContext *)ctx {
   NSMutableDictionary *scope = FNFuture.currentScope;
 
   if (ctx) {

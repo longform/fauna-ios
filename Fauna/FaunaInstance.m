@@ -7,7 +7,7 @@
 //
 
 #import "FaunaInstance.h"
-#import "FaunaContext.h"
+#import "FNContext.h"
 
 #define kExternalIdKey @"external_id"
 #define kClassKey @"class"
@@ -59,7 +59,7 @@
 }
 
 + (BOOL)create:(FaunaInstance *)resource error:(NSError**)error {
-  FaunaContext * context = FaunaContext.current;
+  FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
   NSDictionary * resourceDictionary = [client createInstance:resource.resourceDictionary error:error];
   if(*error || !resourceDictionary) {
@@ -70,13 +70,13 @@
 }
 
 + (BOOL)destroy:(NSString*)ref error:(NSError**)error {
-  FaunaContext * context = FaunaContext.current;
+  FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
   return [client destroyInstance:ref error:error];
 }
 
 + (FaunaInstance*)update:(NSString*)ref changes:(NSDictionary*)changes error:(NSError**)error {
-  FaunaContext * context = FaunaContext.current;
+  FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
   return (FaunaInstance*)[FaunaResource deserialize:[client updateInstance:ref changes:changes error:error]];
 }

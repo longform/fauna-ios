@@ -1,5 +1,5 @@
 //
-//  FaunaContext.h
+//  FNContext.h
 //  Fauna
 //
 //  Created by Johan Hernandez on 2/5/13.
@@ -11,7 +11,7 @@
 /*!
  Fauna API Context
  */
-@interface FaunaContext : NSObject
+@interface FNContext : NSObject
 
 #pragma mark lifecycle
 
@@ -46,19 +46,19 @@
 #pragma mark context management
 
 /*!
- Returns the default FaunaContext for the Application.
+ Returns the default FNContext for the Application.
  */
-+ (FaunaContext*)defaultContext;
++ (FNContext*)defaultContext;
 
 /*!
- Sets the default FaunaContext for the Application.
+ Sets the default FNContext for the Application.
  */
-+ (void)setDefaultContext:(FaunaContext *)context;
++ (void)setDefaultContext:(FNContext *)context;
 
 /*!
- Returns the innermost active FaunaContext, falling back to defaultContext if none is available.
+ Returns the innermost active FNContext, falling back to defaultContext if none is available.
  */
-+ (FaunaContext *)currentContext;
++ (FNContext *)currentContext;
 
 /*!
  Runs a code block in the current context, returning the result of the block.
@@ -74,16 +74,16 @@
 
 #pragma mark HTTP requests
 
-- (FNFuture *)get:(NSString *)path
++ (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters;
 
-- (FNFuture *)post:(NSString *)path
++ (FNFuture *)post:(NSString *)path
         parameters:(NSDictionary *)parameters;
 
-- (FNFuture *)put:(NSString *)path
++ (FNFuture *)put:(NSString *)path
        parameters:(NSDictionary *)parameters;
 
-- (FNFuture *)delete:(NSString *)path
++ (FNFuture *)delete:(NSString *)path
           parameters:(NSDictionary *)parameters;
 
 @end

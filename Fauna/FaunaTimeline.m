@@ -7,7 +7,7 @@
 //
 
 #import "FaunaTimeline.h"
-#import "FaunaContext.h"
+#import "FNContext.h"
 #import "FaunaCache.h"
 #import "FaunaAFNetworking.h"
 
@@ -26,15 +26,15 @@
 }
 
 + (FaunaTimelinePage*)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before after:(NSDate*)after count:(NSInteger)count error:(NSError**)error {
-  return [FaunaContext.current wrap:^{
-    return (FaunaTimelinePage*)[FaunaResource deserialize:[FaunaContext.current.client pageFromTimeline:timelineReference before:before after:after count:[NSNumber numberWithInteger:count] error:error]];
+  return [FNContext.current wrap:^{
+    return (FaunaTimelinePage*)[FaunaResource deserialize:[FNContext.current.client pageFromTimeline:timelineReference before:before after:after count:[NSNumber numberWithInteger:count] error:error]];
   }];
 }
 
 + (BOOL)addInstance:(NSString*)ref toTimeline:(NSString*)timelineRef error:(NSError**)error {
-  FaunaContext * context = FaunaContext.current;
+  FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
-  return [[FaunaContext.current wrap:^{
+  return [[FNContext.current wrap:^{
     [client addInstance:ref toTimeline:timelineRef error:error];
     if(*error) {
       return @NO;
@@ -44,9 +44,9 @@
 }
 
 + (BOOL)removeInstance:(NSString*)ref fromTimeline:(NSString*)timelineRef error:(NSError**)error {
-  FaunaContext * context = FaunaContext.current;
+  FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
-  return [[FaunaContext.current wrap:^{
+  return [[FNContext.current wrap:^{
     return @([client removeInstance:ref fromTimeline:timelineRef error:error]);
   }] boolValue];
 }

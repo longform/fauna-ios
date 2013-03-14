@@ -10,7 +10,7 @@
 #import "FaunaAFNetworking.h"
 #import "FaunaAFJSONRequestOperation.h"
 #import "FaunaAFJSONUtilities.h"
-#import "FaunaError.h"
+#import "FNError.h"
 #import "FNFuture.h"
 #import "FNMutableFuture.h"
 #import "NSObject+FNBlockObservation.h"
@@ -63,11 +63,15 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   return [self initWithAuthString:[keyString stringByAppendingFormat:@":%@", userRef]];
 }
 
-- (id)initWIthPublisherEmail:(NSString *)email password:(NSString *)password {
+- (id)initWithPublisherEmail:(NSString *)email password:(NSString *)password {
   return [self initWithAuthString:[email stringByAppendingFormat:@":%@", password]];
 }
 
 #pragma mark Public methods
+
+- (instancetype)asUser:(NSString *)userRef {
+  return [[self.class alloc] initWithKey:self.authString asUser:userRef];
+}
 
 - (FNFuture *)get:(NSString *)path parameters:(NSDictionary *)parameters {
   return [self performRequestWithMethod:@"GET" path:path parameters:parameters];
@@ -185,7 +189,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
     [res removeObserverWithBlockToken:cancelledToken];
 
     if (op.isCancelled) {
-      [res updateError:FaunaOperationCancelled()];
+      [res updateError:FNOperationCancelled()];
     } else if (op.error) {
       [res updateError:op.error];
     } else {
