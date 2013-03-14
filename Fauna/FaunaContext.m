@@ -7,153 +7,120 @@
 //
 
 #import "FaunaContext.h"
-#define kFaunaContextTLSKey @"FaunaContext"
-#define kFaunaTokenUserKey @"FaunaContextUserToken"
+#import "FNFuture.h"
+#import "FNClient.h"
+#import "NSString+FNBase64Encoding.h"
 
-static FaunaContext* _applicationContext;
+NSString * const FNFutureScopeContextKey = @"FNContext";
 
-static NSMutableArray* ensureContextStack() {
-  NSMutableArray* stack = FaunaTLS[kFaunaContextTLSKey];
-  if(stack) {
-    return stack;
-  }
-  stack = FaunaTLS[kFaunaContextTLSKey] = [[NSMutableArray alloc] initWithCapacity:5];
-  return stack;
-}
+static FaunaContext* _defaultContext;
 
-static FaunaContext* pushContext(FaunaContext* context) {
-  NSMutableArray* stack = ensureContextStack();
-  [stack addObject:context];
-  return context;
-}
+@interface FaunaContext ()
 
-static FaunaContext* popContext() {
-  NSMutableArray* stack = ensureContextStack();
-  if(stack.count == 0) {
-    return nil;
-  }
-  FaunaContext* context = stack.lastObject;
-  [stack removeLastObject];
-  return context;
-}
-
-@interface FaunaContext()
-  
-- (NSString*)keyStringPreferenceKey:(NSString*)key;
-
-- (void)reloadCache;
+@property (nonatomic, readonly) FNClient *client;
 
 @end
 
-@implementation FaunaContext {
-  NSOperationQueue *_queue;
-}
+@implementation FaunaContext
 
-- (id)initWithClientKeyString:(NSString*)keyString {
-  if (self = [self init]) {
-    self.keyString = keyString;
-    _queue = [[NSOperationQueue alloc] init];
-    _queue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
-    
-    _client = [[FaunaClient alloc] initWithClientKeyString:keyString];
-    
-    // Load persisted user token
-    NSString *persistedTokenString = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyStringPreferenceKey:kFaunaTokenUserKey]];
-    self.userToken = persistedTokenString;
+# pragma mark lifecycle
+
+- (id)initWithClient:(FNClient *)client {
+  self = [super init];
+  if (self) {
+    _client = client;
   }
   return self;
 }
 
-- (void)reloadCache {
-  if(self.userToken) {
-    _cache = [[FaunaCache alloc] initWithName:self.userToken];
-  } else {
-    _cache = [[FaunaCache alloc] initWithName:self.keyString];
-  }
+- (id)initWithKey:(NSString*)keyString {
+  return [self initWithClient:[[FNClient alloc] initWithKey:keyString]];
 }
 
--(NSString*)keyStringPreferenceKey:(NSString*)key {
-  return [NSString stringWithFormat:@"%@-%@", self.keyString, key];
+- (id)initWithKey:(NSString *)keyString asUser:(NSString *)userRef {
+  return [self initWithClient:[[FNClient alloc] initWithKey:keyString asUser:userRef]];
 }
 
-- (void)setUserToken:(NSString *)userToken {
-  _userToken = userToken;
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setObject:userToken forKey:[self keyStringPreferenceKey:kFaunaTokenUserKey]];
-  [defaults synchronize];
-  self.client.userToken = userToken;
-  [self reloadCache];
+- (id)initWithPublisherEmail:(NSString *)email password:(NSString *)password {
+  return [self initWithClient:[[FNClient alloc] initWithPublisherEmail:email password:password]];
 }
 
-+ (FaunaContext*)applicationContext {
-  return _applicationContext;
+# pragma mark Public methods
+
+- (instancetype)asUser:(NSString *)userRef {
+  return [[self.class alloc] initWithClient:[self.client asUser:userRef]];
 }
 
-+ (void)setApplicationContext:(FaunaContext*)context {
-  _applicationContext = context;
++ (FaunaContext *)defaultContext {
+  return _defaultContext;
 }
 
-+ (FaunaContext*)scopeContext {
-  return ensureContextStack().lastObject;
++ (void)setDefaultContext:(FaunaContext *)context {
+  _defaultContext = context;
 }
 
-+ (FaunaContext*)current {
-  FaunaContext* scopeContext = [self scopeContext];
-  return scopeContext ? scopeContext : [self applicationContext];
++ (FaunaContext *)currentContext {
+  return self.scopedContext ?: self.defaultContext;
 }
 
-- (void)scoped:(FaunaBlock)block {
-  pushContext(self);
-  @try {
-    block(block);
-  }  @finally {
-    popContext();
-  }
-}
+- (id)inContext:(id (^)(void))block {
+  id __block rv;
 
-+ (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock {
-  return [[self current] background:backgroundBlock success:successBlock failure:failureBlock];
-}
-
-- (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock {
-  NSParameterAssert(backgroundBlock);
-  NSParameterAssert(successBlock);
-  NSParameterAssert(failureBlock);
-  NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock: ^{
-    id result = [self wrap:^id{
-      return backgroundBlock();
-    }];
-    [[NSOperationQueue mainQueue] addOperationWithBlock: ^ {
-      if([result isKindOfClass:[NSError class]]) {
-        failureBlock(result);
-      } else {
-        successBlock(result);
-      }
-    }];
+  [self performInContext:^{
+    rv = block();
   }];
-  [_queue addOperation:op];
-  return op;
+
+  return rv;
 }
 
-- (id)wrap:(FaunaResultBlock)block {
-  NSParameterAssert(block);
-  FaunaCache* scopeCache = [FaunaCache scopeCache];
-  BOOL requiresCacheScope = !scopeCache;
-  if(requiresCacheScope && self.cache) {
-    id __block result = nil;
-    [self.cache scoped:^{
-      result = block();
-    }];
-    return result;
+- (void)performInContext:(void (^)(void))block {
+  FaunaContext *prev = self.class.scopedContext;
+  self.class.scopedContext = self;
+  block();
+  self.class.scopedContext = prev;
+}
+
+- (FNFuture *)get:(NSString *)path
+       parameters:(NSDictionary *)parameters {
+  return [[self.client get:path parameters:parameters] map:^(FNResponse *response) {
+    return response.resource;
+  }];
+}
+
+- (FNFuture *)post:(NSString *)path
+        parameters:(NSDictionary *)parameters {
+  return [[self.client post:path parameters:parameters] map:^(FNResponse *response) {
+    return response.resource;
+  }];
+}
+
+- (FNFuture *)put:(NSString *)path
+       parameters:(NSDictionary *)parameters {
+  return [[self.client put:path parameters:parameters] map:^(FNResponse *response) {
+    return response.resource;
+  }];
+}
+
+- (FNFuture *)delete:(NSString *)path
+          parameters:(NSDictionary *)parameters {
+  return [[self.client delete:path parameters:parameters] map:^(FNResponse *response) {
+    return response.resource;
+  }];
+}
+
+# pragma mark Private methods
+
++ (FaunaContext *)scopedContext {
+  return FNFuture.currentScope[FNFutureScopeContextKey];
+}
+
++ (void)setScopedContext:(FaunaContext *)ctx {
+  NSMutableDictionary *scope = FNFuture.currentScope;
+
+  if (ctx) {
+    scope[FNFutureScopeContextKey] = scope;
   } else {
-    FaunaCache * originalContextCache = scopeCache.parentContextCache;
-    @try {
-      scopeCache.parentContextCache = self.cache;
-      return block();
-    }
-    @finally {
-      scopeCache.parentContextCache = originalContextCache;
-    }
+    [scope removeObjectForKey:FNFutureScopeContextKey];
   }
 }
 

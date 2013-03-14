@@ -77,7 +77,7 @@
 
 # pragma mark Non-Blocking and Functional API
 
--(void)onSuccess:(void (^)(id))succBlock onError:(void (^)(NSError *))errBlock {
+-(void)onSuccess:(void (^)(id value))succBlock onError:(void (^)(NSError *))errBlock {
   [self onCompletion:^(FNFuture *self){
     NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     
@@ -89,25 +89,25 @@
   }];
 }
 
-- (void)onSuccess:(void (^)(id))block {
+- (void)onSuccess:(void (^)(id value))block {
   [self onSuccess:block onError:^(id _){}];
 }
 
-- (void)onError:(void (^)(NSError *))block {
+- (void)onError:(void (^)(NSError *error))block {
   [self onSuccess:^(id _){} onError:block];
 }
 
-- (FNFuture *)map:(id (^)(id))block {
+- (FNFuture *)map:(id (^)(id value))block {
   return [self flatMap:^(id value){ return [FNFuture value:block(value)]; }];
 }
 
-- (FNFuture *)flatMap:(FNFuture *(^)(id))block {
+- (FNFuture *)flatMap:(FNFuture *(^)(id value))block {
   return [self transform:^FNFuture *(FNFuture *self) {
     return self.value ? block(self.value) : self;
   }];
 }
 
-- (FNFuture *)rescue:(FNFuture *(^)(NSError *))block {
+- (FNFuture *)rescue:(FNFuture *(^)(NSError *error))block {
   return [self transform:^FNFuture *(FNFuture *self) {
     if (self.value) {
       return self;
@@ -125,9 +125,7 @@
   }];
 }
 
-# pragma mark Private Methods/Helpers
-
-- (FNFuture *)transform:(FNFuture *(^)(FNFuture *))block {
+- (FNFuture *)transform:(FNFuture *(^)(FNFuture *result))block {
   FNMutableFuture *res = [FNMutableFuture new];
 
   [self onCompletion:^(FNFuture *self) {
@@ -150,6 +148,8 @@
 
   return res;
 }
+
+# pragma mark Private Methods/Helpers
 
 - (void)propagateTo:(FNMutableFuture *)other {
   if (self.value) {

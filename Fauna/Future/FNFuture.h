@@ -104,11 +104,16 @@
 /*!
  Returns a new result object that attempts to recover from errors with the provided block. The block should return a new result object or nil (to propagate the error). The block will run on an unspecified thread.
  */
-- (FNFuture *)rescue:(FNFuture * (^)(NSError *))block;
+- (FNFuture *)rescue:(FNFuture * (^)(NSError *error))block;
 
 /*!
- Returns a new future with the same eventual result this one, which is completed after running the provided block. The block will run on an unspecified thread.
+ Returns a new future with the same result this one, but which is completed after running the provided block. The block will run on an unspecified thread.
  */
 - (FNFuture *)ensure:(void (^)(void))block;
+
+/*!
+ Returns a new future with the result of transforming this one. The block will run on an unspecified thread.
+ */
+- (FNFuture *)transform:(FNFuture *(^)(FNFuture *result))block;
 
 @end

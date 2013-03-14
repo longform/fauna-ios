@@ -6,72 +6,84 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "FaunaConstants.h"
-#import "FaunaClient.h"
-#import "FaunaCache.h"
+#import "FNFuture.h"
 
 /*!
  Fauna API Context
  */
 @interface FaunaContext : NSObject
 
-@property (nonatomic, strong, readonly) FaunaClient* client;
-
-@property (nonatomic, strong, readonly) FaunaCache* cache;
-
-@property (nonatomic, strong) NSString* userToken;
-
-@property (nonatomic, strong) NSString* keyString;
+#pragma mark lifecycle
 
 /*!
- Initializes the Context with the given client key.
- @param keyString Client Key String
+ Initializes the Context with the given key or user token.
+ @param keyString key or user token
  */
-- (id)initWithClientKeyString:(NSString*)keyString;
+- (id)initWithKey:(NSString *)keyString;
 
 /*!
- Returns the FaunaContext for the Application
+ Initializes the Context with the given publisher key, masquerading as a specific user.
+ @param keyString a publisher key
+ @param userRef the ref of the user to masquerade as (e.g. 'users/123').
  */
-+ (FaunaContext*)applicationContext;
+- (id)initWithKey:(NSString *)keyString asUser:(NSString *)userRef;
 
 /*!
- Sets the FaunaContet instance for the Application
+ Initializes the Context with the publisher's email and password.
+ @param email the publisher's email
+ @param password the publisher's password
  */
-+ (void)setApplicationContext:(FaunaContext*)context;
+- (id)initWithPublisherEmail:(NSString *)email password:(NSString *)password;
+
+#pragma mark user masquerading
 
 /*!
- Returns a FaunaContext, resolving to applicationContext if scopeContext is not available.
+ Returns a new Client that masquerades as a specific user. Only valid if this Client was initialized with a publisher key.
+ @param userRef the ref of the user to masquerade as (e.g. 'users/123')
  */
-+ (FaunaContext*)current;
+- (instancetype)asUser:(NSString *)userRef;
+
+#pragma mark context management
 
 /*!
- Returns the context for the current scope.
+ Returns the default FaunaContext for the Application.
  */
-+ (FaunaContext*)scopeContext;
++ (FaunaContext*)defaultContext;
+
+/*!
+ Sets the default FaunaContext for the Application.
+ */
++ (void)setDefaultContext:(FaunaContext *)context;
+
+/*!
+ Returns the innermost active FaunaContext, falling back to defaultContext if none is available.
+ */
++ (FaunaContext *)currentContext;
+
+/*!
+ Runs a code block in the current context, returning the result of the block.
+ @param block The block to be executed in the context.
+ */
+- (id)inContext:(id (^)(void))block;
 
 /*!
  Runs a code block in the current context.
  @param block The block to be executed in the context.
  */
-- (void)scoped:(FaunaBlock)block;
+- (void)performInContext:(void (^)(void))block;
 
-/*!
- Runs the given block in background and executes a callback when the results are ready.
- @param backgroundBlock The code block to be executed in background. You can perform syncrhonous/blocking calls in this block.
- @param success The code block to execute when the background block finishes successfully. You can update your User Interface here.
- @param failure The code block to execute when the background block fails. You can update your User Interface here.
- */
-- (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock;
+#pragma mark HTTP requests
 
-/*!
- Using current, runs the given block in background and executes a callback when the results are ready.
- @param backgroundBlock The code block to be executed in background. You can perform syncrhonous/blocking calls in this block.
- @param success The code block to execute when the background block finishes successfully. You can update your User Interface here.
- @param failure The code block to execute when the background block fails. You can update your User Interface here.
- */
-+ (NSOperation*)background:(FaunaBackgroundBlock)backgroundBlock success:(FaunaResultsBlock)successBlock failure:(FaunaErrorBlock)failureBlock;
+- (FNFuture *)get:(NSString *)path
+       parameters:(NSDictionary *)parameters;
 
-- (id)wrap:(FaunaResultBlock)block;
+- (FNFuture *)post:(NSString *)path
+        parameters:(NSDictionary *)parameters;
+
+- (FNFuture *)put:(NSString *)path
+       parameters:(NSDictionary *)parameters;
+
+- (FNFuture *)delete:(NSString *)path
+          parameters:(NSDictionary *)parameters;
 
 @end

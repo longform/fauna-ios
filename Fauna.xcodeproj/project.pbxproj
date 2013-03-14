@@ -17,8 +17,6 @@
 		075959FA16C16A1300426133 /* FaunaContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 075959F716C167FD00426133 /* FaunaContext.h */; };
 		075959FD16C1B77E00426133 /* FaunaTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 075959FC16C1B77D00426133 /* FaunaTimeline.m */; };
 		075959FE16C1C12E00426133 /* FaunaTimeline.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 075959FB16C1B77D00426133 /* FaunaTimeline.h */; };
-		07603C4116A646DF00A9A885 /* FaunaClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 07603C3416A646DF00A9A885 /* FaunaClient.m */; };
-		07603C4E16A6498300A9A885 /* FaunaClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07603C3316A646DF00A9A885 /* FaunaClient.h */; };
 		077E22A91682D5D200FB0B30 /* FaunaConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 077E22A71682D57800FB0B30 /* FaunaConstants.h */; };
 		0786693816A8CEC000B3639C /* FaunaCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0786693716A8CEC000B3639C /* FaunaCache.m */; };
 		0786693A16A8D74900B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
@@ -100,7 +98,6 @@
 				075959FA16C16A1300426133 /* FaunaContext.h in CopyFiles */,
 				0710493216B5956F0015DC98 /* NSError+FaunaErrors.h in CopyFiles */,
 				0786693B16A8D94600B3639C /* FaunaCache.h in CopyFiles */,
-				07603C4E16A6498300A9A885 /* FaunaClient.h in CopyFiles */,
 				077E22A91682D5D200FB0B30 /* FaunaConstants.h in CopyFiles */,
 				074CF7991678713F00686606 /* Fauna.h in CopyFiles */,
 			);
@@ -121,8 +118,6 @@
 		075959F816C167FD00426133 /* FaunaContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaContext.m; sourceTree = "<group>"; };
 		075959FB16C1B77D00426133 /* FaunaTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaTimeline.h; sourceTree = "<group>"; };
 		075959FC16C1B77D00426133 /* FaunaTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaTimeline.m; sourceTree = "<group>"; };
-		07603C3316A646DF00A9A885 /* FaunaClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaClient.h; sourceTree = "<group>"; };
-		07603C3416A646DF00A9A885 /* FaunaClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaClient.m; sourceTree = "<group>"; };
 		077E22A71682D57800FB0B30 /* FaunaConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaConstants.h; sourceTree = "<group>"; };
 		0786693616A8CEC000B3639C /* FaunaCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCache.h; sourceTree = "<group>"; };
 		0786693716A8CEC000B3639C /* FaunaCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaCache.m; sourceTree = "<group>"; };
@@ -280,8 +275,6 @@
 		07603C3016A6445300A9A885 /* Client */ = {
 			isa = PBXGroup;
 			children = (
-				07603C3316A646DF00A9A885 /* FaunaClient.h */,
-				07603C3416A646DF00A9A885 /* FaunaClient.m */,
 				ACE3EC7216EA7AF200E1C2B1 /* FNClient.h */,
 				ACE3EC7316EA7AF200E1C2B1 /* FNClient.m */,
 				ACE3EC8416EC673300E1C2B1 /* FaunaError.h */,
@@ -477,7 +470,6 @@
 				07B60627167AD39100CD6604 /* FaunaAFJSONRequestOperation.m in Sources */,
 				07B60628167AD39100CD6604 /* FaunaAFHTTPClient.m in Sources */,
 				07B60629167AD39100CD6604 /* FaunaAFJSONUtilities.m in Sources */,
-				07603C4116A646DF00A9A885 /* FaunaClient.m in Sources */,
 				0786693816A8CEC000B3639C /* FaunaCache.m in Sources */,
 				0710493016B592010015DC98 /* NSError+FaunaErrors.m in Sources */,
 				075959F916C167FD00426133 /* FaunaContext.m in Sources */,
