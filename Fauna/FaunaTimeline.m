@@ -27,7 +27,7 @@
 
 + (FaunaTimelinePage*)pageFromTimeline:(NSString*)timelineReference before:(NSDate*)before after:(NSDate*)after count:(NSInteger)count error:(NSError**)error {
   return [FNContext.current wrap:^{
-    return (FaunaTimelinePage*)[FaunaResource deserialize:[FNContext.current.client pageFromTimeline:timelineReference before:before after:after count:[NSNumber numberWithInteger:count] error:error]];
+    return (FaunaTimelinePage*)[FNResource deserialize:[FNContext.current.client pageFromTimeline:timelineReference before:before after:after count:[NSNumber numberWithInteger:count] error:error]];
   }];
 }
 

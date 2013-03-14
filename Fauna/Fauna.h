@@ -11,7 +11,7 @@
 #import "FNClient.h"
 #import "FNContext.h"
 #import "FaunaTimeline.h"
-#import "FaunaResource.h"
+#import "FNResource.h"
 #import "FaunaInstance.h"
 #import "FaunaCommand.h"
 #import "FaunaUser.h"

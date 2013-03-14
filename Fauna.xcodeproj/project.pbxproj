@@ -29,9 +29,9 @@
 		07D9FFAA16DF34E100D6173F /* FaunaUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D9FFA916DF34E100D6173F /* FaunaUser.m */; };
 		07D9FFAB16DF376400D6173F /* FaunaUser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07D9FFA816DF34E100D6173F /* FaunaUser.h */; };
 		07F28A6616C36FEF006EE2A8 /* FaunaInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */; };
-		07F28A6916C37143006EE2A8 /* FaunaResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6816C37143006EE2A8 /* FaunaResource.m */; };
+		07F28A6916C37143006EE2A8 /* FNResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6816C37143006EE2A8 /* FNResource.m */; };
 		07F28A6A16C37B17006EE2A8 /* FaunaInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */; };
-		07F28A6B16C37B17006EE2A8 /* FaunaResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6716C37143006EE2A8 /* FaunaResource.h */; };
+		07F28A6B16C37B17006EE2A8 /* FNResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6716C37143006EE2A8 /* FNResource.h */; };
 		AC06AA8916EE9336006BECBD /* FNFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8416EE9336006BECBD /* FNFuture.m */; };
 		AC06AA8A16EE9336006BECBD /* FNMutableFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8616EE9336006BECBD /* FNMutableFuture.m */; };
 		AC06AA8B16EE9336006BECBD /* FNValueFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8816EE9336006BECBD /* FNValueFuture.m */; };
@@ -91,7 +91,7 @@
 				0708041D16C8854000141B72 /* FaunaCommand.h in CopyFiles */,
 				07B618AC16C61DA1001A5EA1 /* FaunaTimelinePage.h in CopyFiles */,
 				07F28A6A16C37B17006EE2A8 /* FaunaInstance.h in CopyFiles */,
-				07F28A6B16C37B17006EE2A8 /* FaunaResource.h in CopyFiles */,
+				07F28A6B16C37B17006EE2A8 /* FNResource.h in CopyFiles */,
 				075959FE16C1C12E00426133 /* FaunaTimeline.h in CopyFiles */,
 				075959FA16C16A1300426133 /* FNContext.h in CopyFiles */,
 				0786693B16A8D94600B3639C /* FaunaCache.h in CopyFiles */,
@@ -134,8 +134,8 @@
 		07D9FFA916DF34E100D6173F /* FaunaUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaUser.m; sourceTree = "<group>"; };
 		07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaInstance.h; sourceTree = "<group>"; };
 		07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaInstance.m; sourceTree = "<group>"; };
-		07F28A6716C37143006EE2A8 /* FaunaResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaResource.h; sourceTree = "<group>"; };
-		07F28A6816C37143006EE2A8 /* FaunaResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaResource.m; sourceTree = "<group>"; };
+		07F28A6716C37143006EE2A8 /* FNResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNResource.h; sourceTree = "<group>"; };
+		07F28A6816C37143006EE2A8 /* FNResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNResource.m; sourceTree = "<group>"; };
 		AC06AA8316EE9336006BECBD /* FNFuture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFuture.h; sourceTree = "<group>"; };
 		AC06AA8416EE9336006BECBD /* FNFuture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNFuture.m; sourceTree = "<group>"; };
 		AC06AA8516EE9336006BECBD /* FNMutableFuture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNMutableFuture.h; sourceTree = "<group>"; };
@@ -246,8 +246,8 @@
 				075959F816C167FD00426133 /* FNContext.m */,
 				07F28A6416C36FEF006EE2A8 /* FaunaInstance.h */,
 				07F28A6516C36FEF006EE2A8 /* FaunaInstance.m */,
-				07F28A6716C37143006EE2A8 /* FaunaResource.h */,
-				07F28A6816C37143006EE2A8 /* FaunaResource.m */,
+				07F28A6716C37143006EE2A8 /* FNResource.h */,
+				07F28A6816C37143006EE2A8 /* FNResource.m */,
 				075959FB16C1B77D00426133 /* FaunaTimeline.h */,
 				075959FC16C1B77D00426133 /* FaunaTimeline.m */,
 				07B618A916C61B6F001A5EA1 /* FaunaTimelinePage.h */,
@@ -467,7 +467,7 @@
 				075959F916C167FD00426133 /* FNContext.m in Sources */,
 				075959FD16C1B77E00426133 /* FaunaTimeline.m in Sources */,
 				07F28A6616C36FEF006EE2A8 /* FaunaInstance.m in Sources */,
-				07F28A6916C37143006EE2A8 /* FaunaResource.m in Sources */,
+				07F28A6916C37143006EE2A8 /* FNResource.m in Sources */,
 				07B618AB16C61B70001A5EA1 /* FaunaTimelinePage.m in Sources */,
 				0708041C16C8818300141B72 /* FaunaCommand.m in Sources */,
 				07D9FFAA16DF34E100D6173F /* FaunaUser.m in Sources */,

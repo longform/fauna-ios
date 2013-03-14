@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaResource.h"
+#import "FNResource.h"
 
 @interface FaunaCommand : NSObject
 
@@ -17,7 +17,7 @@
  @param params Parameter of the Command
  @param error Any error found in the execution of the command
  */
-+ (FaunaResource*)execute:(NSString*)commandName error:(NSError**)error;
++ (FNResource*)execute:(NSString*)commandName error:(NSError**)error;
 
 /*!
  Executes a Command with parameters.
@@ -25,6 +25,6 @@
  @param params Parameter of the Command
  @param error Any error found in the execution of the command
  */
-+ (FaunaResource*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error;
++ (FNResource*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error;
 
 @end

@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaResource.h"
+#import "FNResource.h"
 
-@interface FaunaInstance : FaunaResource
+@interface FaunaInstance : FNResource
 
 /*!
  Retrieves a FaunaInstance

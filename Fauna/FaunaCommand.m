@@ -11,11 +11,11 @@
 
 @implementation FaunaCommand
 
-+ (FaunaResource*)execute:(NSString*)commandName error:(NSError**)error {
++ (FNResource*)execute:(NSString*)commandName error:(NSError**)error {
   return [self execute:commandName params:nil error:error];
 }
 
-+ (FaunaResource*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error {
++ (FNResource*)execute:(NSString*)commandName params:(NSDictionary*)params error:(NSError**)error {
   NSParameterAssert(commandName);
   FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
@@ -23,7 +23,7 @@
   if(*error || !resourceDictionary) {
     return NO;
   }
-  return [FaunaResource deserialize:resourceDictionary];
+  return [FNResource deserialize:resourceDictionary];
 }
 
 @end

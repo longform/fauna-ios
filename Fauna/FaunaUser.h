@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaResource.h"
+#import "FNResource.h"
 
-@interface FaunaUser : FaunaResource
+@interface FaunaUser : FNResource
 
 @property (nonatomic, strong) NSString *name;
 

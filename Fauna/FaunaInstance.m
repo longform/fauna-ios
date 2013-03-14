@@ -55,7 +55,7 @@
   // works when ref is just the number of the instance.
   // E.g. "123445678" and also for "instances/123445678"
   NSString * resourcePath = [NSString stringWithFormat:@"instances/%@", arr[arr.count -1]];
-  return (FaunaInstance*)[FaunaResource get:resourcePath error:error];
+  return (FaunaInstance*)[FNResource get:resourcePath error:error];
 }
 
 + (BOOL)create:(FaunaInstance *)resource error:(NSError**)error {
@@ -78,7 +78,7 @@
 + (FaunaInstance*)update:(NSString*)ref changes:(NSDictionary*)changes error:(NSError**)error {
   FNContext * context = FNContext.current;
   FaunaClient * client = context.client;
-  return (FaunaInstance*)[FaunaResource deserialize:[client updateInstance:ref changes:changes error:error]];
+  return (FaunaInstance*)[FNResource deserialize:[client updateInstance:ref changes:changes error:error]];
 }
 
 @end

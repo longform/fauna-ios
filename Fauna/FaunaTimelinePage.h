@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaResource.h"
+#import "FNResource.h"
 
-@interface FaunaTimelinePage : FaunaResource
+@interface FaunaTimelinePage : FNResource
 
 @property (readonly) NSInteger creates;
 
