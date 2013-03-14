@@ -9,12 +9,10 @@
 #import "FNResource.h"
 #import "FNContext.h"
 
+// Fauna class names
+NSString * const FNUserClassName = @"users";
 
-#define kRefIdKey @"ref"
-#define kTimestampKey @"ts"
-#define kDeletedKey @"deleted"
-#define kDeletedDefaultValue NO
-
+// Resource JSON keys
 NSString * const FNClassJSONKey = @"class";
 NSString * const FNRefJSONKey = @"ref";
 NSString * const FNTimestampJSONKey = @"ts";
@@ -22,6 +20,10 @@ NSString * const FNUniqueIDJSONKey = @"unique_id";
 NSString * const FNDataJSONKey = @"data";
 NSString * const FNReferencesJSONKey = @"references";
 NSString * const FNIsDeletedJSONKey = @"deleted";
+
+NSString * const FNEmailJSONKey = @"email";
+NSString * const FNPasswordJSONKey = @"password";
+NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
 
 @implementation FNResource
 
@@ -36,19 +38,74 @@ NSString * const FNIsDeletedJSONKey = @"deleted";
 }
 
 - (id)init {
-  return [self initWithMutableDictionary:[NSMutableDictionary new]];
+  if (!self.class.faunaClass) {
+    [NSException raise:@"Invalid Resource Instantiation"
+                format:@"Cannot create unsaved instances of resource class %@",
+     self.class.description];
+  }
+
+  return [self initWithFaunaClass:self.class.faunaClass];
 }
 
-- (id)initWithDictionary:(NSMutableDictionary*)dictionary {
+- (id)initWithFaunaClass:(NSString *)faunaClass {
+  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObject:self.class.faunaClass
+                                                                 forKey:FNClassJSONKey];
+  return [self initWithMutableDictionary:dict];
+}
+
+- (id)initWithDictionary:(NSDictionary *)dictionary {
   NSMutableDictionary *copy = [[NSMutableDictionary alloc] initWithDictionary:dictionary
                                                                     copyItems:YES];
   return [self initWithMutableDictionary:copy];
 }
 
-# pragma mark Public methods
+#pragma mark Class methods
+
++ (NSString *)faunaClass {
+  return nil;
+}
+
++ (FNFuture *)get:(NSString *)ref {
+  return [[FNContext get:ref parameters:@{}] map:^(NSDictionary *resource) {
+    return [self resourceWithDictionary:resource];
+  }];
+}
+
++ (FNResource *)resourceWithDictionary:(NSDictionary *)dictionary {
+  // FIXME: should be smarter, obviously
+  Class class = [self classForFaunaClass:dictionary[FNClassJSONKey]];
+  return [[class alloc] initWithDictionary:dictionary];
+}
+
++ (Class)classForFaunaClass:(NSString *)className {
+  // FIXME: should be smarter, obviously
+  return [FNResource class];
+}
+
+#pragma mark Persistence
+
+- (FNFuture *)save {
+  if (!self.ref && !self.faunaClass) {
+    [NSException raise:@"Invalid Resource"
+                format:@"Resource does not have defined 'ref' or 'class'"];
+  }
+
+  FNFuture *res = self.ref ? [FNContext put:self.ref parameters:self.dictionary] :
+    [FNContext post:self.faunaClass parameters:self.dictionary];
+
+  return [res map:^(NSDictionary *resource) {
+    return [self.class resourceWithDictionary:resource];
+  }];
+}
+
+#pragma mark Fields
 
 - (NSString *)ref {
   return self.dictionary[FNRefJSONKey];
+}
+
+- (NSString *)faunaClass {
+  return self.dictionary[FNClassJSONKey];
 }
 
 - (FNTimestamp)timestamp {
@@ -57,11 +114,13 @@ NSString * const FNIsDeletedJSONKey = @"deleted";
 }
 
 - (void)setTimestamp:(FNTimestamp)timestamp {
-  [self willChangeValueForKey:@"timestamp"];
-  [self willChangeValueForKey:@"dateTimestamp"];
-  self.dictionary[FNTimestampJSONKey] = [NSNumber numberWithLongLong:timestamp];
-  [self didChangeValueForKey:@"timestamp"];
-  [self didChangeValueForKey:@"dateTimestamp"];
+  NSNumber *ts = [NSNumber numberWithLongLong:timestamp];
+
+  if (![self.dictionary[FNTimestampJSONKey] isEqual:ts]) {
+    [self willChangeValueForKey:@"dateTimestamp"];
+    self.dictionary[FNTimestampJSONKey] = ts;
+    [self didChangeValueForKey:@"dateTimestamp"];
+  }
 }
 
 - (NSDate *)dateTimestamp {
@@ -81,24 +140,8 @@ NSString * const FNIsDeletedJSONKey = @"deleted";
 }
 
 - (BOOL)isDeleted {
-  return ((NSNumber *)self.dictionary[FNIsDeletedJSONKey]).boolValue;
-}
-
-+ (FNResource *)resourceWithDictionary:(NSDictionary *)dictionary {
-  // FIXME: should be smarter, obviously
-  Class class = [self classForFaunaClassName:dictionary[FNClassJSONKey]];
-  return [[class alloc] initWithDictionary:dictionary];
-}
-
-+ (FNFuture *)get:(NSString *)ref {
-  return [[FNContext get:ref parameters:@{}] map:^(NSDictionary *resource) {
-    return [self resourceWithDictionary:resource];
-  }];
-}
-
-+ (Class)classForFaunaClassName:(NSString *)className {
-  // FIXME: should be smarter, obviously
-  return [FNResource class];
+  NSNumber *deleted = self.dictionary[FNIsDeletedJSONKey];
+  return deleted ? deleted.boolValue : NO;
 }
 
 #pragma mark implementations of optional fields
@@ -108,9 +151,7 @@ NSString * const FNIsDeletedJSONKey = @"deleted";
 }
 
 - (void)setUniqueID:(NSString *)uniqueID {
-  [self willChangeValueForKey:@"uniqueID"];
   self.dictionary[FNUniqueIDJSONKey] = uniqueID;
-  [self didChangeValueForKey:@"uniqueID"];
 }
 
 - (NSMutableDictionary *)data {
@@ -122,9 +163,7 @@ NSString * const FNIsDeletedJSONKey = @"deleted";
 }
 
 - (void)setData:(NSMutableDictionary *)data {
-  [self willChangeValueForKey:@"data"];
   self.dictionary[FNDataJSONKey] = data;
-  [self didChangeValueForKey:@"data"];
 }
 
 - (NSMutableDictionary *)references {
@@ -136,9 +175,7 @@ NSString * const FNIsDeletedJSONKey = @"deleted";
 }
 
 - (void)setReferences:(NSMutableDictionary *)references {
-  [self willChangeValueForKey:@"references"];
   self.dictionary[FNReferencesJSONKey] = references;
-  [self didChangeValueForKey:@"references"];
 }
 
 #pragma mark private Methods/helpers

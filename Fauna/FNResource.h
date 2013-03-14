@@ -10,6 +10,10 @@
 
 typedef int64_t FNTimestamp;
 
+// Fauna class names
+FOUNDATION_EXPORT NSString * const FNUserClassName;
+
+// Resource JSON keys
 FOUNDATION_EXPORT NSString * const FNClassJSONKey;
 FOUNDATION_EXPORT NSString * const FNRefJSONKey;
 FOUNDATION_EXPORT NSString * const FNTimestampJSONKey;
@@ -18,32 +22,69 @@ FOUNDATION_EXPORT NSString * const FNDataJSONKey;
 FOUNDATION_EXPORT NSString * const FNReferencesJSONKey;
 FOUNDATION_EXPORT NSString * const FNIsDeletedJSONKey;
 
+FOUNDATION_EXPORT NSString * const FNEmailJSONKey;
+FOUNDATION_EXPORT NSString * const FNPasswordJSONKey;
+FOUNDATION_EXPORT NSString * const FNPasswordConfirmationJSONKey;
+
 @interface FNResource : NSObject
 
 # pragma mark lifecycle
 
 /*!
- Initializes the Resource as a new unsaved resource.
+ Initializes a newly allocated resource with the given Fauna class.
  */
-- (id)init;
+- (id)initWithFaunaClass:(NSString *)faunaClass;
 
 /*!
- Initialize the Resource with the given dictionary.
+ Initializes a newly allocatd resource with the given JSON dictionary.
  @param dictionary Dictionary representation of the JSON for the Resource
  */
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
-#pragma mark Public methods
+#pragma mark Class methods
 
 /*!
- Returns the internal JSON dictionary for the Resource
+ Returns the Fauna class name for this type of resource.
  */
-@property (nonatomic) NSMutableDictionary *dictionary;
++ (NSString *)faunaClass;
 
 /*!
- (ref) Reference Id of this Resource.
+ Retrieves a Resource for the given ref.
+ @param ref Resource ref.
+ */
++ (FNFuture *)get:(NSString *)ref;
+
+/*!
+ Returns a deserialized resource for the given JSON dictionary.
+ @param dictionary Dictionary representation of the JSON structure for the Resoure
+ */
++ (FNResource *)resourceWithDictionary:(NSDictionary *)dictionary;
+
+/*!
+ Resolves a FNResource subclass for the given Fauna class string.
+ @param className the name of the class
+ */
++ (Class)classForFaunaClass:(NSString *)className;
+
+#pragma mark Persistence
+
+/*!
+ Save the resource, creating it if necessary. This does *not* update the existing resource.
+ Returns a FNFuture of the saved resource.
+ */
+- (FNFuture *)save;
+
+#pragma mark Fields
+
+/*!
+ (ref) Ref string for the resource.
  */
 @property (nonatomic, readonly) NSString *ref;
+
+/*!
+ (faunaClass) Fauna class name for the resource
+ */
+@property (nonatomic, readonly) NSString *faunaClass;
 
 /*!
  (timestamp) FNTimestamp of the last time the resource was updated.
@@ -76,21 +117,8 @@ FOUNDATION_EXPORT NSString * const FNIsDeletedJSONKey;
 @property (nonatomic, readonly) BOOL isDeleted;
 
 /*!
- Returns a deserialized resource for the given JSON dictionary.
- @param dictionary Dictionary representation of the JSON structure for the Resoure
+ Returns the internal JSON dictionary for the Resource
  */
-+ (FNResource *)resourceWithDictionary:(NSDictionary *)dictionary;
-
-/*!
- Retrieves a Resource from the Server.
- @param ref Resource Reference.
- */
-+ (FNFuture *)get:(NSString *)ref;
-
-/*!
- Resolves a FNResource subclass for the given fauna class string.
- @param className the name of the class
- */
-+ (Class)classForFaunaClassName:(NSString *)className;
+@property (nonatomic, readonly) NSMutableDictionary *dictionary;
 
 @end

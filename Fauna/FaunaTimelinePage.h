@@ -11,16 +11,16 @@
 
 @interface FaunaTimelinePage : FNResource
 
-@property (readonly) NSInteger creates;
+@property (nonatomic, readonly) NSInteger creates;
 
-@property (readonly) NSInteger updates;
+@property (nonatomic, readonly) NSInteger updates;
 
-@property (readonly) NSInteger deletes;
+@property (nonatomic, readonly) NSInteger deletes;
 
-@property (readonly) NSArray* events;
+@property (nonatomic, readonly) NSArray* events;
 
-@property (readonly) NSDate* after;
+@property (nonatomic, readonly) NSDate* after;
 
-@property (readonly) NSDate* before;
+@property (nonatomic, readonly) NSDate* before;
 
 @end

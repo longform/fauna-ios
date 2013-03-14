@@ -14,5 +14,5 @@
 #import "FNResource.h"
 #import "FaunaInstance.h"
 #import "FaunaCommand.h"
-#import "FaunaUser.h"
+#import "FNUser.h"
 
