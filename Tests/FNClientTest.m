@@ -18,14 +18,12 @@
 
 - (void)testGet {
   [self prepare];
-  FNClient *client = [FNClient sharedClient];
+  FNClient *client = [[FNClient alloc] initWithKey:FAUNA_TEST_PUBLISHER_KEY];
+  client.traceID = @"iOS-Test";
+  client.logHTTPTraffic = YES;
 
-  NSURLRequest *req = [client requestWithMethod:@"GET" path:@"users" parameters:@{} headers:@{}];
-
-  [[client performRequest:req] onError:^(NSError *error) {
-    NSHTTPURLResponse *res = error.userInfo[FaunaAFNetworkingOperationFailingURLResponseErrorKey];
-
-    if (res.statusCode == 401) {
+  [[client get:@"users"] onSuccess:^(id value) {
+    if ([value isKindOfClass:[FNResponse class]]) {
       [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testGet)];
     }
   }];

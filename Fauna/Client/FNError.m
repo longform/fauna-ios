@@ -17,37 +17,37 @@ NSInteger const FNErrorBadRequestCode = 400;
 NSInteger const FNErrorNotFoundCode = 404;
 NSInteger const FNErrorInternalServerErrorCode = 500;
 
-NSError *FNOperationCancelled() {
+NSError * FNOperationCancelled() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorOperationCancelledCode
                          userInfo:@{}];
 }
 
-NSError *FNOperationFailed() {
+NSError * FNOperationFailed() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorOperationFailedCode
                          userInfo:@{}];
 }
 
-NSError *FNRequestTimeout() {
+NSError * FNRequestTimeout() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorRequestTimeoutCode
                          userInfo:@{}];
 }
 
-NSError *FNBadRequest(NSString *field, NSString *reason) {
+NSError * FNBadRequest(NSString *field, NSString *reason) {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorBadRequestCode
                          userInfo:@{ @"field": field, @"error": reason}];
 }
 
-NSError *FNNotFound() {
+NSError * FNNotFound() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorNotFoundCode
                          userInfo:@{}];
 }
 
-NSError *FNInternalServerError() {
+NSError * FNInternalServerError() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorInternalServerErrorCode
                          userInfo:@{}];

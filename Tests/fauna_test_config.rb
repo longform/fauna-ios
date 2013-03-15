@@ -50,8 +50,8 @@ File.open(creds_file, 'w') do |f|
 
   #define FAUNA_TEST_EMAIL @"#{email}"
   #define FAUNA_TEST_PASSWORD @"#{password}"
-  #define FAUNA_PUBLISHER_KEY @"#{publisher_key}"
-  #define FAUNA_CLIENT_KEY @"#{client_key}"
+  #define FAUNA_TEST_PUBLISHER_KEY @"#{publisher_key}"
+  #define FAUNA_TEST_CLIENT_KEY @"#{client_key}"
 
   #endif
   EOF

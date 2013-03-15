@@ -9,8 +9,7 @@
 #import <GHUnitIOS/GHUnit.h>
 #import <Fauna/FNFuture.h>
 #import <Fauna/FNMutableFuture.h>
-#import <Fauna/FaunaError.h>
-
+#import <Fauna/FNError.h>
 
 @interface FNFutureTest : GHAsyncTestCase { }
 @end
@@ -106,7 +105,7 @@
   [FNFuture inBackground:^{
     usleep(10000);
     if (res.isCancelled) {
-      [res updateError:FaunaOperationCancelled()];
+      [res updateError:FNOperationCancelled()];
     } else {
       [res update:@"no cancel :("];
     }
@@ -115,7 +114,7 @@
   }];
 
   [res onError:^(NSError *error) {
-    if (error.code == FaunaErrorOperationCancelledCode) {
+    if (error.code == FNErrorOperationCancelledCode) {
       [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testCancellation)];
     }
   }];

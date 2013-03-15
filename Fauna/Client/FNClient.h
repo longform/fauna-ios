@@ -22,6 +22,10 @@ FOUNDATION_EXPORT NSString * const FaunaAPIVersion;
 
 @interface FNClient : NSObject
 
+@property (nonatomic) NSString *traceID;
+
+@property (nonatomic) BOOL logHTTPTraffic;
+
 /*!
  Initializes the Client with the given key or user token.
  @param keyString key or user token

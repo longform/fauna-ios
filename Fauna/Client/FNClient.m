@@ -38,7 +38,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 @interface FNClient ()
 
 @property (nonatomic, readonly) NSString *authString;
-@property (nonatomic, readonly) NSString *encodedAuthString;
+@property (nonatomic, readonly) NSString *authHeaderValue;
 
 @end
 
@@ -50,7 +50,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   self = [super init];
   if (self) {
     _authString = authString;
-    _encodedAuthString = authString.base64Encoded;
+    _authHeaderValue = [@"Basic " stringByAppendingString:authString.base64Encoded];
   }
   return self;
 }
@@ -111,11 +111,21 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
                                              path:(NSString *)path
                                        parameters:(NSDictionary *)parameters {
   NSMutableURLRequest *req = [self.class requestWithMethod:method path:path parameters:parameters];
-  [req setValue:self.encodedAuthString forHTTPHeaderField:@"Authorization"];
+
+  [req setValue:self.authHeaderValue forHTTPHeaderField:@"Authorization"];
+  if (self.traceID) [req setValue:self.traceID forHTTPHeaderField:@"X-TRACE-ID"];
 
   return [[self.class performRequest:req] transform:^FNFuture *(FNFuture *f) {
+
+    if (self.logHTTPTraffic) {
+      id request = req.description;
+      id response = f.value ? f.value : f.error.debugDescription;
+      NSLog(@"Request:\n%@\nResponse:\n%@", request, response);
+    }
+
     if (f.value) {
-      FNResponse *response = [[FNResponse alloc] initWithResource:f.value[@"resource"] references:f.value[@"references"]];
+      FNResponse *response = [[FNResponse alloc] initWithResource:f.value[@"resource"]
+                                                       references:f.value[@"references"]];
       return [FNFuture value:response];
     } else {
       // FIXME: return an instance of our own subclass of NSError.

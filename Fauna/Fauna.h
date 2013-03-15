@@ -12,7 +12,7 @@
 #import "FNContext.h"
 #import "FaunaTimeline.h"
 #import "FNResource.h"
-#import "FaunaInstance.h"
+#import "FNInstance.h"
 #import "FaunaCommand.h"
 #import "FNUser.h"
 

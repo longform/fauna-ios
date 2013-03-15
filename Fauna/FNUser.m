@@ -7,7 +7,6 @@
 //
 
 #import "FNUser.h"
-#import "FNContext.h"
 
 @implementation FNUser
 
