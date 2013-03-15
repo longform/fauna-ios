@@ -9,7 +9,6 @@
 #import <GHUnitIOS/GHUnit.h>
 #import <Fauna/FNClient.h>
 #import "FaunaCredentials.h"
-#import "FaunaAFURLConnectionOperation.h"
 
 @interface FNClientTest : GHAsyncTestCase { }
 @end
@@ -18,8 +17,8 @@
 
 - (void)testGet {
   [self prepare];
+
   FNClient *client = [[FNClient alloc] initWithKey:FAUNA_TEST_PUBLISHER_KEY];
-  client.traceID = @"iOS-Test";
   client.logHTTPTraffic = YES;
 
   [[client get:@"users"] onSuccess:^(id value) {

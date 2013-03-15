@@ -36,6 +36,26 @@
  */
 - (id)initWithPublisherEmail:(NSString *)email password:(NSString *)password;
 
+/*!
+ Returns a new Context with the given key or user token.
+ @param keyString key or user token
+ */
++ (instancetype)contextWithKey:(NSString *)keyString;
+
+/*!
+ Returns a new Context with the given publisher key, masquerading as a specific user.
+ @param keyString a publisher key
+ @param userRef the ref of the user to masquerade as (e.g. 'users/123').
+ */
++ (instancetype)contextWithKey:(NSString *)keyString asUser:(NSString *)userRef;
+
+/*!
+ Returns a new Context with the publisher's email and password.
+ @param email the publisher's email
+ @param password the publisher's password
+ */
++ (instancetype)contextWithPublisherEmail:(NSString *)email password:(NSString *)password;
+
 #pragma mark user masquerading
 
 /*!

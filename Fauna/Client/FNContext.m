@@ -45,6 +45,18 @@ static FNContext* _defaultContext;
   return [self initWithClient:[[FNClient alloc] initWithPublisherEmail:email password:password]];
 }
 
++ (instancetype)contextWithKey:(NSString *)keyString {
+  return [[self alloc] initWithKey:keyString];
+}
+
++ (instancetype)contextWithKey:(NSString *)keyString asUser:(NSString *)userRef {
+  return [[self alloc] initWithKey:keyString asUser:userRef];
+}
+
++ (instancetype)contextWithPublisherEmail:(NSString *)email password:(NSString *)password {
+  return [[self alloc] initWithPublisherEmail:email password:password];
+}
+
 # pragma mark Public methods
 
 - (instancetype)asUser:(NSString *)userRef {
@@ -147,7 +159,7 @@ static FNContext* _defaultContext;
   NSMutableDictionary *scope = FNFuture.currentScope;
 
   if (ctx) {
-    scope[FNFutureScopeContextKey] = scope;
+    scope[FNFutureScopeContextKey] = ctx;
   } else {
     [scope removeObjectForKey:FNFutureScopeContextKey];
   }
