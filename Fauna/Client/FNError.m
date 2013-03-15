@@ -64,3 +64,11 @@ NSException * FNInvalidResource(NSString *format, ...) {
   va_end(args);
   return [NSException exceptionWithName:@"FNInvalidResource" reason:reason userInfo:@{}];
 }
+
+NSException * FNInvalidResourceClass(NSString *format, ...) {
+  va_list args;
+  va_start(args, format);
+  NSString *reason = [NSString stringWithFormat:format, args];
+  va_end(args);
+  return [NSException exceptionWithName:@"FNInvalidResourceClass" reason:reason userInfo:@{}];
+}

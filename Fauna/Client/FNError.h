@@ -34,4 +34,6 @@ NSException * FNContextNotDefined();
 
 NSException * FNInvalidResource(NSString *format, ...);
 
+NSException * FNInvalidResourceClass(NSString *format, ...);
+
 #endif

@@ -14,8 +14,12 @@
   return FNUserClassName;
 }
 
-+ (FNFuture *)selfUser {
++ (FNFuture *)getSelf {
   return [FNResource get:@"users/self"];
+}
+
++ (FNFuture *)getSelfConfig {
+  return [FNResource get:@"users/self/config"];
 }
 
 - (NSString *)email {

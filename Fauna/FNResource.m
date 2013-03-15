@@ -39,7 +39,8 @@ NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
 
 - (id)init {
   if (!self.class.faunaClass) {
-    @throw FNInvalidResource(@"Cannot create unsaved instances of class %@", self.class.description);
+    @throw FNInvalidResource(@"Cannot create unsaved instances of class %@",
+                             self.class.description);
   }
 
   return [self initWithFaunaClass:self.class.faunaClass];

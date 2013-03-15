@@ -10,6 +10,10 @@
 
 @interface FNInstance : FNResource
 
+@end
+
+@interface FNInstance (StandardFields)
+
 /*!
  (uniqueID) The resource's unique id if present, or nil.
  */
