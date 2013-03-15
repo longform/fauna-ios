@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FaunaConstants.h"
 
 @interface FaunaCache : NSObject
 
@@ -27,8 +26,8 @@
 
 + (FaunaCache*)scopeCache;
 
-- (void)scoped:(FaunaBlock)block;
+- (void)scoped:(void (^)(void))block;
 
-+ (void)transient:(FaunaBlock)block;
++ (void)transient:(void (^)(void))block;
 
 @end

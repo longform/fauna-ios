@@ -8,7 +8,6 @@
 
 #import "FaunaCache.h"
 #import <sqlite3.h>
-#import "FaunaConstants.h"
 
 #define SQLITE_STATUS int
 
@@ -22,11 +21,11 @@
 #define kFaunaCacheTLSKey @"FaunaCache"
 
 static NSMutableArray* ensureCacheStack() {
-  NSMutableArray* stack = FaunaTLS[kFaunaCacheTLSKey];
+  NSMutableArray* stack = [[NSThread currentThread] threadDictionary][kFaunaCacheTLSKey];
   if(stack) {
     return stack;
   }
-  stack = FaunaTLS[kFaunaCacheTLSKey] = [[NSMutableArray alloc] initWithCapacity:5];
+  stack = [[NSThread currentThread] threadDictionary][kFaunaCacheTLSKey] = [[NSMutableArray alloc] initWithCapacity:5];
   return stack;
 }
 
@@ -110,16 +109,16 @@ static FaunaCache* popCache() {
   return ensureCacheStack().lastObject;
 }
 
-- (void)scoped:(FaunaBlock)block {
+- (void)scoped:(void (^)(void))block {
   pushCache(self);
   @try {
-    block(block);
+    block();
   }  @finally {
     popCache();
   }
 }
 
-+ (void)transient:(FaunaBlock)block {
++ (void)transient:(void (^)(void))block {
   FaunaCache *cache = [[FaunaCache alloc] initTransient];
   [cache scoped:^{
     block();

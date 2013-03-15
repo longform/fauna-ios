@@ -11,7 +11,6 @@
 		074CF7991678713F00686606 /* Fauna.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7981678713F00686606 /* Fauna.h */; };
 		075959F916C167FD00426133 /* FNContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 075959F816C167FD00426133 /* FNContext.m */; };
 		075959FA16C16A1300426133 /* FNContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 075959F716C167FD00426133 /* FNContext.h */; };
-		077E22A91682D5D200FB0B30 /* FaunaConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 077E22A71682D57800FB0B30 /* FaunaConstants.h */; };
 		0786693816A8CEC000B3639C /* FaunaCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0786693716A8CEC000B3639C /* FaunaCache.m */; };
 		0786693A16A8D74900B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
 		0786693B16A8D94600B3639C /* FaunaCache.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0786693616A8CEC000B3639C /* FaunaCache.h */; };
@@ -86,7 +85,6 @@
 				07F28A6B16C37B17006EE2A8 /* FNResource.h in CopyFiles */,
 				075959FA16C16A1300426133 /* FNContext.h in CopyFiles */,
 				0786693B16A8D94600B3639C /* FaunaCache.h in CopyFiles */,
-				077E22A91682D5D200FB0B30 /* FaunaConstants.h in CopyFiles */,
 				074CF7991678713F00686606 /* Fauna.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,7 +98,6 @@
 		074CF7981678713F00686606 /* Fauna.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fauna.h; sourceTree = "<group>"; };
 		075959F716C167FD00426133 /* FNContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNContext.h; sourceTree = "<group>"; };
 		075959F816C167FD00426133 /* FNContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNContext.m; sourceTree = "<group>"; };
-		077E22A71682D57800FB0B30 /* FaunaConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaConstants.h; sourceTree = "<group>"; };
 		0786693616A8CEC000B3639C /* FaunaCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCache.h; sourceTree = "<group>"; };
 		0786693716A8CEC000B3639C /* FaunaCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaCache.m; sourceTree = "<group>"; };
 		0786693916A8D74900B3639C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -224,7 +221,6 @@
 				0786693416A8CE7E00B3639C /* Cache */,
 				07603C3016A6445300A9A885 /* Client */,
 				074CF7981678713F00686606 /* Fauna.h */,
-				077E22A71682D57800FB0B30 /* FaunaConstants.h */,
 				075959F716C167FD00426133 /* FNContext.h */,
 				075959F816C167FD00426133 /* FNContext.m */,
 				07F28A6416C36FEF006EE2A8 /* FNInstance.h */,
