@@ -39,9 +39,7 @@ NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
 
 - (id)init {
   if (!self.class.faunaClass) {
-    [NSException raise:@"Invalid Resource Instantiation"
-                format:@"Cannot create unsaved instances of resource class %@",
-     self.class.description];
+    @throw FNInvalidResource(@"Cannot create unsaved instances of class %@", self.class.description);
   }
 
   return [self initWithFaunaClass:self.class.faunaClass];
@@ -86,8 +84,7 @@ NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
 
 - (FNFuture *)save {
   if (!self.ref && !self.faunaClass) {
-    [NSException raise:@"Invalid Resource"
-                format:@"Resource does not have defined 'ref' or 'class'"];
+    @throw FNInvalidResource(@"Resource does not have defined 'ref' or 'class'");
   }
 
   FNFuture *res = self.ref ? [FNContext put:self.ref parameters:self.dictionary] :

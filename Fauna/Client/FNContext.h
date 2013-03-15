@@ -7,6 +7,7 @@
 //
 
 #import "FNFuture.h"
+#import "FNError.h"
 
 /*!
  Fauna API Context

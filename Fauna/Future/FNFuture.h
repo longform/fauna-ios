@@ -8,6 +8,10 @@
 
 #import "FNFutureScope.h"
 
+NSException * FNInvalidFutureValue(NSString *format, ...);
+
+NSException * FNFutureAlreadyCompleted(NSString *method, id value);
+
 @interface FNFuture : NSObject
 
 # pragma mark Class methods

@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #ifndef FNError_h
 #define FNError_h
 
@@ -31,5 +29,9 @@ NSError * FNBadRequest(NSString *field, NSString *reason);
 NSError * FNNotFound();
 
 NSError * FNInternalServerError();
+
+NSException * FNContextNotDefined();
+
+NSException * FNInvalidResource(NSString *format, ...);
 
 #endif

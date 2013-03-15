@@ -21,14 +21,14 @@
 
 - (id)initWithValue:(id)value {
   if (value == nil) {
-    [NSException raise:@"Invalid future value." format:@"Futures cannot contain a nil value."];
+    @throw FNInvalidFutureValue(@"Futures cannot contain a nil value.");
   }
   return [self initWithValue:value andError:nil];
 }
 
 - (id)initWithError:(NSError *)error {
   if (error == nil) {
-    [NSException raise:@"Invalid future value." format:@"Futures cannot contain a nil error."];
+    @throw FNInvalidFutureValue(@"Futures cannot contain a nil error.");
   }
   return [self initWithValue:nil andError:error];
 }

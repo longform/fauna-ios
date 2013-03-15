@@ -7,6 +7,7 @@
 //
 
 #import "FNFuture.h"
+#import "FNError.h"
 
 FOUNDATION_EXPORT NSString * const FaunaAPIBaseURL;
 FOUNDATION_EXPORT NSString * const FaunaAPIVersion;

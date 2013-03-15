@@ -11,6 +11,19 @@
 #import "FNValueFuture.h"
 #import "NSOperationQueue+FNFutureOperations.h"
 
+NSException * FNInvalidFutureValue(NSString *format, ...) {
+  va_list args;
+  va_start(args, format);
+  NSString *reason = [NSString stringWithFormat:format, args];
+  va_end(args);
+  return [NSException exceptionWithName:@"FNInvalidFutureValue" reason:reason userInfo:@{}];
+}
+
+NSException * FNFutureAlreadyCompleted(NSString *method, id value) {
+  NSString *reason = [NSString stringWithFormat:@"Future was already completed, but %@ was called with %@.", method, value];
+  return [NSException exceptionWithName:@"FNFutureAlreadyCompleted" reason:reason userInfo:@{}];
+}
+
 @interface FNFuture ()
 
 @property BOOL isCancelled;
@@ -135,7 +148,7 @@
     FNFuture *next = block(self);
 
     if (next == nil) {
-      [NSException raise:@"Invalid future value." format:@"Result of future transformation cannot be nil."];
+      @throw FNInvalidFutureValue(@"Result of future transformation cannot be nil.");
     }
 
     if (next.isCompleted) {

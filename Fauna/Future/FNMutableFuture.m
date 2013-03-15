@@ -74,13 +74,13 @@
 
 - (void)update:(id)value {
   if (![self updateIfEmpty:value]) {
-    [NSException raise:@"Future already completed." format:@"Future was already completed, but update was called with %@.", value];
+    @throw FNFutureAlreadyCompleted(@"update", value);
   }
 }
 
 - (void)updateError:(NSError *)error {
   if (![self updateErrorIfEmpty:error]) {
-    [NSException raise:@"Future already completed." format:@"Future was already completed, but updateError was called with %@.", error];
+    @throw FNFutureAlreadyCompleted(@"updateError", error);
   }
 }
 

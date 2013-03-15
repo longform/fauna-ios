@@ -52,3 +52,15 @@ NSError * FNInternalServerError() {
                              code:FNErrorInternalServerErrorCode
                          userInfo:@{}];
 }
+
+NSException * FNContextNotDefined() {
+  return [NSException exceptionWithName:@"FNContextNotDefined" reason:@"No default or scoped context defined." userInfo:@{}];
+}
+
+NSException * FNInvalidResource(NSString *format, ...) {
+  va_list args;
+  va_start(args, format);
+  NSString *reason = [NSString stringWithFormat:format, args];
+  va_end(args);
+  return [NSException exceptionWithName:@"FNInvalidResource" reason:reason userInfo:@{}];
+}
