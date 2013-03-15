@@ -34,19 +34,26 @@ NSString * const FNFutureScopeTLSKey = @"org.fauna.FutureScope";
   }
 }
 
-+ (void)restoreCurrent:(NSMutableDictionary *)saved {
-  NSAssert(!self.tls[FNFutureScopeTLSKey], @"Setting Future locals over previous scope.");
++ (void)inScope:(NSMutableDictionary *)scope perform:(void (^)(void))block {
+  NSMutableDictionary *prev = self.tls[FNFutureScopeTLSKey];
+  self.currentScope = scope;
 
-  if (saved) {
-    self.tls[FNFutureScopeTLSKey] = saved;
+  @try {
+    block();
+  } @finally {
+    self.currentScope = prev;
   }
 }
 
-+ (void)removeCurrent {
-  [self.tls removeObjectForKey:FNFutureScopeTLSKey];
-}
-
 # pragma mark Private methods
+
++ (void)setCurrentScope:(NSMutableDictionary *)scope {
+  if (scope) {
+    self.tls[FNFutureScopeTLSKey] = scope;
+  } else {
+    [self.tls removeObjectForKey:FNFutureScopeTLSKey];
+  }
+}
 
 + (NSMutableDictionary *)tls {
   return NSThread.currentThread.threadDictionary;

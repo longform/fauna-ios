@@ -10,6 +10,8 @@
 
 @interface FNUser : FNResource
 
++ (FNFuture *)selfUser;
+
 @property (nonatomic) NSString *uniqueID;
 
 @property (nonatomic) NSDictionary *data;

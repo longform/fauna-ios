@@ -34,6 +34,7 @@
 		AC279F4616EEE83100B8EE6A /* FNError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = ACE3EC8416EC673300E1C2B1 /* FNError.h */; };
 		AC279F4916EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */; };
 		AC43BA5716F2EE45004958BD /* FNContextTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC43BA5616F2EE45004958BD /* FNContextTest.m */; };
+		AC5538B116F303CC00E450E8 /* FNUserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5538B016F303CC00E450E8 /* FNUserTest.m */; };
 		AC6C5FE116E937D3003A17DD /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */; };
 		AC6C5FE216E937DB003A17DD /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7901678713F00686606 /* libFauna.a */; };
 		AC72123B16F1043500190261 /* NSObject+FNBlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = AC72123A16F1043500190261 /* NSObject+FNBlockObservation.m */; };
@@ -129,6 +130,7 @@
 		AC279F4716EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOperationQueue+FNFutureOperations.h"; path = "Categories/NSOperationQueue+FNFutureOperations.h"; sourceTree = "<group>"; };
 		AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOperationQueue+FNFutureOperations.m"; path = "Categories/NSOperationQueue+FNFutureOperations.m"; sourceTree = "<group>"; };
 		AC43BA5616F2EE45004958BD /* FNContextTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNContextTest.m; sourceTree = "<group>"; };
+		AC5538B016F303CC00E450E8 /* FNUserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNUserTest.m; sourceTree = "<group>"; };
 		AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
 		AC72123916F1043500190261 /* NSObject+FNBlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+FNBlockObservation.h"; path = "Categories/NSObject+FNBlockObservation.h"; sourceTree = "<group>"; };
 		AC72123A16F1043500190261 /* NSObject+FNBlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+FNBlockObservation.m"; path = "Categories/NSObject+FNBlockObservation.m"; sourceTree = "<group>"; };
@@ -316,8 +318,9 @@
 			isa = PBXGroup;
 			children = (
 				AC72123D16F118E400190261 /* FNClientTest.m */,
-				AC06AA8C16EE934A006BECBD /* FNFutureTest.m */,
 				AC43BA5616F2EE45004958BD /* FNContextTest.m */,
+				AC06AA8C16EE934A006BECBD /* FNFutureTest.m */,
+				AC5538B016F303CC00E450E8 /* FNUserTest.m */,
 				ACDEDB6F16E80DC7005B2B73 /* Supporting Files */,
 			);
 			path = Tests;
@@ -467,6 +470,7 @@
 				AC06AA8D16EE934A006BECBD /* FNFutureTest.m in Sources */,
 				AC72123E16F118E400190261 /* FNClientTest.m in Sources */,
 				AC43BA5716F2EE45004958BD /* FNContextTest.m in Sources */,
+				AC5538B116F303CC00E450E8 /* FNUserTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

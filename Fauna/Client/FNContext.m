@@ -83,8 +83,8 @@ static FNContext* _defaultContext;
 
 - (id)inContext:(id (^)(void))block {
   FNContext *prev = self.class.scopedContext;
+  self.class.scopedContext = self;
   @try {
-    self.class.scopedContext = self;
     return block();
   } @finally {
     self.class.scopedContext = prev;
@@ -93,8 +93,8 @@ static FNContext* _defaultContext;
 
 - (void)performInContext:(void (^)(void))block {
   FNContext *prev = self.class.scopedContext;
+  self.class.scopedContext = self;
   @try {
-    self.class.scopedContext = self;
     block();
   } @finally {
     self.class.scopedContext = prev;

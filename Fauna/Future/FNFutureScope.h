@@ -12,7 +12,6 @@
 
 + (NSMutableDictionary *)currentScope;
 + (NSMutableDictionary *)saveCurrent;
-+ (void)restoreCurrent:(NSMutableDictionary *)scope;
-+ (void)removeCurrent;
++ (void)inScope:(NSMutableDictionary *)scope perform:(void (^)(void))block;
 
 @end

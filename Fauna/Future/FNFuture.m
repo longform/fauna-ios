@@ -95,12 +95,9 @@ NSException * FNFutureAlreadyCompleted(NSString *method, id value) {
     NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      @try {
-        [FNFutureScope restoreCurrent:scope];
+      [FNFutureScope inScope:scope perform:^{
         self.value ? succBlock(self.value) : errBlock(self.error);
-      } @finally {
-        [FNFutureScope removeCurrent];
-      }
+      }];
     }];
   }];
 }

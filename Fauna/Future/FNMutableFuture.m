@@ -51,12 +51,7 @@
   } else {
     NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-      @try {
-        [FNFutureScope restoreCurrent:scope];
-        block(self);
-      } @finally {
-        [FNFutureScope removeCurrent];
-      }
+      [FNFutureScope inScope:scope perform:^{ block(self); }];
     }];
 
     NSOperationQueue *q = [NSOperationQueue currentQueue];

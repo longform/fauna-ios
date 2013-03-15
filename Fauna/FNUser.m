@@ -14,6 +14,10 @@
   return FNUserClassName;
 }
 
++ (FNFuture *)selfUser {
+  return [FNResource get:@"users/self"];
+}
+
 - (NSString *)email {
   return self.dictionary[FNEmailJSONKey];
 }

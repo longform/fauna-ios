@@ -17,8 +17,7 @@
   NSMutableDictionary *scope = [FNFutureScope saveCurrent];
 
   [self addOperationWithBlock:^{
-    @try {
-      [FNFutureScope restoreCurrent:scope];
+    [FNFutureScope inScope:scope perform:^{
       id rv = res.isCancelled ? FNOperationCancelled() : block();
 
       if (rv == nil) @throw FNInvalidFutureValue(@"Result of future operation cannot be nil.");
@@ -28,9 +27,7 @@
       } else {
         [res update:rv];
       }
-    } @finally {
-      [FNFutureScope removeCurrent];
-    }
+    }];
   }];
 
   return res;
