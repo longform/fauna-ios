@@ -40,6 +40,55 @@
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
 }
 
+- (void)testStacksScopedContexts {
+  [self prepare];
+
+  FNContext *clientCtx = [FNContext contextWithKey:FAUNA_TEST_CLIENT_KEY];
+  FNContext *publisherCtx = [FNContext contextWithKey:FAUNA_TEST_PUBLISHER_KEY];
+  FNContext *pwContext = [FNContext contextWithPublisherEmail:FAUNA_TEST_EMAIL password:FAUNA_TEST_PASSWORD];
+
+  FNContext.defaultContext = clientCtx;
+
+  FNFuture *result = [[FNContext get:@"users"] rescue:^(NSError *error) {
+    return [publisherCtx inContext:^{
+      FNFuture *res1 = [FNContext get:@"users/sets"];
+
+      FNFuture *resFail = [FNContext get:@"keys/publisher"];
+      [resFail onSuccess:^(id value) {
+        [self notify:kGHUnitWaitStatusFailure forSelector:@selector(testStacksScopedContexts)];
+      }];
+
+      FNFuture *res2 = [resFail rescue:^(NSError *error) {
+        return [pwContext inContext:^{
+          return [FNContext get:@"keys/publisher"];
+        }];
+      }];
+
+      if (![FNContext.currentContext isEqual:publisherCtx]) {
+        [self notify:kGHUnitWaitStatusFailure forSelector:@selector(testStacksScopedContexts)];
+      }
+
+      FNFuture *res3 = [FNContext get:@"classes"];
+
+      return [res1 flatMap:^(id sets) {
+        return [res2 flatMap:^(id keys) {
+          return [res3 map:^(id classes) {
+            return @"yay!";
+          }];
+        }];
+      }];
+    }];
+  }];
+
+  [result onSuccess:^(id value) {
+    if ([value isEqual:@"yay!"]) {
+      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testStacksScopedContexts)];
+    }
+  }];
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
+}
+
 - (void)testRaisesOnNoContext {
   [self prepare];
 
