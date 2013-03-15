@@ -78,13 +78,21 @@
 + (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters;
 
++ (FNFuture *)get:(NSString *)path;
+
 + (FNFuture *)post:(NSString *)path
         parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)post:(NSString *)path;
 
 + (FNFuture *)put:(NSString *)path
        parameters:(NSDictionary *)parameters;
 
++ (FNFuture *)put:(NSString *)path;
+
 + (FNFuture *)delete:(NSString *)path
           parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)delete:(NSString *)path;
 
 @end

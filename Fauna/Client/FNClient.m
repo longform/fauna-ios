@@ -78,7 +78,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 }
 
 - (FNFuture *)get:(NSString *)path {
-  return [self get:path parameters:@{}];
+  return [self get:path parameters:nil];
 }
 
 - (FNFuture *)post:(NSString *)path parameters:(NSDictionary *)parameters {
@@ -86,7 +86,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 }
 
 - (FNFuture *)post:(NSString *)path {
-  return [self post:path parameters:@{}];
+  return [self post:path parameters:nil];
 }
 
 - (FNFuture *)put:(NSString *)path parameters:(NSDictionary *)parameters {
@@ -94,7 +94,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 }
 
 - (FNFuture *)put:(NSString *)path {
-  return [self put:path parameters:@{}];
+  return [self put:path parameters:nil];
 }
 
 - (FNFuture *)delete:(NSString *)path parameters:(NSDictionary *)parameters {
@@ -102,7 +102,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 }
 
 - (FNFuture *)delete:(NSString *)path {
-  return [self delete:path parameters:@{}];
+  return [self delete:path parameters:nil];
 }
 
 #pragma mark Private methods
@@ -167,7 +167,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   [req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
   if ([method isEqualToString:@"GET"]) {
-    if (parameters.count > 0) {
+    if (parameters) {
       NSString *params = AFQueryStringFromParametersWithEncoding(parameters, NSUTF8StringEncoding);
       NSString *sep = [path rangeOfString:@"?"].location == NSNotFound ? @"?" : @"&";
       url = [NSURL URLWithString:[url.absoluteString stringByAppendingFormat:@"%@%@", sep, params]];

@@ -63,6 +63,12 @@ static FNContext* _defaultContext;
   return self.scopedContext ?: self.defaultContext;
 }
 
++ (FNContext *)currentOrRaise {
+  FNContext *ctx = self.currentContext;
+  if (!ctx) @throw FNContextNotDefined();
+  return ctx;
+}
+
 - (id)inContext:(id (^)(void))block {
   FNContext *prev = self.class.scopedContext;
   @try {
@@ -85,38 +91,50 @@ static FNContext* _defaultContext;
 
 + (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters {
-  return [[self.currentContext.client get:path
-                               parameters:parameters]
+  return [[self.currentOrRaise.client get:path parameters:parameters]
           map:^(FNResponse *response) {
     return response.resource;
   }];
+}
+
++ (FNFuture *)get:(NSString *)path {
+  return [self get:path parameters:nil];
 }
 
 + (FNFuture *)post:(NSString *)path
         parameters:(NSDictionary *)parameters {
-  return [[self.currentContext.client post:path
-                                parameters:parameters]
+  return [[self.currentOrRaise.client post:path parameters:parameters]
           map:^(FNResponse *response) {
     return response.resource;
   }];
+}
+
++ (FNFuture *)post:(NSString *)path {
+  return [self post:path parameters:nil];
 }
 
 + (FNFuture *)put:(NSString *)path
        parameters:(NSDictionary *)parameters {
-  return [[self.currentContext.client put:path
-                               parameters:parameters]
+  return [[self.currentOrRaise.client put:path parameters:parameters]
           map:^(FNResponse *response) {
     return response.resource;
   }];
 }
 
++ (FNFuture *)put:(NSString *)path {
+  return [self put:path parameters:nil];
+}
+
 + (FNFuture *)delete:(NSString *)path
           parameters:(NSDictionary *)parameters {
-  return [[self.currentContext.client delete:path
-                                  parameters:parameters]
+  return [[self.currentOrRaise.client delete:path parameters:parameters]
           map:^(FNResponse *response) {
             return response.resource;
   }];
+}
+
++ (FNFuture *)delete:(NSString *)path {
+  return [self delete:path parameters:nil];
 }
 
 # pragma mark Private methods
