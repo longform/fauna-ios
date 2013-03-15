@@ -82,9 +82,12 @@
     NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [FNFutureScope restoreCurrent:scope];
-      self.value ? succBlock(self.value) : errBlock(self.error);
-      [FNFutureScope removeCurrent];
+      @try {
+        [FNFutureScope restoreCurrent:scope];
+        self.value ? succBlock(self.value) : errBlock(self.error);
+      } @finally {
+        [FNFutureScope removeCurrent];
+      }
     }];
   }];
 }

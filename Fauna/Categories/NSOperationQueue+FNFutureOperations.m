@@ -17,19 +17,22 @@
   NSMutableDictionary *scope = [FNFutureScope saveCurrent];
 
   [self addOperationWithBlock:^{
-    [FNFutureScope restoreCurrent:scope];
-    id rv = res.isCancelled ? FNOperationCancelled() : block();
+    @try {
+      [FNFutureScope restoreCurrent:scope];
+      id rv = res.isCancelled ? FNOperationCancelled() : block();
 
-    if (rv == nil) {
-      [NSException raise:@"Invalid future value." format:@"Result of future operation cannot be nil."];
-    }
+      if (rv == nil) {
+        [NSException raise:@"Invalid future value." format:@"Result of future operation cannot be nil."];
+      }
 
-    if ([rv isKindOfClass:[NSError class]]) {
-      [res updateError:rv];
-    } else {
-      [res update:rv];
+      if ([rv isKindOfClass:[NSError class]]) {
+        [res updateError:rv];
+      } else {
+        [res update:rv];
+      }
+    } @finally {
+      [FNFutureScope removeCurrent];
     }
-    [FNFutureScope removeCurrent];
   }];
 
   return res;

@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import <pthread.h>
 #import "FNMutableFuture.h"
 
 @interface FNMutableFuture ()
@@ -14,7 +13,6 @@
 // Used as a signal for future completion
 @property (nonatomic, readonly) NSOperation *completionOp;
 @property (nonatomic, readonly) FNFuture *cancellationTarget;
-@property (nonatomic, readonly) pthread_mutex_t mutex;
 
 // make read/write
 @property id value;
@@ -28,16 +26,9 @@
 - (id)init {
   if (self = [super init]) {
     _completionOp = [NSOperation new];
-    if (pthread_mutex_init(&_mutex, NULL)) {
-      return nil;
-    }
   }
 
   return self;
-}
-
-- (void)dealloc {
-  pthread_mutex_destroy(&_mutex);
 }
 
 # pragma mark Accessors
@@ -60,18 +51,21 @@
   } else {
     NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-      [FNFutureScope restoreCurrent:scope];
-      block(self);
-      [FNFutureScope removeCurrent];
+      @try {
+        [FNFutureScope restoreCurrent:scope];
+        block(self);
+      } @finally {
+        [FNFutureScope removeCurrent];
+      }
     }];
 
     NSOperationQueue *q = [NSOperationQueue currentQueue];
     q = q ?: [NSOperationQueue mainQueue];
 
-    pthread_mutex_lock(&_mutex);
-    if (!self.isCompleted) [op addDependency:self.completionOp];
-    [q addOperation:op];
-    pthread_mutex_unlock(&_mutex);
+    @synchronized (self) {
+      if (!self.isCompleted) [op addDependency:self.completionOp];
+      [q addOperation:op];
+    }
   }
 }
 
@@ -112,14 +106,14 @@
   BOOL updated = NO;
 
   if (!self.isCompleted) {
-    pthread_mutex_lock(&_mutex);
-    if (!self.isCompleted) {
-      self.value = value;
-      self.error = error;
-      self.isCompleted = YES;
-      updated = YES;
+    @synchronized (self) {
+      if (!self.isCompleted) {
+        self.value = value;
+        self.error = error;
+        self.isCompleted = YES;
+        updated = YES;
+      }
     }
-    pthread_mutex_unlock(&_mutex);
   }
 
   if (updated) [self operationWasCompleted];

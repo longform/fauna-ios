@@ -64,20 +64,23 @@ static FNContext* _defaultContext;
 }
 
 - (id)inContext:(id (^)(void))block {
-  id __block rv;
-
-  [self performInContext:^{
-    rv = block();
-  }];
-
-  return rv;
+  FNContext *prev = self.class.scopedContext;
+  @try {
+    self.class.scopedContext = self;
+    return block();
+  } @finally {
+    self.class.scopedContext = prev;
+  }
 }
 
 - (void)performInContext:(void (^)(void))block {
   FNContext *prev = self.class.scopedContext;
-  self.class.scopedContext = self;
-  block();
-  self.class.scopedContext = prev;
+  @try {
+    self.class.scopedContext = self;
+    block();
+  } @finally {
+    self.class.scopedContext = prev;
+  }
 }
 
 + (FNFuture *)get:(NSString *)path
