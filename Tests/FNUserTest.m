@@ -20,16 +20,25 @@
 
   [[FNContext contextWithKey:FAUNA_TEST_PUBLISHER_KEY] performInContext:^{
     FNUser *user = [FNUser new];
+    NSInteger stamp = [[NSDate date] timeIntervalSince1970];
+    user.uniqueID = [NSString stringWithFormat:@"created_user%d", stamp];
 
     [[user save] onSuccess:^(FNUser *user) {
-      NSLog(@"user: %@", user);
-      if (user.ref) {
+      if ([user isKindOfClass:[FNUser class]] && user.ref) {
         [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testCreate)];
       }
     }];
   }];
 
-  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
+}
+
+- (void)testSelf {
+  GHFail(@"pending");
+}
+
+- (void)testConfig {
+  GHFail(@"pending");
 }
 
 @end

@@ -19,7 +19,7 @@
   [self prepare];
 
   FNClient *client = [[FNClient alloc] initWithKey:FAUNA_TEST_PUBLISHER_KEY];
-  client.logHTTPTraffic = YES;
+  //client.logHTTPTraffic = YES;
 
   [[client get:@"users"] onSuccess:^(id value) {
     if ([value isKindOfClass:[FNResponse class]]) {

@@ -69,15 +69,14 @@ NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
   }];
 }
 
-+ (FNResource *)resourceWithDictionary:(NSDictionary *)dictionary {
-  // FIXME: should be smarter, obviously
++ (instancetype)resourceWithDictionary:(NSDictionary *)dictionary {
   Class class = [self classForFaunaClass:dictionary[FNClassJSONKey]];
   return [[class alloc] initWithDictionary:dictionary];
 }
 
 + (Class)classForFaunaClass:(NSString *)className {
   // FIXME: should be smarter, obviously
-  return [FNResource class];
+  return [self class];
 }
 
 #pragma mark Persistence
