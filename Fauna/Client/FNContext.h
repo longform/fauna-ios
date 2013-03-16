@@ -69,7 +69,7 @@
 /*!
  Returns the default FNContext for the Application.
  */
-+ (FNContext*)defaultContext;
++ (FNContext *)defaultContext;
 
 /*!
  Sets the default FNContext for the Application.

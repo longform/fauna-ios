@@ -42,4 +42,8 @@
   return [FNResource get:[self.ref stringByAppendingString:@"/config"]];
 }
 
++ (BOOL)allowNewResources {
+  return YES;
+}
+
 @end

@@ -10,4 +10,8 @@
 
 @implementation FNInstance
 
++ (BOOL)allowNewResources {
+  return YES;
+}
+
 @end

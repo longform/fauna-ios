@@ -16,7 +16,18 @@
 @implementation FNInstanceTest
 
 - (void)testCreate {
-  GHFail(@"pending");
+  [self prepare];
+
+  FNInstance *inst = [[FNInstance alloc] initWithClass:@"classes/messages"];
+  [[inst save] onSuccess:^(FNInstance *value) {
+    if ([value isKindOfClass:[FNInstance class]] &&
+        value.ref &&
+        [value.faunaClass isEqual:@"classes/messages"]) {
+      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testCreate)];
+    }
+  }];
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
 }
 
 @end

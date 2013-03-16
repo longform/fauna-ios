@@ -25,7 +25,50 @@ NSString * const FNEmailJSONKey = @"email";
 NSString * const FNPasswordJSONKey = @"password";
 NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
 
+static NSMutableDictionary * FNResourceClassRegistry;
+
+static void FNInitClassRegistry() {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    [FNResource resetDefaultClasses];
+  });
+}
+
 @implementation FNResource
+
++ (Class)classForFaunaClass:(NSString *)className {
+  FNInitClassRegistry();
+
+  Class class = FNResourceClassRegistry[className];
+
+  if (class) {
+    return class;
+  } else if ([className hasPrefix:@"classes/"]) {
+    return [FNInstance class];
+  } else {
+    return [FNResource class];
+  }
+}
+
++ (void)registerClass:(Class)class {
+  FNInitClassRegistry();
+
+  if (![class isSubclassOfClass:[FNResource class]]) {
+    @throw FNInvalidResourceClass(@"%@ is not a subclass of FNResource", class);
+  }
+
+  if (!class.faunaClass) {
+    @throw FNInvalidResourceClass(@"+faunaClass is not defined on %@.", class);
+  }
+
+  FNResourceClassRegistry[class.faunaClass] = class;
+}
+
++ (void)resetDefaultClasses {
+  FNResourceClassRegistry = [NSMutableDictionary new];
+  FNResourceClassRegistry[@"users"] = [FNUser class];
+  FNResourceClassRegistry[@"classes/config"] = [FNResource class];
+}
 
 #pragma mark lifecycle
 
@@ -39,15 +82,14 @@ NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
 
 - (id)init {
   if (!self.class.faunaClass) {
-    @throw FNInvalidResource(@"Cannot create unsaved instances of class %@",
-                             self.class.description);
+    @throw FNInvalidResource(@"Cannot create unsaved instances of class %@", self.class);
   }
 
-  return [self initWithFaunaClass:self.class.faunaClass];
+  return [self initWithClass:self.class.faunaClass];
 }
 
-- (id)initWithFaunaClass:(NSString *)faunaClass {
-  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObject:self.class.faunaClass
+- (id)initWithClass:(NSString *)faunaClass {
+  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObject:faunaClass
                                                                  forKey:FNClassJSONKey];
   return [self initWithMutableDictionary:dict];
 }
@@ -75,16 +117,11 @@ NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
   return [[class alloc] initWithDictionary:dictionary];
 }
 
-+ (Class)classForFaunaClass:(NSString *)className {
-  // FIXME: should be smarter, obviously
-  return [self class];
-}
-
 #pragma mark Persistence
 
 - (FNFuture *)save {
-  if (!self.ref && !self.faunaClass) {
-    @throw FNInvalidResource(@"Resource does not have defined 'ref' or 'class'");
+  if (!self.ref && !self.class.allowNewResources) {
+    @throw FNInvalidResource(@"New resources of %@ cannot be saved.", self.class);
   }
 
   FNFuture *res = self.ref ? [FNContext put:self.ref parameters:self.dictionary] :
@@ -176,6 +213,10 @@ NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
 }
 
 #pragma mark private Methods/helpers
+
++ (BOOL)allowNewResources {
+  return NO;
+}
 
 NSMutableDictionary * FNMutableDictionaryFromValue(id value) {
   if (!value) {

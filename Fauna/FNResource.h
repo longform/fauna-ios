@@ -29,12 +29,29 @@ FOUNDATION_EXPORT NSString * const FNPasswordConfirmationJSONKey;
 
 @interface FNResource : NSObject
 
+/*!
+ Resolves a FNResource subclass for the given Fauna class string.
+ @param className the name of the class
+ */
++ (Class)classForFaunaClass:(NSString *)className;
+
+/*!
+ Registers a subclass of FNResource to handle resources for the given Fauna class.
+ @param class the subclass of FNResource. Must have a defined +faunaClass
+ */
++ (void)registerClass:(Class)class;
+
+/*!
+ Resets the global class registry to the default state.
+ */
++ (void)resetDefaultClasses;
+
 # pragma mark lifecycle
 
 /*!
  Initializes a newly allocated resource with the given Fauna class.
  */
-- (id)initWithFaunaClass:(NSString *)faunaClass;
+- (id)initWithClass:(NSString *)faunaClass;
 
 /*!
  Initializes a newly allocatd resource with the given JSON dictionary.
@@ -60,12 +77,6 @@ FOUNDATION_EXPORT NSString * const FNPasswordConfirmationJSONKey;
  @param dictionary Dictionary representation of the JSON structure for the Resoure
  */
 + (FNResource *)resourceWithDictionary:(NSDictionary *)dictionary;
-
-/*!
- Resolves a FNResource subclass for the given Fauna class string.
- @param className the name of the class
- */
-+ (Class)classForFaunaClass:(NSString *)className;
 
 #pragma mark Persistence
 
