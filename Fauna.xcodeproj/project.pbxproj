@@ -34,6 +34,7 @@
 		AC279F4616EEE83100B8EE6A /* FNError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = ACE3EC8416EC673300E1C2B1 /* FNError.h */; };
 		AC279F4916EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */; };
 		AC30BD8F16F390A400B47081 /* FNInstanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC30BD8E16F390A400B47081 /* FNInstanceTest.m */; };
+		AC30BDE016F3F63B00B47081 /* FNPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = AC30BDDF16F3F63B00B47081 /* FNPublisher.m */; };
 		AC43BA5716F2EE45004958BD /* FNContextTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC43BA5616F2EE45004958BD /* FNContextTest.m */; };
 		AC5538B116F303CC00E450E8 /* FNUserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5538B016F303CC00E450E8 /* FNUserTest.m */; };
 		AC6C5FE116E937D3003A17DD /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */; };
@@ -131,6 +132,8 @@
 		AC279F4716EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOperationQueue+FNFutureOperations.h"; path = "Categories/NSOperationQueue+FNFutureOperations.h"; sourceTree = "<group>"; };
 		AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOperationQueue+FNFutureOperations.m"; path = "Categories/NSOperationQueue+FNFutureOperations.m"; sourceTree = "<group>"; };
 		AC30BD8E16F390A400B47081 /* FNInstanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNInstanceTest.m; sourceTree = "<group>"; };
+		AC30BDDE16F3F63B00B47081 /* FNPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNPublisher.h; sourceTree = "<group>"; };
+		AC30BDDF16F3F63B00B47081 /* FNPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNPublisher.m; sourceTree = "<group>"; };
 		AC43BA5616F2EE45004958BD /* FNContextTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNContextTest.m; sourceTree = "<group>"; };
 		AC5538B016F303CC00E450E8 /* FNUserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNUserTest.m; sourceTree = "<group>"; };
 		AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
@@ -233,6 +236,8 @@
 				07F28A6816C37143006EE2A8 /* FNResource.m */,
 				07D9FFA816DF34E100D6173F /* FNUser.h */,
 				07D9FFA916DF34E100D6173F /* FNUser.m */,
+				AC30BDDE16F3F63B00B47081 /* FNPublisher.h */,
+				AC30BDDF16F3F63B00B47081 /* FNPublisher.m */,
 				074CF7961678713F00686606 /* Supporting Files */,
 			);
 			path = Fauna;
@@ -462,6 +467,7 @@
 				AC896F5016EFFD6C008C6F7B /* NSString+FNBase64Encoding.m in Sources */,
 				AC72123B16F1043500190261 /* NSObject+FNBlockObservation.m in Sources */,
 				ACEF9FB916F13EAA0016A936 /* NSError+FNHTTPErrors.m in Sources */,
+				AC30BDE016F3F63B00B47081 /* FNPublisher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

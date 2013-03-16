@@ -8,6 +8,9 @@
 
 #import "FNResource.h"
 #import "FNContext.h"
+#import "FNInstance.h"
+#import "FNUser.h"
+#import "FNPublisher.h"
 
 // Fauna class names
 NSString * const FNUserClassName = @"users";
