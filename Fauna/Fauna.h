@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "FNClient.h"
 #import "FNContext.h"
+
+#import "FNResource.h"
+
 #import "FNResource.h"
 #import "FNInstance.h"
 #import "FNUser.h"
-

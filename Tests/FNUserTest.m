@@ -34,6 +34,10 @@
 }
 
 - (void)testSelf {
+  [self prepare];
+
+  
+
   GHFail(@"pending");
 }
 

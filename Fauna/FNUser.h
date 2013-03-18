@@ -21,6 +21,20 @@
 + (FNFuture *)getSelfConfig;
 
 /*!
+ Returns an authentication token for a user identified by email and password. The token may be used to construct an a FNContext to make requests on behalf of the user.
+ @param email the user's email
+ @param password the user's password
+ */
++ (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password;
+
+/*!
+ Returns an authentication token for a user identified by a unique_id and password. The token may be used to construct an an FNContext to make requests on behalf of the user.
+ @param uniqueID the user's unique_id
+ @param password the user's password
+ */
++ (FNFuture *)tokenForUniqueID:(NSString *)uniqueID password:(NSString *)password;
+
+/*!
  (email) the user's email. Set on a new user in order to create with an email address.
  */
 @property (nonatomic) NSString *email;

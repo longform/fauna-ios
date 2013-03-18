@@ -35,6 +35,7 @@
 		AC279F4916EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = AC279F4816EEEA9000B8EE6A /* NSOperationQueue+FNFutureOperations.m */; };
 		AC30BD8F16F390A400B47081 /* FNInstanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC30BD8E16F390A400B47081 /* FNInstanceTest.m */; };
 		AC30BDE016F3F63B00B47081 /* FNPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = AC30BDDF16F3F63B00B47081 /* FNPublisher.m */; };
+		AC30BDE116F3F8EA00B47081 /* FNPublisher.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC30BDDE16F3F63B00B47081 /* FNPublisher.h */; };
 		AC43BA5716F2EE45004958BD /* FNContextTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC43BA5616F2EE45004958BD /* FNContextTest.m */; };
 		AC5538B116F303CC00E450E8 /* FNUserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5538B016F303CC00E450E8 /* FNUserTest.m */; };
 		AC6C5FE116E937D3003A17DD /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */; };
@@ -77,6 +78,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				AC30BDE116F3F8EA00B47081 /* FNPublisher.h in CopyFiles */,
 				AC72123F16F1193100190261 /* FNClient.h in CopyFiles */,
 				AC896F4D16EFE5F9008C6F7B /* FNValueFuture.h in CopyFiles */,
 				AC896F4B16EFE5EF008C6F7B /* NSOperationQueue+FNFutureOperations.h in CopyFiles */,

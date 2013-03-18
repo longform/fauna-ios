@@ -7,6 +7,7 @@
 //
 
 #import "FNUser.h"
+#import "FNContext.h"
 
 @implementation FNUser
 
@@ -20,6 +21,22 @@
 
 + (FNFuture *)getSelfConfig {
   return [FNResource get:@"users/self/config"];
+}
+
++ (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password {
+  return [[FNContext post:@"tokens"
+               parameters:@{@"email": email, @"password": password}]
+          map:^(NSDictionary *resource) {
+    return resource[@"token"];
+  }];
+}
+
++ (FNFuture *)tokenForUniqueID:(NSString *)uniqueID password:(NSString *)password {
+  return [[FNContext post:@"tokens"
+               parameters:@{@"unique_id": uniqueID, @"password": password}]
+          map:^(NSDictionary *resource) {
+            return resource[@"token"];
+          }];
 }
 
 - (NSString *)email {

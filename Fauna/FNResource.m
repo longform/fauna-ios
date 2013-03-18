@@ -69,8 +69,11 @@ static void FNInitClassRegistry() {
 
 + (void)resetDefaultClasses {
   FNResourceClassRegistry = [NSMutableDictionary new];
-  FNResourceClassRegistry[@"users"] = [FNUser class];
   FNResourceClassRegistry[@"classes/config"] = [FNResource class];
+  FNResourceClassRegistry[@"publisher/config"] = [FNResource class];
+  FNResourceClassRegistry[@"users/config"] = [FNResource class];
+  FNResourceClassRegistry[@"users"] = [FNUser class];
+  FNResourceClassRegistry[@"publisher"] = [FNPublisher class];
 }
 
 #pragma mark lifecycle
