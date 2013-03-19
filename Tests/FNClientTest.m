@@ -6,9 +6,7 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import <GHUnitIOS/GHUnit.h>
 #import <Fauna/FNClient.h>
-#import "FaunaCredentials.h"
 
 @interface FNClientTest : GHAsyncTestCase { }
 @end

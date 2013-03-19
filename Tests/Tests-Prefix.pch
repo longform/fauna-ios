@@ -12,3 +12,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+#import <GHUnitIOS/GHUnit.h>
+#import <Fauna/Fauna.h>
+#import "FaunaCredentials.h"
+#import "FNTestHelper.h"

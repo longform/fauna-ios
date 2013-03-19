@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
+#import "FNFuture.h"
 #import "FNUser.h"
 #import "FNContext.h"
 
@@ -36,6 +37,18 @@
                parameters:@{@"unique_id": uniqueID, @"password": password}]
           map:^(NSDictionary *resource) {
             return resource[@"token"];
+          }];
+}
+
++ (FNFuture *)contextForEmail:(NSString *)email password:(NSString *)password {
+  return [[self tokenForEmail:email password:password] map:^(NSString *token) {
+            return [FNContext contextWithKey:token];
+          }];
+}
+
++ (FNFuture *)contextForUniqueID:(NSString *)uniqueID password:(NSString *)password {
+  return [[self tokenForUniqueID:uniqueID password:password] map:^(NSString *token) {
+            return [FNContext contextWithKey:token];
           }];
 }
 

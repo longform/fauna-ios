@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "FNFuture.h"
-#import "FNError.h"
+@class FNFuture;
 
 FOUNDATION_EXPORT NSString * const FaunaAPIBaseURL;
 FOUNDATION_EXPORT NSString * const FaunaAPIVersion;

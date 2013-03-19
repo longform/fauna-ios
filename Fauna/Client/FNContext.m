@@ -8,6 +8,7 @@
 
 #import "FNContext.h"
 #import "FNFuture.h"
+#import "FNError.h"
 #import "FNClient.h"
 #import "NSString+FNBase64Encoding.h"
 

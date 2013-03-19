@@ -6,10 +6,6 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import <GHUnitIOS/GHUnit.h>
-#import <Fauna/Fauna.h>
-#import "FaunaCredentials.h"
-
 @interface FNUserTest : GHAsyncTestCase { }
 @end
 
@@ -18,10 +14,9 @@
 - (void)testCreate {
   [self prepare];
 
-  [[FNContext contextWithKey:FAUNA_TEST_PUBLISHER_KEY] performInContext:^{
+  [TestPublisherContext() performInContext:^{
     FNUser *user = [FNUser new];
-    NSInteger stamp = [[NSDate date] timeIntervalSince1970];
-    user.uniqueID = [NSString stringWithFormat:@"created_user%d", stamp];
+    user.uniqueID = TestUniqueID();
 
     [[user save] onSuccess:^(FNUser *user) {
       if ([user isKindOfClass:[FNUser class]] && user.ref) {
@@ -36,13 +31,50 @@
 - (void)testSelf {
   [self prepare];
 
-  
+  [TestClientContext() performInContext:^{
+    FNUser *user = [FNUser new];
+    user.uniqueID = TestUniqueID();
+    user.password = @"sekrit";
 
-  GHFail(@"pending");
+    [[[[user save] flatMap:^(FNUser *user) {
+      return [FNUser contextForUniqueID:user.uniqueID password:@"sekrit"];
+    }] flatMap:^(FNContext *ctx) {
+      return [ctx inContext:^{
+        return [FNUser getSelf];
+      }];
+    }] onSuccess:^(FNUser *selfUser) {
+      if ([selfUser.uniqueID isEqualToString:user.uniqueID]) {
+        [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testSelf)];
+      }
+    }];
+  }];
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
 }
 
 - (void)testConfig {
-  GHFail(@"pending");
+  [self prepare];
+
+  [TestClientContext() performInContext:^{
+    FNUser *user = [FNUser new];
+    NSString *email = TestUniqueEmail();
+    user.email = email;
+    user.password = @"sekrit";
+
+    [[[[user save] flatMap:^(FNUser *user) {
+      return [FNUser contextForEmail:email password:@"sekrit"];
+    }] flatMap:^(FNContext *ctx) {
+      return [ctx inContext:^{
+        return [FNUser getSelfConfig];
+      }];
+    }] onSuccess:^(FNResource *config) {
+      if ([config.dictionary[@"email"] isEqualToString:email]) {
+        [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testConfig)];
+      }
+    }];
+  }];
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
 }
 
 @end

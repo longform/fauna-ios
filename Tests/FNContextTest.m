@@ -6,10 +6,6 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import <GHUnitIOS/GHUnit.h>
-#import <Fauna/FNContext.h>
-#import "FaunaCredentials.h"
-
 @interface FNContextTest : GHAsyncTestCase { }
 @end
 
@@ -18,20 +14,21 @@
 - (void)testUsesDefaultContext {
   [self prepare];
 
-  FNContext *ctx = [FNContext contextWithKey:FAUNA_TEST_PUBLISHER_KEY];
-  FNContext.defaultContext = ctx;
+  FNContext.defaultContext = TestPublisherContext();
 
   [[FNContext get:@"users"] onSuccess:^(id value) {
     [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testUsesDefaultContext)];
   }];
 
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
+
+  FNContext.defaultContext = nil;
 }
 
 - (void)testUsesScopedContext {
   [self prepare];
 
-  [[FNContext contextWithKey:FAUNA_TEST_PUBLISHER_KEY] performInContext:^{
+  [TestPublisherContext() performInContext:^{
     [[FNContext get:@"users"] onSuccess:^(id value) {
       [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testUsesScopedContext)];
     }];
@@ -43,9 +40,9 @@
 - (void)testStacksScopedContexts {
   [self prepare];
 
-  FNContext *clientCtx = [FNContext contextWithKey:FAUNA_TEST_CLIENT_KEY];
-  FNContext *publisherCtx = [FNContext contextWithKey:FAUNA_TEST_PUBLISHER_KEY];
-  FNContext *pwContext = [FNContext contextWithPublisherEmail:FAUNA_TEST_EMAIL password:FAUNA_TEST_PASSWORD];
+  FNContext *clientCtx = TestClientContext();
+  FNContext *publisherCtx = TestPublisherContext();
+  FNContext *pwContext = TestPublisherPasswordContext();
 
   FNContext.defaultContext = clientCtx;
 
@@ -87,6 +84,8 @@
   }];
 
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
+
+  FNContext.defaultContext = nil;
 }
 
 - (void)testRaisesOnNoContext {

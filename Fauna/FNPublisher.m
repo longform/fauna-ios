@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
+#import "FNFuture.h"
 #import "FNPublisher.h"
 
 @implementation FNPublisher

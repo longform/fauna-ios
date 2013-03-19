@@ -8,6 +8,8 @@
 
 #import "FNResource.h"
 
+@class FNFuture;
+
 @interface FNPublisher : FNResource
 
 /*!

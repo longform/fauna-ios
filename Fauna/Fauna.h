@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FNFuture.h"
+#import "FNError.h"
+
 #import "FNClient.h"
 #import "FNContext.h"
 

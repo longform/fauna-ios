@@ -8,6 +8,8 @@
 
 #import "FNResource.h"
 
+@class FNFuture;
+
 @interface FNUser : FNResource
 
 /*!
@@ -33,6 +35,20 @@
  @param password the user's password
  */
 + (FNFuture *)tokenForUniqueID:(NSString *)uniqueID password:(NSString *)password;
+
+/*!
+ Returns an authentication context for a user identified by email and password.
+ @param email the user's email
+ @param password the user's password
+ */
++ (FNFuture *)contextForEmail:(NSString *)email password:(NSString *)password;
+
+/*!
+ Returns an authentication token for a user identified by a unique_id and password.
+ @param uniqueID the user's unique_id
+ @param password the user's password
+ */
++ (FNFuture *)contextForUniqueID:(NSString *)uniqueID password:(NSString *)password;
 
 /*!
  (email) the user's email. Set on a new user in order to create with an email address.

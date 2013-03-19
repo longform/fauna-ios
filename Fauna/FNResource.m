@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
-#import "FNResource.h"
+#import "FNFuture.h"
+#import "FNError.h"
 #import "FNContext.h"
+#import "FNResource.h"
 #import "FNInstance.h"
 #import "FNUser.h"
 #import "FNPublisher.h"
