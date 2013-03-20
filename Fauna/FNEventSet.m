@@ -11,12 +11,6 @@
 #import "FNEventSet.h"
 #import "NSArray+FNFunctionalEnumeration.h"
 
-@interface FNEventSet ()
-
-@property (nonatomic) NSString *ref;
-
-@end
-
 @implementation FNEventSet
 
 #pragma mark lifecycle
@@ -117,8 +111,7 @@
 }
 
 -(NSString *)ref {
-  if (!super.ref) self.ref = [NSString stringWithFormat:@"query?query=%@", self.query];
-  return super.ref;
+  return [NSString stringWithFormat:@"query?query=%@", self.query];
 }
 
 #pragma mark Private methods
