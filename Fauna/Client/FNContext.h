@@ -114,4 +114,8 @@
 
 + (FNFuture *)delete:(NSString *)path;
 
+#pragma mark debugging
+
+- (void)setLogHTTPTraffic:(BOOL)log;
+
 @end

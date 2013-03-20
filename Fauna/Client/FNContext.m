@@ -150,6 +150,10 @@ static FNContext* _defaultContext;
   return [self delete:path parameters:nil];
 }
 
+- (void)setLogHTTPTraffic:(BOOL)log {
+  self.client.logHTTPTraffic = log;
+}
+
 # pragma mark Private methods
 
 + (FNContext *)scopedContext {

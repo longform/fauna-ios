@@ -13,6 +13,30 @@
 #import "FNInstance.h"
 #import "FNUser.h"
 #import "FNPublisher.h"
+#import "FNEventSet.h"
+
+FNTimestamp const FNTimestampMax = INT64_MAX;
+FNTimestamp const FNTimestampMin = 0;
+FNTimestamp const FNFirst = FNTimestampMin;
+FNTimestamp const FNLast = FNTimestampMax;
+
+NSDate * FNTimestampToNSDate(FNTimestamp ts) {
+  double micros = 1000000.0;
+  return [NSDate dateWithTimeIntervalSince1970:ts / micros];
+}
+
+FNTimestamp FNTimestampFromNSDate(NSDate *date) {
+  double micros = 1000000.0;
+  return date.timeIntervalSince1970 * micros;
+}
+
+NSNumber * FNTimestampToNSNumber(FNTimestamp ts) {
+  return @(ts);
+}
+
+FNTimestamp FNTimestampFromNSNumber(NSNumber *number) {
+  return number.longLongValue;
+}
 
 // Fauna class names
 NSString * const FNUserClassName = @"users";
@@ -72,10 +96,17 @@ static void FNInitClassRegistry() {
 + (void)resetDefaultClasses {
   FNResourceClassRegistry = [NSMutableDictionary new];
   FNResourceClassRegistry[@"classes/config"] = [FNResource class];
+  FNResourceClassRegistry[@"sets/config"] = [FNResource class];
+  FNResourceClassRegistry[@"commands/config"] = [FNResource class];
   FNResourceClassRegistry[@"publisher/config"] = [FNResource class];
   FNResourceClassRegistry[@"users/config"] = [FNResource class];
+  FNResourceClassRegistry[@"keys/client"] = [FNResource class];
+  FNResourceClassRegistry[@"keys/publisher"] = [FNResource class];
+  FNResourceClassRegistry[@"tokens"] = [FNResource class];
+
   FNResourceClassRegistry[@"users"] = [FNUser class];
   FNResourceClassRegistry[@"publisher"] = [FNPublisher class];
+  FNResourceClassRegistry[@"sets"] = [FNEventSetPage class];
 }
 
 #pragma mark lifecycle
@@ -152,33 +183,11 @@ static void FNInitClassRegistry() {
 
 - (FNTimestamp)timestamp {
   NSNumber *ts = self.dictionary[FNTimestampJSONKey];
-  return ts ? (FNTimestamp) ts.longLongValue : 0;
+  return ts ? FNTimestampFromNSNumber(ts) : 0;
 }
 
 - (void)setTimestamp:(FNTimestamp)timestamp {
-  NSNumber *ts = [NSNumber numberWithLongLong:timestamp];
-
-  if (![self.dictionary[FNTimestampJSONKey] isEqual:ts]) {
-    [self willChangeValueForKey:@"dateTimestamp"];
-    self.dictionary[FNTimestampJSONKey] = ts;
-    [self didChangeValueForKey:@"dateTimestamp"];
-  }
-}
-
-- (NSDate *)dateTimestamp {
-  NSNumber *ts = self.dictionary[FNTimestampJSONKey];
-
-  if (ts) {
-    NSTimeInterval seconds = ts.doubleValue / 1000000.0;
-    return [NSDate dateWithTimeIntervalSince1970:seconds];
-  } else {
-    return nil;
-  }
-}
-
-- (void)setDateTimestamp:(NSDate *)date {
-  FNTimestamp ts = date.timeIntervalSince1970 * 1000000.0;
-  self.timestamp = ts;
+  self.dictionary[FNTimestampJSONKey] = FNTimestampToNSNumber(timestamp);
 }
 
 - (BOOL)isDeleted {
@@ -218,6 +227,14 @@ static void FNInitClassRegistry() {
 
 - (void)setReferences:(NSMutableDictionary *)references {
   self.dictionary[FNReferencesJSONKey] = references;
+}
+
+- (FNEventSet *)eventSet:(NSString *)name {
+  return [FNEventSet eventSetWithRef:[self.ref stringByAppendingFormat:@"/sets/%@", name]];
+}
+
+- (FNEventSet *)internalEventSet:(NSString *)name {
+  return [FNEventSet eventSetWithRef:[self.ref stringByAppendingFormat:@"/%@", name]];
 }
 
 #pragma mark private Methods/helpers

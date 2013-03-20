@@ -15,6 +15,6 @@
 
 #import "FNResource.h"
 
-#import "FNResource.h"
+#import "FNEventSet.h"
 #import "FNInstance.h"
 #import "FNUser.h"

@@ -9,6 +9,7 @@
 #import "FNResource.h"
 
 @class FNFuture;
+@class FNEventSet;
 
 @interface FNPublisher : FNResource
 
@@ -30,5 +31,10 @@
  (data) The custom data dictionary for the resource.
  */
 @property (nonatomic) NSMutableDictionary *data;
+
+/*!
+ Returns a custom event set for the resource
+ */
+- (FNEventSet *)eventSet:(NSString *)name;
 
 @end

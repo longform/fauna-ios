@@ -38,6 +38,10 @@
 		AC30BDE116F3F8EA00B47081 /* FNPublisher.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC30BDDE16F3F63B00B47081 /* FNPublisher.h */; };
 		AC43BA5716F2EE45004958BD /* FNContextTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC43BA5616F2EE45004958BD /* FNContextTest.m */; };
 		AC5538B116F303CC00E450E8 /* FNUserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5538B016F303CC00E450E8 /* FNUserTest.m */; };
+		AC59B2AD16F8FC4600026D37 /* FNEventSet.m in Sources */ = {isa = PBXBuildFile; fileRef = AC59B2AC16F8FC4600026D37 /* FNEventSet.m */; };
+		AC59B2AE16F91B7200026D37 /* FNEventSet.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC59B2AB16F8FC4600026D37 /* FNEventSet.h */; };
+		AC59B2B116F92CE600026D37 /* FNEventSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC59B2B016F92CE600026D37 /* FNEventSetTest.m */; };
+		AC59B2B416F92E8E00026D37 /* FNMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AC59B2B316F92E8E00026D37 /* FNMessage.m */; };
 		AC6C5FE116E937D3003A17DD /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */; };
 		AC6C5FE216E937DB003A17DD /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7901678713F00686606 /* libFauna.a */; };
 		AC72123B16F1043500190261 /* NSObject+FNBlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = AC72123A16F1043500190261 /* NSObject+FNBlockObservation.m */; };
@@ -80,6 +84,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				AC59B2AE16F91B7200026D37 /* FNEventSet.h in CopyFiles */,
 				AC30BDE116F3F8EA00B47081 /* FNPublisher.h in CopyFiles */,
 				AC72123F16F1193100190261 /* FNClient.h in CopyFiles */,
 				AC896F4D16EFE5F9008C6F7B /* FNValueFuture.h in CopyFiles */,
@@ -140,6 +145,11 @@
 		AC30BDDF16F3F63B00B47081 /* FNPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNPublisher.m; sourceTree = "<group>"; };
 		AC43BA5616F2EE45004958BD /* FNContextTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNContextTest.m; sourceTree = "<group>"; };
 		AC5538B016F303CC00E450E8 /* FNUserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNUserTest.m; sourceTree = "<group>"; };
+		AC59B2AB16F8FC4600026D37 /* FNEventSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNEventSet.h; sourceTree = "<group>"; };
+		AC59B2AC16F8FC4600026D37 /* FNEventSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNEventSet.m; sourceTree = "<group>"; };
+		AC59B2B016F92CE600026D37 /* FNEventSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNEventSetTest.m; sourceTree = "<group>"; };
+		AC59B2B216F92E8E00026D37 /* FNMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNMessage.h; sourceTree = "<group>"; };
+		AC59B2B316F92E8E00026D37 /* FNMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNMessage.m; sourceTree = "<group>"; };
 		AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Vendor/GHUnitIOS.framework; sourceTree = "<group>"; };
 		AC72123916F1043500190261 /* NSObject+FNBlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+FNBlockObservation.h"; path = "Categories/NSObject+FNBlockObservation.h"; sourceTree = "<group>"; };
 		AC72123A16F1043500190261 /* NSObject+FNBlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+FNBlockObservation.m"; path = "Categories/NSObject+FNBlockObservation.m"; sourceTree = "<group>"; };
@@ -247,6 +257,8 @@
 				AC30BDDE16F3F63B00B47081 /* FNPublisher.h */,
 				AC30BDDF16F3F63B00B47081 /* FNPublisher.m */,
 				074CF7961678713F00686606 /* Supporting Files */,
+				AC59B2AB16F8FC4600026D37 /* FNEventSet.h */,
+				AC59B2AC16F8FC4600026D37 /* FNEventSet.m */,
 			);
 			path = Fauna;
 			sourceTree = "<group>";
@@ -339,9 +351,10 @@
 				AC06AA8C16EE934A006BECBD /* FNFutureTest.m */,
 				AC30BD8E16F390A400B47081 /* FNInstanceTest.m */,
 				AC5538B016F303CC00E450E8 /* FNUserTest.m */,
+				AC59B2B016F92CE600026D37 /* FNEventSetTest.m */,
 				ACDEDB6F16E80DC7005B2B73 /* Supporting Files */,
-				ACBA467316F8D8B6000F2A3B /* FNTestHelper.h */,
-				ACBA467416F8D8B6000F2A3B /* FNTestHelper.m */,
+				AC59B2B216F92E8E00026D37 /* FNMessage.h */,
+				AC59B2B316F92E8E00026D37 /* FNMessage.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -349,6 +362,8 @@
 		ACDEDB6F16E80DC7005B2B73 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ACBA467316F8D8B6000F2A3B /* FNTestHelper.h */,
+				ACBA467416F8D8B6000F2A3B /* FNTestHelper.m */,
 				ACC998AE16E9159900FDF963 /* fauna_test_config.rb */,
 				ACDEDB8616E81030005B2B73 /* Default-568h@2x.png */,
 				ACDEDB7016E80DC7005B2B73 /* Tests-Info.plist */,
@@ -480,6 +495,8 @@
 				AC72123B16F1043500190261 /* NSObject+FNBlockObservation.m in Sources */,
 				ACEF9FB916F13EAA0016A936 /* NSError+FNHTTPErrors.m in Sources */,
 				AC30BDE016F3F63B00B47081 /* FNPublisher.m in Sources */,
+				AC59B2AD16F8FC4600026D37 /* FNEventSet.m in Sources */,
+				ACADB88116FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +511,8 @@
 				AC5538B116F303CC00E450E8 /* FNUserTest.m in Sources */,
 				AC30BD8F16F390A400B47081 /* FNInstanceTest.m in Sources */,
 				ACBA467516F8D8B6000F2A3B /* FNTestHelper.m in Sources */,
+				AC59B2B116F92CE600026D37 /* FNEventSetTest.m in Sources */,
+				AC59B2B416F92E8E00026D37 /* FNMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

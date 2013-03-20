@@ -24,6 +24,35 @@ NSException * FNFutureAlreadyCompleted(NSString *method, id value) {
   return [NSException exceptionWithName:@"FNFutureAlreadyCompleted" reason:reason userInfo:@{}];
 }
 
+NSObject * const FNUnit = @"__FNUnit__";
+
+static FNFuture * FNAccumulateHelper(NSArray *futures, int idx, id seed, id (^accumulator)(id accum, id value)) {
+  if (idx >= futures.count) {
+    return [FNFuture value:seed];
+  } else {
+    return [futures[idx] flatMap:^FNFuture *(id value) {
+      return FNAccumulateHelper(futures, idx + 1, accumulator(seed, value), accumulator);
+    }];
+  }
+}
+
+FNFuture * FNAccumulate(NSArray *futures, id seed, id (^accumulator)(id accum, id value)) {
+  return FNAccumulateHelper(futures, 0, seed, accumulator);
+}
+
+FNFuture * FNSequence(NSArray *futures) {
+  return FNAccumulate(futures, [NSMutableArray arrayWithCapacity:futures.count], ^id(NSMutableArray *arr, id value) {
+    [arr addObject:value];
+    return arr;
+  });
+}
+
+FNFuture * FNJoin(NSArray *futures) {
+  return FNAccumulate(futures, FNUnit, ^id(id accum, id value) {
+    return FNUnit;
+  });
+}
+
 @interface FNFuture ()
 
 @property BOOL isCancelled;

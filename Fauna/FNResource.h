@@ -9,6 +9,15 @@
 @class FNFuture;
 
 typedef int64_t FNTimestamp;
+FOUNDATION_EXPORT FNTimestamp const FNTimestampMax;
+FOUNDATION_EXPORT FNTimestamp const FNTimestampMin;
+FOUNDATION_EXPORT FNTimestamp const FNFirst;
+FOUNDATION_EXPORT FNTimestamp const FNLast;
+
+NSDate * FNTimestampToNSDate(FNTimestamp ts);
+FNTimestamp FNTimestampFromNSDate(NSDate *date);
+NSNumber * FNTimestampToNSNumber(FNTimestamp ts);
+FNTimestamp FNTimestampFromNSNumber(NSNumber *number);
 
 // Fauna class names
 FOUNDATION_EXPORT NSString * const FNUserClassName;
@@ -25,7 +34,6 @@ FOUNDATION_EXPORT NSString * const FNIsDeletedJSONKey;
 FOUNDATION_EXPORT NSString * const FNEmailJSONKey;
 FOUNDATION_EXPORT NSString * const FNPasswordJSONKey;
 FOUNDATION_EXPORT NSString * const FNPasswordConfirmationJSONKey;
-
 @interface FNResource : NSObject
 
 /*!
@@ -101,11 +109,6 @@ FOUNDATION_EXPORT NSString * const FNPasswordConfirmationJSONKey;
  (timestamp) FNTimestamp of the last time the resource was updated.
  */
 @property (nonatomic) FNTimestamp timestamp;
-
-/*!
- (dateTimestamp) The resource's timestamp as an NSDate.
- */
-@property (nonatomic) NSDate *dateTimestamp;
 
 /*!
  (uniqueID) The resource's unique id if present, or nil.

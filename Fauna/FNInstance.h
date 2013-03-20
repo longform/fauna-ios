@@ -8,6 +8,8 @@
 
 #import "FNResource.h"
 
+@class FNEventSet;
+
 @interface FNInstance : FNResource
 
 @end
@@ -28,5 +30,10 @@
  (references) The custom references dictionary for the resource.
  */
 @property (nonatomic) NSMutableDictionary *references;
+
+/*!
+ Returns a custom event set for the resource
+ */
+- (FNEventSet *)eventSet:(NSString *)name;
 
 @end

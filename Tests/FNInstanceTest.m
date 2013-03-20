@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Fauna. All rights reserved.
 //
 
+#import "FNMessage.h"
+
 @interface FNInstanceTest : GHAsyncTestCase { }
 @end
 
@@ -14,13 +16,18 @@
 - (void)testCreate {
   [self prepare];
 
-  FNInstance *inst = [[FNInstance alloc] initWithClass:@"classes/messages"];
-  [[inst save] onSuccess:^(FNInstance *value) {
-    if ([value isKindOfClass:[FNInstance class]] &&
-        value.ref &&
-        [value.faunaClass isEqual:@"classes/messages"]) {
-      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testCreate)];
-    }
+  [FNResource registerClass:[FNMessage class]];
+
+  FNInstance *inst = [FNMessage new];
+
+  [TestPublisherContext() performInContext:^{
+    [[inst save] onSuccess:^(FNInstance *value) {
+      if ([value isKindOfClass:[FNMessage class]] &&
+          value.ref &&
+          [value.faunaClass isEqual:@"classes/messages"]) {
+        [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testCreate)];
+      }
+    }];
   }];
 
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];

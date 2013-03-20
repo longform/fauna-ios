@@ -83,7 +83,7 @@
     }
   }];
 
-  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:2.0];
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:3.0];
 
   FNContext.defaultContext = nil;
 }
