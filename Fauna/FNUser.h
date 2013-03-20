@@ -9,7 +9,7 @@
 #import "FNResource.h"
 
 @class FNFuture;
-@class FNEventSet;
+@class FNCustomEventSet;
 
 @interface FNUser : FNResource
 
@@ -88,6 +88,6 @@
 /*!
  Returns a custom event set for the resource
  */
-- (FNEventSet *)eventSet:(NSString *)name;
+- (FNCustomEventSet *)eventSet:(NSString *)name;
 
 @end

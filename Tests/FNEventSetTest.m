@@ -9,27 +9,45 @@
 #import <Fauna/FNContext.h>
 #import "FNMessage.h"
 
-@interface FNEventSetTest : GHAsyncTestCase { }
-
+@interface FNEventSetTest : GHAsyncTestCase {
+  FNMessage *msg1;
+  FNMessage *comment1;
+  FNMessage *msg2;
+  FNMessage *comment2;
+}
 @end
 
 @implementation FNEventSetTest
 
-- (void)testPage {
+- (void)setUpClass {
   [FNResource registerClass:[FNMessage class]];
 
   [TestPublisherContext() performInContext:^{
-    FNMessage *msg = [FNMessage new];
-    msg.text = @"hey there";
-    msg = [msg save].get;
+    msg1 = [FNMessage new];
+    msg1.text = @"hey there";
+    msg1 = [msg1 save].get;
 
-    FNMessage *comment = [FNMessage new];
-    comment.text = @"why, hello!";
-    comment = [comment save].get;
+    comment1 = [FNMessage new];
+    comment1.text = @"why, hello!";
+    comment1 = [comment1 save].get;
 
-    [[msg.comments add:comment] get];
+    [[msg1.comments add:comment1] get];
 
-    FNEventSetPage *page = [msg.comments pageBefore:FNLast].get;
+    msg2 = [FNMessage new];
+    msg2.text = @"sup";
+    msg2 = [msg2 save].get;
+
+    comment2 = [FNMessage new];
+    comment2.text = @"word";
+    comment2 = [comment2 save].get;
+
+    [[msg2.comments add:comment2] get];
+  }];
+}
+
+- (void)testBasics {
+  [TestPublisherContext() performInContext:^{
+    FNEventSetPage *page = [msg1.comments pageBefore:FNLast].get;
     NSArray *events = page.events;
     FNEvent *event = events[0];
     FNFuture *resources = page.resources;
@@ -41,11 +59,44 @@
     GHAssertTrue(page.creates == 1, @"Should contain a create count.");
     GHAssertTrue(page.updates == 0, @"Should contain an update count.");
     GHAssertTrue(page.deletes == 0, @"Should contain a delete count.");
-    GHAssertTrue([event.ref isEqualToString:comment.ref], @"event's ref should point to the comment");
-    GHAssertTrue([((FNMessage *)event.resource.get).text isEqual:comment.text], @"resources are the same.");
+    GHAssertTrue([event.ref isEqualToString:comment1.ref], @"event's ref should point to the comment");
+    GHAssertTrue([((FNMessage *)event.resource.get).text isEqual:comment1.text], @"resources are the same.");
   }];
 }
 
+- (void)testQueries {
+  [TestPublisherContext() performInContext:^{
+    FNQueryEventSet *set = FNUnion(msg1.comments, msg2.comments);
+    NSString *query = [NSString stringWithFormat:@"union('%@','%@')", msg1.comments.ref, msg2.comments.ref];
+    FNEventSetPage *creates = [set createsBefore:FNLast].get;
 
+    GHAssertTrue(creates.events.count == 2, @"should contain the correct number of creates.");
+    GHAssertEqualStrings(set.query, query, @"should have a correct query.");
+  }];
+}
+
+- (void)testJoinStringGeneration {
+  FNQueryEventSet *q = FNJoin(@"publisher/sets/foo", @"sets/bar", @"sets/baz");
+  GHAssertEqualStrings(q.query, @"join('publisher/sets/foo','sets/bar','sets/baz')", @"query");
+  GHAssertEqualStrings(q.ref, @"query?query=join('publisher/sets/foo','sets/bar','sets/baz')", @"ref");
+}
+
+- (void)testUnionStringGeneration {
+  FNQueryEventSet *q = FNUnion(@"publisher/sets/foo", @"users/self/sets/bar");
+  GHAssertEqualStrings(q.query, @"union('publisher/sets/foo','users/self/sets/bar')", @"query");
+  GHAssertEqualStrings(q.ref, @"query?query=union('publisher/sets/foo','users/self/sets/bar')", @"ref");
+}
+
+- (void)testIntersectionStringGeneration {
+  FNQueryEventSet *q = FNIntersection(@"publisher/sets/foo", @"users/self/sets/bar");
+  GHAssertEqualStrings(q.query, @"intersection('publisher/sets/foo','users/self/sets/bar')", @"query");
+  GHAssertEqualStrings(q.ref, @"query?query=intersection('publisher/sets/foo','users/self/sets/bar')", @"ref");
+}
+
+- (void)testDifferenceStringGeneration {
+  FNQueryEventSet *q = FNDifference(@"publisher/sets/foo", @"users/self/sets/bar");
+  GHAssertEqualStrings(q.query, @"difference('publisher/sets/foo','users/self/sets/bar')", @"query");
+  GHAssertEqualStrings(q.ref, @"query?query=difference('publisher/sets/foo','users/self/sets/bar')", @"ref");
+}
 
 @end

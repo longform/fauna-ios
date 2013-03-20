@@ -11,6 +11,18 @@
 
 @class FNFuture;
 
+@class FNEventSet;
+
+@class FNQueryEventSet;
+
+#define FNJoin(base, ...) ([[FNQueryEventSet alloc] initWithQueryFunction:@"join" parameters:@[(base), ##__VA_ARGS__ ]])
+
+#define FNIntersection(first, ...) ([[FNQueryEventSet alloc] initWithQueryFunction:@"intersection" parameters:@[(first), ##__VA_ARGS__ ]])
+
+#define FNUnion(first, ...) ([[FNQueryEventSet alloc] initWithQueryFunction:@"union" parameters:@[(first), ##__VA_ARGS__ ]])
+
+#define FNDifference(first, ...) ([[FNQueryEventSet alloc] initWithQueryFunction:@"difference" parameters:@[(first), ##__VA_ARGS__ ]])
+
 @interface FNEventSet : NSObject
 
 @property (nonatomic, readonly) NSString *ref;
@@ -19,7 +31,7 @@
 
 - (id)initWithRef:(NSString *)ref;
 
-+ (FNEventSet *)eventSetWithRef:(NSString *)ref;
++ (instancetype)eventSetWithRef:(NSString *)ref;
 
 #pragma mark Public methods
 
@@ -46,6 +58,22 @@
 - (FNFuture *)updatesAfter:(FNTimestamp)after;
 
 - (FNFuture *)updatesAfter:(FNTimestamp)after count:(NSInteger)count;
+
+@end
+
+@interface FNQueryEventSet : FNEventSet
+
+@property (nonatomic, readonly) NSString *function;
+
+@property (nonatomic, readonly) NSArray *parameters;
+
+@property (nonatomic, readonly) NSString *query;
+
+- (id)initWithQueryFunction:(NSString *)function parameters:(NSArray *)parameters;
+
+@end
+
+@interface FNCustomEventSet : FNEventSet
 
 - (FNFuture *)add:(FNResource *)resource;
 

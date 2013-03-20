@@ -11,6 +11,12 @@
 #import "FNEventSet.h"
 #import "NSArray+FNFunctionalEnumeration.h"
 
+@interface FNEventSet ()
+
+@property (nonatomic) NSString *ref;
+
+@end
+
 @implementation FNEventSet
 
 #pragma mark lifecycle
@@ -77,6 +83,70 @@
   return [self eventsWithBefore:-1 after:after count:count filter:@"updates"];
 }
 
+#pragma mark Private methods
+
+- (NSMutableDictionary *)baseParams {
+  return [NSMutableDictionary new];
+}
+
+- (FNFuture *)eventsWithBefore:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count filter:(NSString *)filter {
+  NSString *fullRef = filter ? [self.ref stringByAppendingFormat:@"/%@", filter] : self.ref;
+  NSMutableDictionary *params = self.baseParams;
+
+  if (before > -1) params[@"before"] = FNTimestampToNSNumber(before);
+  if (after > -1) params[@"after"] = FNTimestampToNSNumber(after);
+  if (count > -1) params[@"count"] = @(count);
+
+  return [[FNContext get:fullRef parameters:params] map:^(NSDictionary *dict) {
+    return [FNEventSetPage resourceWithDictionary:dict];
+  }];
+}
+
+@end
+
+@implementation FNQueryEventSet
+
+- (id)initWithQueryFunction:(NSString *)function parameters:(NSArray *)parameters {
+  self = [super init];
+  if (self) {
+    _function = function;
+    _parameters = parameters;
+    _query = self.generateQuery;
+  }
+  return self;
+}
+
+-(NSString *)ref {
+  if (!super.ref) self.ref = [NSString stringWithFormat:@"query?query=%@", self.query];
+  return super.ref;
+}
+
+#pragma mark Private methods
+
+- (NSString *)generateQuery {
+  NSMutableArray *ps = [NSMutableArray arrayWithCapacity:self.parameters.count + 1];
+
+  for (id param in self.parameters) {
+    if ([param isKindOfClass:[FNQueryEventSet class]]) {
+      [ps addObject:((FNQueryEventSet *)param).query];
+    } else if ([param isKindOfClass:[FNEventSet class]]) {
+      [ps addObject:[NSString stringWithFormat:@"'%@'", ((FNEventSet *)param).ref]];
+    } else {
+      [ps addObject:[NSString stringWithFormat:@"'%@'", param]];
+    }
+  }
+
+  return [NSString stringWithFormat:@"%@(%@)", self.function, [ps componentsJoinedByString:@","]];
+}
+
+- (NSMutableDictionary *)baseParams {
+  return [NSMutableDictionary dictionaryWithObject:self.query forKey:@"query"];
+}
+
+@end
+
+@implementation FNCustomEventSet
+
 - (FNFuture *)add:(FNResource *)resource {
   return [self addRef:resource.ref];
 }
@@ -94,25 +164,6 @@
 - (FNFuture *)removeRef:(NSString *)ref {
   return [[FNContext delete:self.ref parameters:@{@"resource": ref}] map:^(NSDictionary *dict) {
     return [FNResource resourceWithDictionary:dict];
-  }];
-}
-
-#pragma mark Private methods
-
-- (NSMutableDictionary *)baseParams {
-  return [NSMutableDictionary new];
-}
-
-- (FNFuture *)eventsWithBefore:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count filter:(NSString *)filter {
-  NSString *fullRef = filter ? [self.ref stringByAppendingFormat:@"/%@", filter] : self.ref;
-  NSMutableDictionary *params = self.baseParams;
-
-  if (before > -1) params[@"before"] = FNTimestampToNSNumber(before);
-  if (after > -1) params[@"after"] = FNTimestampToNSNumber(after);
-  if (count > -1) params[@"count"] = @(count);
-
-  return [[FNContext get:fullRef parameters:params] map:^(NSDictionary *dict) {
-    return [FNEventSetPage resourceWithDictionary:dict];
   }];
 }
 

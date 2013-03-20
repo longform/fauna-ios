@@ -14,16 +14,12 @@ NSException * FNInvalidFutureValue(NSString *format, ...);
 
 NSException * FNFutureAlreadyCompleted(NSString *method, id value);
 
-FOUNDATION_EXPORT NSObject * const FNUnit;
-
 FNFuture * FNAccumulate(NSArray *futures, id seed, id (^accumulator)(id accum, id value));
 
 /*!
  Returns a new future that contains an array of the results of the passed in array of futures.
  */
 FNFuture * FNSequence(NSArray *futures);
-
-FNFuture * FNJoin(NSArray *futures);
 
 @interface FNFuture : NSObject
 

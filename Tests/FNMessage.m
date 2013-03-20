@@ -22,7 +22,7 @@
   self.data[@"text"] = text;
 }
 
-- (FNEventSet *)comments {
+- (FNCustomEventSet *)comments {
   return [self eventSet:@"comments"];
 }
 

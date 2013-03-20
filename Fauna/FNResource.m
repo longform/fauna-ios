@@ -229,8 +229,8 @@ static void FNInitClassRegistry() {
   self.dictionary[FNReferencesJSONKey] = references;
 }
 
-- (FNEventSet *)eventSet:(NSString *)name {
-  return [FNEventSet eventSetWithRef:[self.ref stringByAppendingFormat:@"/sets/%@", name]];
+- (FNCustomEventSet *)eventSet:(NSString *)name {
+  return [FNCustomEventSet eventSetWithRef:[self.ref stringByAppendingFormat:@"/sets/%@", name]];
 }
 
 - (FNEventSet *)internalEventSet:(NSString *)name {

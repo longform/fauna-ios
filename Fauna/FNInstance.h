@@ -8,7 +8,7 @@
 
 #import "FNResource.h"
 
-@class FNEventSet;
+@class FNCustomEventSet;
 
 @interface FNInstance : FNResource
 
@@ -34,6 +34,6 @@
 /*!
  Returns a custom event set for the resource
  */
-- (FNEventSet *)eventSet:(NSString *)name;
+- (FNCustomEventSet *)eventSet:(NSString *)name;
 
 @end

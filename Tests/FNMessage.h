@@ -14,6 +14,6 @@
 
 - (void)setText:(NSString *)text;
 
-- (FNEventSet *)comments;
+- (FNCustomEventSet *)comments;
 
 @end

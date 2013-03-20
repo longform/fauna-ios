@@ -24,8 +24,6 @@ NSException * FNFutureAlreadyCompleted(NSString *method, id value) {
   return [NSException exceptionWithName:@"FNFutureAlreadyCompleted" reason:reason userInfo:@{}];
 }
 
-NSObject * const FNUnit = @"__FNUnit__";
-
 static FNFuture * FNAccumulateHelper(NSArray *futures, int idx, id seed, id (^accumulator)(id accum, id value)) {
   if (idx >= futures.count) {
     return [FNFuture value:seed];
@@ -44,12 +42,6 @@ FNFuture * FNSequence(NSArray *futures) {
   return FNAccumulate(futures, [NSMutableArray arrayWithCapacity:futures.count], ^id(NSMutableArray *arr, id value) {
     [arr addObject:value];
     return arr;
-  });
-}
-
-FNFuture * FNJoin(NSArray *futures) {
-  return FNAccumulate(futures, FNUnit, ^id(id accum, id value) {
-    return FNUnit;
   });
 }
 
