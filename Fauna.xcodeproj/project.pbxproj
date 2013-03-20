@@ -25,6 +25,9 @@
 		07F28A6916C37143006EE2A8 /* FNResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6816C37143006EE2A8 /* FNResource.m */; };
 		07F28A6A16C37B17006EE2A8 /* FNInstance.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6416C36FEF006EE2A8 /* FNInstance.h */; };
 		07F28A6B16C37B17006EE2A8 /* FNResource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07F28A6716C37143006EE2A8 /* FNResource.h */; };
+		0C73421A16FA3F3B0007796B /* FNSQLiteCacheTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C73421916FA3F3B0007796B /* FNSQLiteCacheTest.m */; };
+		0C73421B16FA400E0007796B /* FNSQLiteCache.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0CF0FACB16F925890081E7F5 /* FNSQLiteCache.h */; };
+		0CF0FACD16F925890081E7F5 /* FNSQLiteCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0FACC16F925890081E7F5 /* FNSQLiteCache.m */; };
 		AC06AA8916EE9336006BECBD /* FNFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8416EE9336006BECBD /* FNFuture.m */; };
 		AC06AA8A16EE9336006BECBD /* FNMutableFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8616EE9336006BECBD /* FNMutableFuture.m */; };
 		AC06AA8B16EE9336006BECBD /* FNValueFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = AC06AA8816EE9336006BECBD /* FNValueFuture.m */; };
@@ -85,6 +88,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				AC59B2AE16F91B7200026D37 /* FNEventSet.h in CopyFiles */,
+				0C73421B16FA400E0007796B /* FNSQLiteCache.h in CopyFiles */,
 				AC30BDE116F3F8EA00B47081 /* FNPublisher.h in CopyFiles */,
 				AC72123F16F1193100190261 /* FNClient.h in CopyFiles */,
 				AC896F4D16EFE5F9008C6F7B /* FNValueFuture.h in CopyFiles */,
@@ -131,6 +135,10 @@
 		07F28A6516C36FEF006EE2A8 /* FNInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNInstance.m; sourceTree = "<group>"; };
 		07F28A6716C37143006EE2A8 /* FNResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNResource.h; sourceTree = "<group>"; };
 		07F28A6816C37143006EE2A8 /* FNResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNResource.m; sourceTree = "<group>"; };
+		0C73421916FA3F3B0007796B /* FNSQLiteCacheTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNSQLiteCacheTest.m; sourceTree = "<group>"; };
+		0CF0FACB16F925890081E7F5 /* FNSQLiteCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNSQLiteCache.h; sourceTree = "<group>"; };
+		0CF0FACC16F925890081E7F5 /* FNSQLiteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNSQLiteCache.m; sourceTree = "<group>"; };
+		0CF0FACE16FA3C4A0081E7F5 /* FNCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FNCache.h; sourceTree = "<group>"; };
 		AC06AA8316EE9336006BECBD /* FNFuture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNFuture.h; sourceTree = "<group>"; };
 		AC06AA8416EE9336006BECBD /* FNFuture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNFuture.m; sourceTree = "<group>"; };
 		AC06AA8516EE9336006BECBD /* FNMutableFuture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNMutableFuture.h; sourceTree = "<group>"; };
@@ -287,8 +295,11 @@
 		0786693416A8CE7E00B3639C /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				0786693616A8CEC000B3639C /* FaunaCache.h */,
+				0CF0FACE16FA3C4A0081E7F5 /* FNCache.h */,
 				0786693716A8CEC000B3639C /* FaunaCache.m */,
+				0786693616A8CEC000B3639C /* FaunaCache.h */,
+				0CF0FACB16F925890081E7F5 /* FNSQLiteCache.h */,
+				0CF0FACC16F925890081E7F5 /* FNSQLiteCache.m */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -349,6 +360,7 @@
 				AC72123D16F118E400190261 /* FNClientTest.m */,
 				AC43BA5616F2EE45004958BD /* FNContextTest.m */,
 				AC06AA8C16EE934A006BECBD /* FNFutureTest.m */,
+				0C73421916FA3F3B0007796B /* FNSQLiteCacheTest.m */,
 				AC30BD8E16F390A400B47081 /* FNInstanceTest.m */,
 				AC5538B016F303CC00E450E8 /* FNUserTest.m */,
 				AC59B2B016F92CE600026D37 /* FNEventSetTest.m */,
@@ -497,6 +509,7 @@
 				AC30BDE016F3F63B00B47081 /* FNPublisher.m in Sources */,
 				AC59B2AD16F8FC4600026D37 /* FNEventSet.m in Sources */,
 				ACADB88116FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.m in Sources */,
+				0CF0FACD16F925890081E7F5 /* FNSQLiteCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +526,7 @@
 				ACBA467516F8D8B6000F2A3B /* FNTestHelper.m in Sources */,
 				AC59B2B116F92CE600026D37 /* FNEventSetTest.m in Sources */,
 				AC59B2B416F92E8E00026D37 /* FNMessage.m in Sources */,
+				0C73421A16FA3F3B0007796B /* FNSQLiteCacheTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
