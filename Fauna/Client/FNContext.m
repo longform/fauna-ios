@@ -19,6 +19,8 @@
 #import "FNFuture.h"
 #import "FNError.h"
 #import "FNClient.h"
+#import "FNCache.h"
+#import "FNSQLiteCache.h"
 #import "NSString+FNBase64Encoding.h"
 
 NSString * const FNFutureScopeContextKey = @"FNContext";
@@ -28,6 +30,8 @@ static FNContext* _defaultContext;
 @interface FNContext ()
 
 @property (nonatomic, readonly) FNClient *client;
+@property (nonatomic, readonly) FNContext *parent;
+@property (nonatomic, readonly) NSObject<FNCache> *cache;
 
 @end
 
@@ -35,12 +39,18 @@ static FNContext* _defaultContext;
 
 # pragma mark lifecycle
 
-- (id)initWithClient:(FNClient *)client {
+- (id)initWithClient:(FNClient *)client parent:(FNContext*)parent cache:(NSObject<FNCache>*)cache {
   self = [super init];
   if (self) {
     _client = client;
+    _parent = parent;
+    _cache = cache;
   }
   return self;
+}
+
+- (id)initWithClient:(FNClient *)client {
+  return [self initWithClient:client parent:nil cache:[FNSQLiteCache persistentCacheWithName:[client getAuthHash]]];
 }
 
 - (id)initWithKey:(NSString*)keyString {
@@ -111,6 +121,11 @@ static FNContext* _defaultContext;
   }
 }
 
+- (id)transient:(id (^)(void))block {
+  FNContext *child = [[FNContext alloc] initWithClient:self.client parent:self cache:[FNSQLiteCache volatileCache]];
+  return [child inContext:block];
+}
+
 + (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters {
   return [[self.currentOrRaise.client get:path parameters:parameters]
@@ -125,9 +140,13 @@ static FNContext* _defaultContext;
 
 + (FNFuture *)post:(NSString *)path
         parameters:(NSDictionary *)parameters {
-  return [[self.currentOrRaise.client post:path parameters:parameters]
-          map:^(FNResponse *response) {
-    return response.resource;
+  FNContext* context = self.currentOrRaise;
+
+  return [context cacheResourceResponse:^() {
+    return [[context.client post:path parameters:parameters]
+            map:^(FNResponse *response) {
+      return response.resource;
+    }];
   }];
 }
 
@@ -137,9 +156,13 @@ static FNContext* _defaultContext;
 
 + (FNFuture *)put:(NSString *)path
        parameters:(NSDictionary *)parameters {
-  return [[self.currentOrRaise.client put:path parameters:parameters]
-          map:^(FNResponse *response) {
-    return response.resource;
+  FNContext *context = self.currentOrRaise;
+
+  return [context cacheResourceResponse:^() {
+    return [[context.client put:path parameters:parameters]
+            map:^(FNResponse *response) {
+      return response.resource;
+    }];
   }];
 }
 
@@ -176,6 +199,30 @@ static FNContext* _defaultContext;
     scope[FNFutureScopeContextKey] = ctx;
   } else {
     [scope removeObjectForKey:FNFutureScopeContextKey];
+  }
+}
+
+# pragma mark Private cache methods
+
+- (FNFuture *)cacheResourceResponse:(FNFuture* (^)(void))block {
+  return [block() flatMap:^(NSDictionary *res) {
+    // TODO: Assert res[@"ref"] exists;
+    if (res) {
+      return [self propogateToCachesWithRef:res[@"ref"] dict:res];
+    } else {
+      return [FNFuture value:res];
+    }
+  }];
+}
+
+- (FNFuture *)propogateToCachesWithRef:(NSString*)ref dict:(NSDictionary *)dict {
+  FNFuture *localCacheCompletion = [self.cache putWithKey:ref dictionary:dict];
+  if (self.parent) {
+    return [FNSequence(@[localCacheCompletion, [self.parent propogateToCachesWithRef:ref dict:dict]]) map:^(NSArray* rv) {
+      return rv[0];
+    }];
+  } else {
+    return [FNFuture value:dict];
   }
 }
 

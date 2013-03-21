@@ -23,6 +23,7 @@
 typedef int SQLITE_STATUS;
 static int const kRefColumnOrdinal = 1;
 static int const kDataColumnOrdinal = 2;
+static int const kCreatedAtColumnOrdinal = 3;
 
 @interface FNSQLiteCache () {
   sqlite3 *database;
@@ -84,10 +85,10 @@ static int const kDataColumnOrdinal = 2;
 - (BOOL)createTables {
   // Creates the Resources table.
   SQLITE_STATUS status = sqlite3_exec(database,
-               "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB)",
+               "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, CREATED_AT INTEGER)",
                NULL, NULL, NULL);
   if(status != SQLITE_OK) {
-    NSLog(@"FaunaCache: failed to create table");
+    NSLog(@"FNCache: failed to create table");
     return NO;
   }
   return YES;
@@ -139,6 +140,12 @@ static int const kDataColumnOrdinal = 2;
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
     }
+
+    // TODO: CLEAN UP OLD DB IN TESTS?
+/*    status = sqlite3_bind_int64(stmt, kCreatedAtColumnOrdinal, FNTimestampFromNSDate([NSDate date]));
+    if (status != SQLITE_OK) {
+      return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
+    } */
 
     return (id)[self executeNextStep:stmt];
   }];

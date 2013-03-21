@@ -55,6 +55,8 @@ FOUNDATION_EXPORT NSString * const FaunaAPIVersion;
  */
 - (id)initWithPublisherEmail:(NSString *)email password:(NSString *)password;
 
+- (NSString*) getAuthHash;
+
 /*!
  Returns a new Client that masquerades as a specific user. Only valid if this Client was initialized with a publisher key.
  @param userRef the ref of the user to masquerade as (e.g. 'users/123')
