@@ -20,7 +20,7 @@
 #import "FNFuture.h"
 #import "FNRequestOperation.h"
 #import "FNMutableFuture.h"
-#import "NSObject+FNBlockObservation.h"
+#import "FNNetworkStatus.h"
 #import "NSString+FNStringExtensions.h"
 #import "NSDictionary+FNDictionaryExtensions.h"
 
@@ -35,6 +35,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 - (id)initWithResource:(NSDictionary *)resource references:(NSDictionary *)references {
   self = [super init];
   if (self) {
+    [FNNetworkStatus start];
     _resource = resource;
     _references = references;
   }
@@ -142,7 +143,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   }];
 }
 
-+ (NSOperationQueue *)operationQueue {
++ (NSOperationQueue *)sharedOperationQueue {
   static NSOperationQueue *queue = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -195,7 +196,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 
 + (FNFuture *)performRequest:(NSURLRequest *)request {
   FNRequestOperation *op = [[FNRequestOperation alloc] initWithRequest:request];
-  [self.operationQueue addOperation:op];
+  [self.sharedOperationQueue addOperation:op];
   return op.future;
 }
 
