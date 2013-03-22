@@ -37,24 +37,24 @@
 		07E2458616A2D3D0007B6CFE /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07E2458316A2D3D0007B6CFE /* SVProgressHUD.bundle */; };
 		07E2458716A2D3D0007B6CFE /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */; };
 		07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E2458816A2D3EF007B6CFE /* QuartzCore.framework */; };
-		AC95948616FCFA0D006EA3E2 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC95948316FCF9DC006EA3E2 /* libFauna.a */; };
 		AC95948816FCFA0D006EA3E2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC95948716FCFA0D006EA3E2 /* SystemConfiguration.framework */; };
 		AC95948B16FCFCC4006EA3E2 /* FaunaChatClientKey.m in Sources */ = {isa = PBXBuildFile; fileRef = AC95948A16FCFCC4006EA3E2 /* FaunaChatClientKey.m */; };
 		AC95948E16FCFFAA006EA3E2 /* FaunaChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AC95948D16FCFFAA006EA3E2 /* FaunaChatMessage.m */; };
 		AC95949116FCFFEC006EA3E2 /* FaunaChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = AC95949016FCFFEC006EA3E2 /* FaunaChatUser.m */; };
+		AC95949C16FD223C006EA3E2 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC95949916FD2234006EA3E2 /* libFauna.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AC95948216FCF9DC006EA3E2 /* PBXContainerItemProxy */ = {
+		AC95949816FD2234006EA3E2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = AC95947D16FCF9DC006EA3E2 /* Fauna.xcodeproj */;
+			containerPortal = AC95949316FD2233006EA3E2 /* Fauna.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 074CF7901678713F00686606;
 			remoteInfo = Fauna;
 		};
-		AC95948416FCF9DC006EA3E2 /* PBXContainerItemProxy */ = {
+		AC95949A16FD2234006EA3E2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = AC95947D16FCF9DC006EA3E2 /* Fauna.xcodeproj */;
+			containerPortal = AC95949316FD2233006EA3E2 /* Fauna.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = ACDEDB6816E80DC7005B2B73;
 			remoteInfo = Tests;
@@ -107,7 +107,6 @@
 		07E2458816A2D3EF007B6CFE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AC543AF716EE50E900EEB8E8 /* fauna_example_config.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = fauna_example_config.rb; sourceTree = "<group>"; };
 		AC543AF816EE526400EEB8E8 /* FaunaCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCredentials.h; sourceTree = "<group>"; };
-		AC95947D16FCF9DC006EA3E2 /* Fauna.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fauna.xcodeproj; path = ../Fauna.xcodeproj; sourceTree = "<group>"; };
 		AC95948716FCFA0D006EA3E2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		AC95948916FCFCC4006EA3E2 /* FaunaChatClientKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatClientKey.h; sourceTree = "<group>"; };
 		AC95948A16FCFCC4006EA3E2 /* FaunaChatClientKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatClientKey.m; sourceTree = "<group>"; };
@@ -115,6 +114,7 @@
 		AC95948D16FCFFAA006EA3E2 /* FaunaChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatMessage.m; sourceTree = "<group>"; };
 		AC95948F16FCFFEC006EA3E2 /* FaunaChatUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatUser.h; sourceTree = "<group>"; };
 		AC95949016FCFFEC006EA3E2 /* FaunaChatUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatUser.m; sourceTree = "<group>"; };
+		AC95949316FD2233006EA3E2 /* Fauna.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fauna.xcodeproj; path = ../../Fauna.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,8 +122,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC95949C16FD223C006EA3E2 /* libFauna.a in Frameworks */,
 				AC95948816FCFA0D006EA3E2 /* SystemConfiguration.framework in Frameworks */,
-				AC95948616FCFA0D006EA3E2 /* libFauna.a in Frameworks */,
 				0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */,
 				07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */,
 				074CF6C0167855AD00686606 /* UIKit.framework in Frameworks */,
@@ -138,7 +138,7 @@
 		074CF6B0167855AD00686606 = {
 			isa = PBXGroup;
 			children = (
-				AC95947D16FCF9DC006EA3E2 /* Fauna.xcodeproj */,
+				AC95949316FD2233006EA3E2 /* Fauna.xcodeproj */,
 				074CF6C5167855AD00686606 /* FaunaChat */,
 				074CF6BE167855AD00686606 /* Frameworks */,
 				074CF6BC167855AD00686606 /* Products */,
@@ -250,11 +250,11 @@
 			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
-		AC95947E16FCF9DC006EA3E2 /* Products */ = {
+		AC95949416FD2233006EA3E2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AC95948316FCF9DC006EA3E2 /* libFauna.a */,
-				AC95948516FCF9DC006EA3E2 /* Tests.app */,
+				AC95949916FD2234006EA3E2 /* libFauna.a */,
+				AC95949B16FD2234006EA3E2 /* Tests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -302,8 +302,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = AC95947E16FCF9DC006EA3E2 /* Products */;
-					ProjectRef = AC95947D16FCF9DC006EA3E2 /* Fauna.xcodeproj */;
+					ProductGroup = AC95949416FD2233006EA3E2 /* Products */;
+					ProjectRef = AC95949316FD2233006EA3E2 /* Fauna.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -314,18 +314,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		AC95948316FCF9DC006EA3E2 /* libFauna.a */ = {
+		AC95949916FD2234006EA3E2 /* libFauna.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFauna.a;
-			remoteRef = AC95948216FCF9DC006EA3E2 /* PBXContainerItemProxy */;
+			remoteRef = AC95949816FD2234006EA3E2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		AC95948516FCF9DC006EA3E2 /* Tests.app */ = {
+		AC95949B16FD2234006EA3E2 /* Tests.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = Tests.app;
-			remoteRef = AC95948416FCF9DC006EA3E2 /* PBXContainerItemProxy */;
+			remoteRef = AC95949A16FD2234006EA3E2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
