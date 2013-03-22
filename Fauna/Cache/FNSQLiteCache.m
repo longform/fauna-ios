@@ -129,7 +129,7 @@ static int const kCreatedAtColumnOrdinal = 3;
 
 - (FNFuture*)putWithKey:(NSString*)key dictionary:(NSDictionary*)dict {
   // TOOD: Assert?
-  return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA) VALUES (?, ?)" perform:^(sqlite3_stmt* stmt) {
+  return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)" perform:^(sqlite3_stmt* stmt) {
     SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind key to statement."}];
@@ -141,11 +141,10 @@ static int const kCreatedAtColumnOrdinal = 3;
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
     }
 
-    // TODO: CLEAN UP OLD DB IN TESTS?
-/*    status = sqlite3_bind_int64(stmt, kCreatedAtColumnOrdinal, FNTimestampFromNSDate([NSDate date]));
+    status = sqlite3_bind_int64(stmt, kCreatedAtColumnOrdinal, FNTimestampFromNSDate([NSDate date]));
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
-    } */
+    }
 
     return (id)[self executeNextStep:stmt];
   }];

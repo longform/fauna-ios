@@ -46,7 +46,7 @@
   [self prepare];
 
   NSString const *testKey = @"testKey";
-  NSString const *testFilename = @"test-cache";
+  NSString const *testFilename = TestUniqueID();
 
   FNSQLiteCache *cache = [FNSQLiteCache persistentCacheWithName:testFilename];
   NSDictionary *dict = @{@"test": @"sup"};
