@@ -33,6 +33,11 @@
 + (FNFuture *)getSelfConfig;
 
 /*!
+ Change the current user's password.
+ */
++ (FNFuture *)changeSelfPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword confirmation:(NSString *)confirmation;
+
+/*!
  Returns an authentication token for a user identified by email and password. The token may be used to construct an a FNContext to make requests on behalf of the user.
  @param email the user's email
  @param password the user's password

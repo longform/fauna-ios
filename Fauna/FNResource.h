@@ -58,6 +58,12 @@ FOUNDATION_EXPORT NSString * const FNPasswordConfirmationJSONKey;
 + (void)registerClass:(Class)class;
 
 /*!
+ Resets the clobal class registry to the default state and then registers the given classes.
+ @param array of classes to register. Must conform to the requirements of +registerClass, above.
+ */
++ (void)registerClasses:(NSArray *)classes;
+
+/*!
  Resets the global class registry to the default state.
  */
 + (void)resetDefaultClasses;

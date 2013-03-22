@@ -102,6 +102,14 @@ static void FNInitClassRegistry() {
   FNResourceClassRegistry[class.faunaClass] = class;
 }
 
++ (void)registerClasses:(NSArray *)classes {
+  [self resetDefaultClasses];
+
+  for (Class cls in classes) {
+    [self registerClass:cls];
+  }
+}
+
 + (void)resetDefaultClasses {
   FNResourceClassRegistry = [NSMutableDictionary new];
   FNResourceClassRegistry[@"classes/config"] = [FNResource class];

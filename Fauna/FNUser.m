@@ -33,6 +33,18 @@
   return [FNResource get:@"users/self/config"];
 }
 
++ (FNFuture *)changeSelfPassword:(NSString *)password newPassword:(NSString *)newPassword confirmation:(NSString *)confirmation {
+  NSDictionary *params = @{
+    @"password": password,
+    @"new_password": newPassword,
+    @"new_password_confirmation": confirmation
+  };
+
+  return [[FNContext put:@"users/self/config/password" parameters:params] map:^id(id value) {
+    return @YES;
+  }];
+}
+
 + (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password {
   return [[FNContext post:@"tokens"
                parameters:@{@"email": email, @"password": password}]
