@@ -38,8 +38,8 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   self = [super init];
   if (self) {
     [FNNetworkStatus start];
-    _resource = resource;
-    _references = references;
+    _resource = resource ?: @{};
+    _references = references ?: @{};
   }
   return self;
 }

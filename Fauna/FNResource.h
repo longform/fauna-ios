@@ -28,21 +28,6 @@ FNTimestamp FNTimestampFromNSDate(NSDate *date);
 NSNumber * FNTimestampToNSNumber(FNTimestamp ts);
 FNTimestamp FNTimestampFromNSNumber(NSNumber *number);
 
-// Fauna class names
-FOUNDATION_EXPORT NSString * const FNUserClassName;
-
-// Resource JSON keys
-FOUNDATION_EXPORT NSString * const FNClassJSONKey;
-FOUNDATION_EXPORT NSString * const FNRefJSONKey;
-FOUNDATION_EXPORT NSString * const FNTimestampJSONKey;
-FOUNDATION_EXPORT NSString * const FNUniqueIDJSONKey;
-FOUNDATION_EXPORT NSString * const FNDataJSONKey;
-FOUNDATION_EXPORT NSString * const FNReferencesJSONKey;
-FOUNDATION_EXPORT NSString * const FNIsDeletedJSONKey;
-
-FOUNDATION_EXPORT NSString * const FNEmailJSONKey;
-FOUNDATION_EXPORT NSString * const FNPasswordJSONKey;
-FOUNDATION_EXPORT NSString * const FNPasswordConfirmationJSONKey;
 @interface FNResource : NSObject
 
 /*!

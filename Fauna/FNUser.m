@@ -22,7 +22,7 @@
 @implementation FNUser
 
 + (NSString *)faunaClass {
-  return FNUserClassName;
+  return @"users";
 }
 
 + (FNFuture *)getSelf {
@@ -40,9 +40,7 @@
     @"new_password_confirmation": confirmation
   };
 
-  return [[FNContext put:@"users/self/config/password" parameters:params] map:^id(id value) {
-    return @YES;
-  }];
+  return [FNContext put:@"users/self/config/password" parameters:params].done;
 }
 
 + (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password {
@@ -73,28 +71,16 @@
           }];
 }
 
-- (NSString *)email {
-  return self.dictionary[FNEmailJSONKey];
-}
-
 - (void)setEmail:(NSString *)email {
-  self.dictionary[FNEmailJSONKey] = email;
-}
-
-- (NSString *)password {
-  return self.dictionary[FNPasswordJSONKey];
+  self.dictionary[@"email"] = email;
 }
 
 - (void)setPassword:(NSString *)password {
-  self.dictionary[FNPasswordJSONKey] = password;
+  self.dictionary[@"password"] = password;
 }
 
 - (FNFuture *)config {
   return [FNResource get:[self.ref stringByAppendingString:@"/config"]];
-}
-
-+ (BOOL)allowNewResources {
-  return YES;
 }
 
 @end

@@ -15,12 +15,28 @@
 // specific language governing permissions and limitations under the License.
 //
 
+#import "FNError.h"
+#import "FNFuture.h"
+#import "FNEventSet.h"
+#import "FNContext.h"
 #import "FNInstance.h"
 
 @implementation FNInstance
 
++ (FNEventSet *)all {
+  if (!self.faunaClass) {
+    @throw FNInvalidResourceClass(@"+faunaClass is not defined on %@.", self);
+  }
+
+  return [FNEventSet eventSetWithRef:self.faunaClass];
+}
+
 + (BOOL)allowNewResources {
   return YES;
+}
+
+- (FNFuture *)destroy {
+  return [FNContext delete:self.ref].done;
 }
 
 @end

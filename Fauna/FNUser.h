@@ -15,12 +15,11 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FNResource.h"
+#import "FNInstance.h"
 
 @class FNFuture;
-@class FNCustomEventSet;
 
-@interface FNUser : FNResource
+@interface FNUser : FNInstance
 
 /*!
  Retrieve the current user, if applicable to the current context.
@@ -66,42 +65,20 @@
 + (FNFuture *)contextForUniqueID:(NSString *)uniqueID password:(NSString *)password;
 
 /*!
- (email) the user's email. Set on a new user in order to create with an email address.
+ Set a new user's email. Set on a new user in order to create with an email address.
+ @param email the user's email
  */
-@property (nonatomic) NSString *email;
+- (void)setEmail:(NSString *)email;
 
 /*!
- (password) the user's password. Set on a new user in order to create with a password.
+ Set a new user's password. Set on a new user in order to create with a password.
+ @param password the user's password
  */
-@property (nonatomic) NSString *password;
+- (void)setPassword:(NSString *)password;
 
 /*!
  Retrieve the user's configuration.
  */
 - (FNFuture *)config;
-
-@end
-
-@interface FNUser (StandardFields)
-
-/*!
- (uniqueID) The resource's unique id if present, or nil.
- */
-@property (nonatomic) NSString *uniqueID;
-
-/*!
- (data) The custom data dictionary for the resource.
- */
-@property (nonatomic) NSMutableDictionary *data;
-
-/*!
- (references) The custom references dictionary for the resource.
- */
-@property (nonatomic) NSMutableDictionary *references;
-
-/*!
- Returns a custom event set for the resource
- */
-- (FNCustomEventSet *)eventSet:(NSString *)name;
 
 @end

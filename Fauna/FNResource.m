@@ -47,22 +47,6 @@ FNTimestamp FNTimestampFromNSNumber(NSNumber *number) {
   return number.longLongValue;
 }
 
-// Fauna class names
-NSString * const FNUserClassName = @"users";
-
-// Resource JSON keys
-NSString * const FNClassJSONKey = @"class";
-NSString * const FNRefJSONKey = @"ref";
-NSString * const FNTimestampJSONKey = @"ts";
-NSString * const FNUniqueIDJSONKey = @"unique_id";
-NSString * const FNDataJSONKey = @"data";
-NSString * const FNReferencesJSONKey = @"references";
-NSString * const FNIsDeletedJSONKey = @"deleted";
-
-NSString * const FNEmailJSONKey = @"email";
-NSString * const FNPasswordJSONKey = @"password";
-NSString * const FNPasswordConfirmationJSONKey = @"password_confirmation";
-
 static NSMutableDictionary * FNResourceClassRegistry;
 
 static void FNInitClassRegistry() {
@@ -146,7 +130,7 @@ static void FNInitClassRegistry() {
 
 - (id)initWithClass:(NSString *)faunaClass {
   NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObject:faunaClass
-                                                                 forKey:FNClassJSONKey];
+                                                                 forKey:@"class"];
   return [self initWithMutableDictionary:dict];
 }
 
@@ -169,7 +153,7 @@ static void FNInitClassRegistry() {
 }
 
 + (instancetype)resourceWithDictionary:(NSDictionary *)dictionary {
-  Class class = [self classForFaunaClass:dictionary[FNClassJSONKey]];
+  Class class = [self classForFaunaClass:dictionary[@"class"]];
   return [[class alloc] initWithDictionary:dictionary];
 }
 
@@ -191,59 +175,59 @@ static void FNInitClassRegistry() {
 #pragma mark Fields
 
 - (NSString *)ref {
-  return self.dictionary[FNRefJSONKey];
+  return self.dictionary[@"ref"];
 }
 
 - (NSString *)faunaClass {
-  return self.dictionary[FNClassJSONKey];
+  return self.dictionary[@"class"];
 }
 
 - (FNTimestamp)timestamp {
-  NSNumber *ts = self.dictionary[FNTimestampJSONKey];
+  NSNumber *ts = self.dictionary[@"ts"];
   return ts ? FNTimestampFromNSNumber(ts) : 0;
 }
 
 - (void)setTimestamp:(FNTimestamp)timestamp {
-  self.dictionary[FNTimestampJSONKey] = FNTimestampToNSNumber(timestamp);
+  self.dictionary[@"ts"] = FNTimestampToNSNumber(timestamp);
 }
 
 - (BOOL)isDeleted {
-  NSNumber *deleted = self.dictionary[FNIsDeletedJSONKey];
+  NSNumber *deleted = self.dictionary[@"deleted"];
   return deleted ? deleted.boolValue : NO;
 }
 
 #pragma mark implementations of optional fields
 
 - (NSString *)uniqueID {
-  return self.dictionary[FNUniqueIDJSONKey];
+  return self.dictionary[@"unique_id"];
 }
 
 - (void)setUniqueID:(NSString *)uniqueID {
-  self.dictionary[FNUniqueIDJSONKey] = uniqueID;
+  self.dictionary[@"unique_id"] = uniqueID;
 }
 
 - (NSMutableDictionary *)data {
-  id value = self.dictionary[FNDataJSONKey];
-  NSMutableDictionary *data = FNMutableDictionaryFromValue(value  );
+  id value = self.dictionary[@"data"];
+  NSMutableDictionary *data = FNMutableDictionaryFromValue(value);
 
-  if (data != value) self.dictionary[FNDataJSONKey] = data;
+  if (data != value) self.dictionary[@"data"] = data;
   return data;
 }
 
 - (void)setData:(NSMutableDictionary *)data {
-  self.dictionary[FNDataJSONKey] = data;
+  self.dictionary[@"data"] = data;
 }
 
 - (NSMutableDictionary *)references {
-  id value = self.dictionary[FNReferencesJSONKey];
-  NSMutableDictionary *references = FNMutableDictionaryFromValue(value  );
+  id value = self.dictionary[@"references"];
+  NSMutableDictionary *references = FNMutableDictionaryFromValue(value);
 
-  if (references != value) self.dictionary[FNReferencesJSONKey] = references;
+  if (references != value) self.dictionary[@"references"] = references;
   return references;
 }
 
 - (void)setReferences:(NSMutableDictionary *)references {
-  self.dictionary[FNReferencesJSONKey] = references;
+  self.dictionary[@"references"] = references;
 }
 
 - (FNCustomEventSet *)eventSet:(NSString *)name {

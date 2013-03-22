@@ -17,9 +17,12 @@
 
 #import "FNResource.h"
 
+@class FNEventSet;
 @class FNCustomEventSet;
 
 @interface FNInstance : FNResource
+
+- (FNFuture *)destroy;
 
 @end
 
@@ -44,5 +47,10 @@
  Returns a custom event set for the resource
  */
 - (FNCustomEventSet *)eventSet:(NSString *)name;
+
+/*
+ Returns the set of all resources for this class;
+ */
++ (FNEventSet *)all;
 
 @end

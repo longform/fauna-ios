@@ -119,9 +119,24 @@ FNFuture * FNSequence(NSArray *futures);
 - (FNFuture *)map:(id (^)(id value))block;
 
 /*!
+ Returns a new future that contains the value returned by the provided block. The block will run on future completion on an unspecified thread.
+ */
+- (FNFuture *)map_:(id (^)(void))block;
+
+/*!
+ Returns a new future that will contain the value @YES, or this future's error.
+ */
+- (FNFuture *)done;
+
+/*!
  Returns a new future that contains the result of the future returned by the provided block if this future is successful, or this future's error. The block will run on an unspecified thread.
  */
 - (FNFuture *)flatMap:(FNFuture * (^)(id value))block;
+
+/*!
+ Returns a new future that contains the result of the future returned by the provided block if this future is successful, or this future's error. The block will run on an unspecified thread.
+ */
+- (FNFuture *)flatMap_:(FNFuture * (^)(void))block;
 
 /*!
  Returns a new result object that attempts to recover from errors with the provided block. The block should return a new result object or nil (to propagate the error). The block will run on an unspecified thread.

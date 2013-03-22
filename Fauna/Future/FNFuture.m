@@ -147,10 +147,22 @@ FNFuture * FNSequence(NSArray *futures) {
     return [FNFuture value:mapped]; }];
 }
 
+- (FNFuture *)map_:(id (^)(void))block {
+  return [self map:^(id __unused value) { return block(); }];
+}
+
 - (FNFuture *)flatMap:(FNFuture *(^)(id value))block {
   return [self transform:^FNFuture *(FNFuture *self) {
     return self.value ? block(self.value) : self;
   }];
+}
+
+- (FNFuture *)flatMap_:(FNFuture *(^)(void))block {
+  return [self flatMap:^(id __unused value) { return block(); }];
+}
+
+- (FNFuture *)done {
+  return [self map_:^{ return @YES; }];
 }
 
 - (FNFuture *)rescue:(FNFuture *(^)(NSError *error))block {
