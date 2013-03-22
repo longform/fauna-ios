@@ -24,6 +24,8 @@
 #import "NSString+FNStringExtensions.h"
 #import "NSDictionary+FNDictionaryExtensions.h"
 
+#import <CommonCrypto/CommonDigest.h>
+
 #define API_VERSION @"v1"
 
 NSString * const FaunaAPIVersion = API_VERSION;
@@ -48,6 +50,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 
 @property (nonatomic, readonly) NSString *authString;
 @property (nonatomic, readonly) NSString *authHeaderValue;
+@property (nonatomic, readonly) NSString *authHash;
 
 @end
 
@@ -60,6 +63,10 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   if (self) {
     _authString = authString;
     _authHeaderValue = [@"Basic " stringByAppendingString:authString.base64Encoded];
+
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    CC_SHA1([authString UTF8String], [authString lengthOfBytesUsingEncoding:NSUTF8StringEncoding], digest);
+    _authHash = [NSString stringWithUTF8String:(const char*)digest];
   }
   return self;
 }
@@ -77,6 +84,11 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 }
 
 #pragma mark Public methods
+
+- (NSString*)getAuthHash {
+  // todo: copy?
+  return self.authHash;
+}
 
 - (instancetype)asUser:(NSString *)userRef {
   return [[self.class alloc] initWithKey:self.authString asUser:userRef];

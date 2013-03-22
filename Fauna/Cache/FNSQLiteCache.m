@@ -23,6 +23,7 @@
 typedef int SQLITE_STATUS;
 static int const kRefColumnOrdinal = 1;
 static int const kDataColumnOrdinal = 2;
+static int const kCreatedAtColumnOrdinal = 3;
 
 @interface FNSQLiteCache () {
   sqlite3 *database;
@@ -84,10 +85,10 @@ static int const kDataColumnOrdinal = 2;
 - (BOOL)createTables {
   // Creates the Resources table.
   SQLITE_STATUS status = sqlite3_exec(database,
-               "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB)",
+               "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, CREATED_AT INTEGER)",
                NULL, NULL, NULL);
   if(status != SQLITE_OK) {
-    NSLog(@"FaunaCache: failed to create table");
+    NSLog(@"FNCache: failed to create table");
     return NO;
   }
   return YES;
@@ -128,7 +129,7 @@ static int const kDataColumnOrdinal = 2;
 
 - (FNFuture*)putWithKey:(NSString*)key dictionary:(NSDictionary*)dict {
   // TOOD: Assert?
-  return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA) VALUES (?, ?)" perform:^(sqlite3_stmt* stmt) {
+  return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)" perform:^(sqlite3_stmt* stmt) {
     SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind key to statement."}];
@@ -136,6 +137,11 @@ static int const kDataColumnOrdinal = 2;
 
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
     status = sqlite3_bind_blob(stmt, kDataColumnOrdinal, [data bytes], [data length], SQLITE_TRANSIENT);
+    if (status != SQLITE_OK) {
+      return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
+    }
+
+    status = sqlite3_bind_int64(stmt, kCreatedAtColumnOrdinal, FNTimestampFromNSDate([NSDate date]));
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
     }
