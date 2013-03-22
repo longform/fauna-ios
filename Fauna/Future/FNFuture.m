@@ -141,7 +141,10 @@ FNFuture * FNSequence(NSArray *futures) {
 }
 
 - (FNFuture *)map:(id (^)(id value))block {
-  return [self flatMap:^(id value){ return [FNFuture value:block(value)]; }];
+  return [self flatMap:^(id value){
+    id mapped = block(value);
+    if (!mapped) @throw FNInvalidFutureValue(@"Result of map cannot be nil.");
+    return [FNFuture value:mapped]; }];
 }
 
 - (FNFuture *)flatMap:(FNFuture *(^)(id value))block {

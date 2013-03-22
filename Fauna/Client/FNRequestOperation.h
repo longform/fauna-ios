@@ -1,5 +1,5 @@
 //
-// NSError+FNHTTPErrors.h
+// FNRequestOperation.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,8 +15,22 @@
 // specific language governing permissions and limitations under the License.
 //
 
-@interface NSError (FNHTTPErrors)
+#import <Foundation/Foundation.h>
 
-- (NSHTTPURLResponse *)HTTPResponse;
+@class FNFuture;
+
+@interface FNRequestOperation : NSOperation <NSURLConnectionDelegate>
+
+@property (readonly) BOOL isExecuting;
+@property (readonly) BOOL isFinished;
+@property (readonly) BOOL isCancelled;
+
+@property (nonatomic, readonly) NSURLRequest *request;
+@property (nonatomic, readonly) FNFuture *future;
+@property (nonatomic, readonly) NSHTTPURLResponse *response;
+@property (nonatomic, readonly) id responseData;
+@property (nonatomic, readonly) NSError *error;
+
+- (id)initWithRequest:(NSURLRequest *)request;
 
 @end

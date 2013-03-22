@@ -19,7 +19,7 @@
 #import "FNFuture.h"
 #import "FNError.h"
 #import "FNClient.h"
-#import "NSString+FNBase64Encoding.h"
+#import "NSString+FNStringExtensions.h"
 
 NSString * const FNFutureScopeContextKey = @"FNContext";
 

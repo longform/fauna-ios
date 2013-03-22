@@ -1,5 +1,5 @@
 //
-// NSString+FNBase64Encoding.h
+// NSDictionary+FNDictionaryExtensions.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,8 +15,10 @@
 // specific language governing permissions and limitations under the License.
 //
 
-@interface NSString (FNBase64Encoding)
+#import <Foundation/Foundation.h>
 
-- (NSString *)base64Encoded;
+@interface NSDictionary (FNDictionaryExtensions)
+
+- (NSString *)queryStringWithEncoding:(NSStringEncoding)encoding;
 
 @end

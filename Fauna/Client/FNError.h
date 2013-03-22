@@ -24,6 +24,7 @@ FOUNDATION_EXPORT NSInteger const FNErrorOperationCancelledCode;
 FOUNDATION_EXPORT NSInteger const FNErrorOperationFailedCode;
 FOUNDATION_EXPORT NSInteger const FNErrorRequestTimeoutCode;
 FOUNDATION_EXPORT NSInteger const FNErrorBadRequestCode;
+FOUNDATION_EXPORT NSInteger const FNErrorUnauthorizedCode;
 FOUNDATION_EXPORT NSInteger const FNErrorNotFoundCode;
 FOUNDATION_EXPORT NSInteger const FNErrorInternalServerErrorCode;
 
@@ -33,7 +34,9 @@ NSError * FNOperationFailed();
 
 NSError * FNRequestTimeout();
 
-NSError * FNBadRequest(NSString *field, NSString *reason);
+NSError * FNBadRequest(NSString *error, NSDictionary *paramErrors);
+
+NSError * FNUnauthorized();
 
 NSError * FNNotFound();
 

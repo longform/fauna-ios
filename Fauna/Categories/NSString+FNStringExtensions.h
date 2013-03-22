@@ -1,5 +1,5 @@
 //
-// NSError+FNHTTPErrors.m
+// NSString+FNStringExtensions.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,13 +15,10 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "NSError+FNHTTPErrors.h"
-#import "FaunaAFURLConnectionOperation.h"
+@interface NSString (FNStringExtensions)
 
-@implementation NSError (FNHTTPErrors)
+- (NSString *)base64Encoded;
 
-- (NSHTTPURLResponse *)HTTPResponse {
-  return self.userInfo[FaunaAFNetworkingOperationFailingURLResponseErrorKey];
-}
+- (NSString *)urlEscapedWithEncoding:(NSStringEncoding)encoding;
 
 @end

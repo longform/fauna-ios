@@ -16,14 +16,13 @@
 //
 
 #import "FNClient.h"
-#import "FaunaAFNetworking.h"
-#import "FaunaAFJSONRequestOperation.h"
-#import "FaunaAFJSONUtilities.h"
 #import "FNError.h"
 #import "FNFuture.h"
+#import "FNRequestOperation.h"
 #import "FNMutableFuture.h"
 #import "NSObject+FNBlockObservation.h"
-#import "NSString+FNBase64Encoding.h"
+#import "NSString+FNStringExtensions.h"
+#import "NSDictionary+FNDictionaryExtensions.h"
 
 #define API_VERSION @"v1"
 
@@ -177,16 +176,16 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 
   if ([method isEqualToString:@"GET"]) {
     if (parameters) {
-      NSString *params = AFQueryStringFromParametersWithEncoding(parameters, NSUTF8StringEncoding);
+      NSString *queryString = [parameters queryStringWithEncoding:NSUTF8StringEncoding];
       NSString *sep = [path rangeOfString:@"?"].location == NSNotFound ? @"?" : @"&";
-      url = [NSURL URLWithString:[url.absoluteString stringByAppendingFormat:@"%@%@", sep, params]];
+      url = [NSURL URLWithString:[url.absoluteString stringByAppendingFormat:@"%@%@", sep, queryString]];
       req.URL = url;
     }
   } else {
     [req setValue:@"application/json charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 
     NSError __autoreleasing *err;
-    NSData *json = FaunaAFJSONEncode(parameters, &err);
+    NSData *json = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&err];
     if (!json) return nil;
     req.HTTPBody = json;
   }
@@ -195,37 +194,9 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 }
 
 + (FNFuture *)performRequest:(NSURLRequest *)request {
-  FNMutableFuture *res = [FNMutableFuture new];
-  FaunaAFJSONRequestOperation *op = [[FaunaAFJSONRequestOperation alloc] initWithRequest:request];
-  FaunaAFJSONRequestOperation * __weak wkOp = op;
-
-  id cancelledToken = [res addObserverForKeyPath:@"isCancelled" task:^(FNFuture *res, NSDictionary *change) {
-    if (res.isCancelled) [wkOp cancel];
-  }];
-
-  op.completionBlock = ^{
-    FaunaAFJSONRequestOperation *op = wkOp;
-    [res removeObserverWithBlockToken:cancelledToken];
-
-    if (op.isCancelled) {
-      [res updateError:FNOperationCancelled()];
-    } else if (op.error) {
-      [res updateError:op.error];
-    } else {
-      id json = op.responseJSON;
-
-      // check error again, as calling responseJSON may have set it as a side-effect.
-      if (op.error) {
-        [res updateError:op.error];
-      } else {
-        [res update:json];
-      }
-    }
-  };
-
+  FNRequestOperation *op = [[FNRequestOperation alloc] initWithRequest:request];
   [self.operationQueue addOperation:op];
-
-  return res;
+  return op.future;
 }
 
 @end

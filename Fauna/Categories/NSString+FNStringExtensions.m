@@ -1,5 +1,5 @@
 //
-// NSString+FNBase64Encoding.m
+// NSString+FNStringExtensions.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "NSString+FNBase64Encoding.h"
+#import "NSString+FNStringExtensions.h"
 
-@implementation NSString (FNBase64Encoding)
+@implementation NSString (FNStringExtensions)
 
 - (NSString *)base64Encoded {
   static uint8_t const kEncodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -56,6 +56,10 @@
   }
 
   return [[NSString alloc] initWithData:outData encoding:NSASCIIStringEncoding];
+}
+
+- (NSString *)urlEscapedWithEncoding:(NSStringEncoding)encoding {
+  return CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, CFBridgingRetain(self), NULL, NULL, CFStringConvertNSStringEncodingToEncoding(encoding)));
 }
 
 @end

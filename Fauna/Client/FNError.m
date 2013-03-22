@@ -23,6 +23,7 @@ NSInteger const FNErrorOperationCancelledCode = 0;
 NSInteger const FNErrorOperationFailedCode = 1;
 NSInteger const FNErrorRequestTimeoutCode = 2;
 NSInteger const FNErrorBadRequestCode = 400;
+NSInteger const FNErrorUnauthorizedCode = 401;
 NSInteger const FNErrorNotFoundCode = 404;
 NSInteger const FNErrorInternalServerErrorCode = 500;
 
@@ -44,10 +45,16 @@ NSError * FNRequestTimeout() {
                          userInfo:@{}];
 }
 
-NSError * FNBadRequest(NSString *field, NSString *reason) {
+NSError * FNBadRequest(NSString *error, NSDictionary *paramErrors) {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorBadRequestCode
-                         userInfo:@{ @"field": field, @"error": reason}];
+                         userInfo:@{ @"description": error, @"parameter_errors": paramErrors}];
+}
+
+NSError * FNUnauthorized() {
+  return [NSError errorWithDomain:FNErrorDomain
+                             code:FNErrorUnauthorizedCode
+                         userInfo:@{}];
 }
 
 NSError * FNNotFound() {
