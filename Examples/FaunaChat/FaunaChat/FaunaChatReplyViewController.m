@@ -1,5 +1,5 @@
 //
-// FaunaExampleReplyViewController.m
+// FaunaChatReplyViewController.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaExampleReplyViewController.h"
-#import "FaunaExampleMessageEditorViewController.h"
+#import "FaunaChatReplyViewController.h"
+#import "FaunaChatMessageEditorViewController.h"
 
-@implementation FaunaExampleReplyViewController
+@implementation FaunaChatReplyViewController
 
 - (void)viewDidLoad
 {
@@ -35,7 +35,7 @@
 }
 
 - (void)editAction:(id)sender {
-  FaunaExampleMessageEditorViewController *controller = [[FaunaExampleMessageEditorViewController alloc] initWithNibName:@"FaunaExampleMessageEditorViewController" bundle:nil];
+  FaunaChatMessageEditorViewController *controller = [[FaunaChatMessageEditorViewController alloc] initWithNibName:@"FaunaChatMessageEditorViewController" bundle:nil];
   controller.messageRef = self.message.ref;
   [self.navigationController pushViewController:controller animated:YES];
 }

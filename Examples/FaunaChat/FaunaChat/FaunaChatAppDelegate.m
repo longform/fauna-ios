@@ -1,5 +1,5 @@
 //
-// FaunaExampleAppDelegate.m
+// FaunaChatAppDelegate.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -18,10 +18,10 @@
 #import "FaunaChatClientKey.h"
 #import "FaunaChatUser.h"
 #import "FaunaChatMessage.h"
-#import "FaunaExampleViewController.h"
-#import "FaunaExampleAppDelegate.h"
+#import "FaunaChatViewController.h"
+#import "FaunaChatAppDelegate.h"
 
-@implementation FaunaExampleAppDelegate
+@implementation FaunaChatAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -34,7 +34,7 @@
   FNContext.defaultContext.logHTTPTraffic = YES;
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  self.viewController = [[UINavigationController alloc] initWithRootViewController:[[FaunaExampleViewController alloc] initWithNibName:@"FaunaExampleViewController" bundle:nil]];
+  self.viewController = [[UINavigationController alloc] initWithRootViewController:[[FaunaChatViewController alloc] initWithNibName:@"FaunaChatViewController" bundle:nil]];
 
   self.window.rootViewController = self.viewController;
   [self.window makeKeyAndVisible];

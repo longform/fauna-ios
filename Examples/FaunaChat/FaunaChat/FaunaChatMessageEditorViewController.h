@@ -1,5 +1,5 @@
 //
-// FaunaExampleMessageEditorViewController.h
+// FaunaChatMessageEditorViewController.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -17,7 +17,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FaunaExampleMessageEditorViewController : UIViewController
+@interface FaunaChatMessageEditorViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UITextField * txtMessage;
 

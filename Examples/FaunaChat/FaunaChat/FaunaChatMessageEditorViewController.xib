@@ -359,7 +359,7 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.CustomClassName">FaunaExampleMessageEditorViewController</string>
+				<string key="-1.CustomClassName">FaunaChatMessageEditorViewController</string>
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -398,7 +398,7 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
-					<string key="className">FaunaExampleMessageEditorViewController</string>
+					<string key="className">FaunaChatMessageEditorViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">sendAction:</string>
@@ -427,7 +427,7 @@
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/FaunaExampleMessageEditorViewController.h</string>
+						<string key="minorKey">./Classes/FaunaChatMessageEditorViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

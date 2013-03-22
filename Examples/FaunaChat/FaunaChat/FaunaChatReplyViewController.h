@@ -1,5 +1,5 @@
 //
-// FaunaExampleAppDelegate.h
+// FaunaChatReplyViewController.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -17,13 +17,18 @@
 
 #import <UIKit/UIKit.h>
 #import <Fauna/Fauna.h>
+#import "FaunaChatMessage.h"
 
-@class FaunaExampleViewController;
+@interface FaunaChatReplyViewController : UIViewController
 
-@interface FaunaExampleAppDelegate : UIResponder <UIApplicationDelegate>
+@property IBOutlet UILabel *lblMessage;
 
-@property (strong, nonatomic) UIWindow *window;
+@property IBOutlet UITextField *txtMessage;
 
-@property (strong, nonatomic) UINavigationController *viewController;
+@property IBOutlet FaunaChatMessage *message;
+
+- (IBAction)sendAction:(id)sender;
+
+- (IBAction)editAction:(id)sender;
 
 @end

@@ -1,5 +1,5 @@
 //
-// FaunaExampleSignupViewController.h
+// FaunaChatMessageComposerViewController.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -17,14 +17,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FaunaExampleSignupViewController : UIViewController<UIAlertViewDelegate>
+@interface FaunaChatMessageComposerViewController : UIViewController
 
-- (IBAction)signupAction:(id)sender;
+@property IBOutlet UITextField *messageField;
 
-@property (nonatomic, strong) IBOutlet UITextField *emailField;
-
-@property (nonatomic, strong) IBOutlet UITextField *passwordField;
-
-@property (nonatomic, strong) IBOutlet UITextField *nameField;
+@property FNEventSet *eventSet;
 
 @end

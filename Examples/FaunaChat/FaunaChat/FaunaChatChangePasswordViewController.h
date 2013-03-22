@@ -1,5 +1,5 @@
 //
-// FaunaExampleChangePasswordViewController.h
+// FaunaChatChangePasswordViewController.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -18,7 +18,7 @@
 #import <UIKit/UIKit.h>
 #import <Fauna/Fauna.h>
 
-@interface FaunaExampleChangePasswordViewController : UIViewController<UIAlertViewDelegate>
+@interface FaunaChatChangePasswordViewController : UIViewController<UIAlertViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UITextField *oldPasswordField;
 

@@ -1,5 +1,5 @@
 //
-// FaunaExampleViewController.m
+// FaunaChatViewController.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -16,19 +16,19 @@
 //
 
 #import "FaunaChatClientKey.h"
-#import "FaunaExampleViewController.h"
-#import "FaunaExampleSignupViewController.h"
-#import "FaunaExampleLoginViewController.h"
-#import "FaunaExampleRoomViewController.h"
-#import "FaunaExampleChangePasswordViewController.h"
+#import "FaunaChatViewController.h"
+#import "FaunaChatSignupViewController.h"
+#import "FaunaChatLoginViewController.h"
+#import "FaunaChatRoomViewController.h"
+#import "FaunaChatChangePasswordViewController.h"
 
-@interface FaunaExampleViewController ()
+@interface FaunaChatViewController ()
 
 - (void)refreshUI;
 
 @end
 
-@implementation FaunaExampleViewController
+@implementation FaunaChatViewController
 
 - (void)viewDidLoad
 {
@@ -42,22 +42,22 @@
 }
 
 - (IBAction)signupAction:(id)sender {
-  FaunaExampleSignupViewController *controller = [[FaunaExampleSignupViewController alloc] initWithNibName:@"FaunaExampleSignupViewController" bundle:nil];
+  FaunaChatSignupViewController *controller = [[FaunaChatSignupViewController alloc] initWithNibName:@"FaunaChatSignupViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)loginAction:(id)sender {
-  FaunaExampleLoginViewController *controller = [[FaunaExampleLoginViewController alloc] initWithNibName:@"FaunaExampleLoginViewController" bundle:nil];
+  FaunaChatLoginViewController *controller = [[FaunaChatLoginViewController alloc] initWithNibName:@"FaunaChatLoginViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 -(IBAction)chatRoomAction:(id)sender {
-  FaunaExampleRoomViewController *controller = [[FaunaExampleRoomViewController alloc] initWithNibName:@"FaunaExampleRoomViewController" bundle:nil];
+  FaunaChatRoomViewController *controller = [[FaunaChatRoomViewController alloc] initWithNibName:@"FaunaChatRoomViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 -(IBAction)changePasswordAction:(id)sender {
-  FaunaExampleChangePasswordViewController *controller = [[FaunaExampleChangePasswordViewController alloc] initWithNibName:@"FaunaExampleChangePasswordViewController" bundle:nil];
+  FaunaChatChangePasswordViewController *controller = [[FaunaChatChangePasswordViewController alloc] initWithNibName:@"FaunaChatChangePasswordViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 

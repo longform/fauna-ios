@@ -1,5 +1,5 @@
 //
-// FaunaExampleRoomViewController.m
+// FaunaChatRoomViewController.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,14 +15,14 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaExampleRoomViewController.h"
-#import "FaunaExampleMessageComposerViewController.h"
-#import "FaunaExampleReplyViewController.h"
+#import "FaunaChatRoomViewController.h"
+#import "FaunaChatMessageComposerViewController.h"
+#import "FaunaChatReplyViewController.h"
 #import "SVProgressHUD.h"
 
 #define kEventsPageSize 30
 
-@implementation FaunaExampleRoomViewController
+@implementation FaunaChatRoomViewController
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -104,7 +104,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   FaunaChatMessage *message = self.messages[indexPath.row];
 
-  FaunaExampleReplyViewController *detailViewController = [[FaunaExampleReplyViewController alloc] initWithNibName:@"FaunaExampleReplyViewController" bundle:nil];
+  FaunaChatReplyViewController *detailViewController = [[FaunaChatReplyViewController alloc] initWithNibName:@"FaunaChatReplyViewController" bundle:nil];
   detailViewController.message = message;
 
   UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
@@ -114,7 +114,7 @@
 #pragma mark - Post
 
 - (void)postAction:(id)sender {
-  FaunaExampleMessageComposerViewController * controller = [[FaunaExampleMessageComposerViewController alloc] initWithNibName:@"FaunaExampleMessageComposerViewController" bundle:nil];
+  FaunaChatMessageComposerViewController * controller = [[FaunaChatMessageComposerViewController alloc] initWithNibName:@"FaunaChatMessageComposerViewController" bundle:nil];
   controller.eventSet = self.eventSet;
   UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:controller];
   [self presentModalViewController:navController animated:YES];

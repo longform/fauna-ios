@@ -17,11 +17,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "FaunaExampleAppDelegate.h"
+#import "FaunaChatAppDelegate.h"
 
 int main(int argc, char *argv[])
 {
   @autoreleasepool {
-      return UIApplicationMain(argc, argv, nil, NSStringFromClass([FaunaExampleAppDelegate class]));
+      return UIApplicationMain(argc, argv, nil, NSStringFromClass([FaunaChatAppDelegate class]));
   }
 }

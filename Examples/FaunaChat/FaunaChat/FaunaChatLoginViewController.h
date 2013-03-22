@@ -1,5 +1,5 @@
 //
-// FaunaExampleRoomViewController.h
+// FaunaChatLoginViewController.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -16,13 +16,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Fauna/Fauna.h>
 
-@interface FaunaExampleRoomViewController : UITableViewController
+@interface FaunaChatLoginViewController : UIViewController
 
-@property (nonatomic, strong) FNEventSet *eventSet;
-@property (nonatomic, strong) NSMutableArray *messages;
+@property (nonatomic, strong) IBOutlet UITextField *emailField;
 
-- (void)reloadTimeline;
+@property (nonatomic, strong) IBOutlet UITextField *passwordField;
+
+- (IBAction)loginAction:(id)sender;
 
 @end

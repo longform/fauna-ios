@@ -1,5 +1,5 @@
 //
-// FaunaExampleSignupViewController.m
+// FaunaChatSignupViewController.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -17,9 +17,9 @@
 
 #import <Fauna/Fauna.h>
 #import "FaunaChatUser.h"
-#import "FaunaExampleSignupViewController.h"
+#import "FaunaChatSignupViewController.h"
 
-@implementation FaunaExampleSignupViewController
+@implementation FaunaChatSignupViewController
 
 - (void)viewDidLoad
 {

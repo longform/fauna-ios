@@ -1,5 +1,5 @@
 //
-// FaunaExampleChangePasswordViewController.m
+// FaunaChatChangePasswordViewController.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -18,9 +18,9 @@
 #import "SVProgressHUD.h"
 #import "FaunaChatClientKey.h"
 #import "FaunaChatUser.h"
-#import "FaunaExampleChangePasswordViewController.h"
+#import "FaunaChatChangePasswordViewController.h"
 
-@implementation FaunaExampleChangePasswordViewController
+@implementation FaunaChatChangePasswordViewController
 
 - (void)viewDidLoad {
   [super viewDidLoad];

@@ -1,5 +1,5 @@
 //
-// FaunaExampleMessageEditorViewController.m
+// FaunaChatMessageEditorViewController.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,12 +15,12 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaExampleMessageEditorViewController.h"
+#import "FaunaChatMessageEditorViewController.h"
 #import <Fauna/Fauna.h>
 #import "FaunaChatMessage.h"
 #import "SVProgressHUD.h"
 
-@interface FaunaExampleMessageEditorViewController ()
+@interface FaunaChatMessageEditorViewController ()
 
 - (void)loadMessageDetails;
 
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation FaunaExampleMessageEditorViewController
+@implementation FaunaChatMessageEditorViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

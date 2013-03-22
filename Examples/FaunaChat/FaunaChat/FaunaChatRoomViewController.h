@@ -1,5 +1,5 @@
 //
-// FaunaExampleMessageComposerViewController.h
+// FaunaChatRoomViewController.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -16,11 +16,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Fauna/Fauna.h>
 
-@interface FaunaExampleMessageComposerViewController : UIViewController
+@interface FaunaChatRoomViewController : UITableViewController
 
-@property IBOutlet UITextField *messageField;
+@property (nonatomic, strong) FNEventSet *eventSet;
+@property (nonatomic, strong) NSMutableArray *messages;
 
-@property FNEventSet *eventSet;
+- (void)reloadTimeline;
 
 @end

@@ -7,33 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0711CA11168BD41C00CEEAA1 /* FaunaExampleRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA0F168BD41C00CEEAA1 /* FaunaExampleRoomViewController.m */; };
-		0711CA12168BD41C00CEEAA1 /* FaunaExampleRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0711CA10168BD41C00CEEAA1 /* FaunaExampleRoomViewController.xib */; };
-		0711CA17168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA15168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m */; };
-		0711CA18168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0711CA16168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib */; };
+		0711CA11168BD41C00CEEAA1 /* FaunaChatRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA0F168BD41C00CEEAA1 /* FaunaChatRoomViewController.m */; };
+		0711CA12168BD41C00CEEAA1 /* FaunaChatRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0711CA10168BD41C00CEEAA1 /* FaunaChatRoomViewController.xib */; };
+		0711CA17168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA15168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.m */; };
+		0711CA18168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0711CA16168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.xib */; };
 		074CF6C0167855AD00686606 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF6BF167855AD00686606 /* UIKit.framework */; };
 		074CF6C2167855AD00686606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF6C1167855AD00686606 /* Foundation.framework */; };
 		074CF6C4167855AD00686606 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF6C3167855AD00686606 /* CoreGraphics.framework */; };
 		074CF6CA167855AD00686606 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6C8167855AD00686606 /* InfoPlist.strings */; };
 		074CF6CC167855AD00686606 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF6CB167855AD00686606 /* main.m */; };
-		074CF6D0167855AE00686606 /* FaunaExampleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF6CF167855AE00686606 /* FaunaExampleAppDelegate.m */; };
+		074CF6D0167855AE00686606 /* FaunaChatAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF6CF167855AE00686606 /* FaunaChatAppDelegate.m */; };
 		074CF6D2167855AE00686606 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6D1167855AE00686606 /* Default.png */; };
 		074CF6D4167855AE00686606 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6D3167855AE00686606 /* Default@2x.png */; };
 		074CF6D6167855AE00686606 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6D5167855AE00686606 /* Default-568h@2x.png */; };
-		074CF6D9167855AE00686606 /* FaunaExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF6D8167855AE00686606 /* FaunaExampleViewController.m */; };
-		074CF6DC167855AE00686606 /* FaunaExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 074CF6DA167855AE00686606 /* FaunaExampleViewController.xib */; };
+		074CF6D9167855AE00686606 /* FaunaChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CF6D8167855AE00686606 /* FaunaChatViewController.m */; };
 		074CF7CA16788F7800686606 /* fauna_logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CF7C916788F7800686606 /* fauna_logo_small.png */; };
-		07603C2D16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */; };
-		07603C2E16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */; };
-		077E22941682C3A900FB0B30 /* FaunaExampleSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */; };
-		077E22951682C3A900FB0B30 /* FaunaExampleSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */; };
+		07603C2D16A6249900A9A885 /* FaunaChatChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07603C2B16A6249900A9A885 /* FaunaChatChangePasswordViewController.m */; };
+		07603C2E16A6249900A9A885 /* FaunaChatChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07603C2C16A6249900A9A885 /* FaunaChatChangePasswordViewController.xib */; };
+		077E22941682C3A900FB0B30 /* FaunaChatSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E22921682C3A900FB0B30 /* FaunaChatSignupViewController.m */; };
+		077E22951682C3A900FB0B30 /* FaunaChatSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 077E22931682C3A900FB0B30 /* FaunaChatSignupViewController.xib */; };
 		0786693D16A8D96000B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693C16A8D96000B3639C /* libsqlite3.dylib */; };
-		07B9D8B916866913002956FF /* FaunaExampleLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */; };
-		07B9D8BA16866913002956FF /* FaunaExampleLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */; };
-		07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */; };
-		07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */; };
-		07E2457C16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2457A16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m */; };
-		07E2457D16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E2457B16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib */; };
+		07B9D8B916866913002956FF /* FaunaChatLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9D8B716866913002956FF /* FaunaChatLoginViewController.m */; };
+		07B9D8BA16866913002956FF /* FaunaChatLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B9D8B816866913002956FF /* FaunaChatLoginViewController.xib */; };
+		07E24562169F83FD007B6CFE /* FaunaChatReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E24560169F83FD007B6CFE /* FaunaChatReplyViewController.m */; };
+		07E24563169F83FD007B6CFE /* FaunaChatReplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E24561169F83FD007B6CFE /* FaunaChatReplyViewController.xib */; };
+		07E2457C16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2457A16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.m */; };
+		07E2457D16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E2457B16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.xib */; };
 		07E2458616A2D3D0007B6CFE /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07E2458316A2D3D0007B6CFE /* SVProgressHUD.bundle */; };
 		07E2458716A2D3D0007B6CFE /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */; };
 		07E2458916A2D3F0007B6CFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E2458816A2D3EF007B6CFE /* QuartzCore.framework */; };
@@ -42,6 +41,7 @@
 		AC95948E16FCFFAA006EA3E2 /* FaunaChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AC95948D16FCFFAA006EA3E2 /* FaunaChatMessage.m */; };
 		AC95949116FCFFEC006EA3E2 /* FaunaChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = AC95949016FCFFEC006EA3E2 /* FaunaChatUser.m */; };
 		AC95949C16FD223C006EA3E2 /* libFauna.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC95949916FD2234006EA3E2 /* libFauna.a */; };
+		ACAA449B16FD246200E00929 /* FaunaChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACAA449A16FD246200E00929 /* FaunaChatViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,12 +62,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0711CA0E168BD41C00CEEAA1 /* FaunaExampleRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleRoomViewController.h; sourceTree = "<group>"; };
-		0711CA0F168BD41C00CEEAA1 /* FaunaExampleRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleRoomViewController.m; sourceTree = "<group>"; };
-		0711CA10168BD41C00CEEAA1 /* FaunaExampleRoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleRoomViewController.xib; sourceTree = "<group>"; };
-		0711CA14168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleMessageComposerViewController.h; sourceTree = "<group>"; };
-		0711CA15168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleMessageComposerViewController.m; sourceTree = "<group>"; };
-		0711CA16168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleMessageComposerViewController.xib; sourceTree = "<group>"; };
+		0711CA0E168BD41C00CEEAA1 /* FaunaChatRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatRoomViewController.h; sourceTree = "<group>"; };
+		0711CA0F168BD41C00CEEAA1 /* FaunaChatRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatRoomViewController.m; sourceTree = "<group>"; };
+		0711CA10168BD41C00CEEAA1 /* FaunaChatRoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatRoomViewController.xib; sourceTree = "<group>"; };
+		0711CA14168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatMessageComposerViewController.h; sourceTree = "<group>"; };
+		0711CA15168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatMessageComposerViewController.m; sourceTree = "<group>"; };
+		0711CA16168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatMessageComposerViewController.xib; sourceTree = "<group>"; };
 		074CF6BB167855AD00686606 /* FaunaChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaunaChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		074CF6BF167855AD00686606 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		074CF6C1167855AD00686606 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -76,31 +76,30 @@
 		074CF6C9167855AD00686606 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		074CF6CB167855AD00686606 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		074CF6CD167855AD00686606 /* FaunaChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FaunaChat-Prefix.pch"; sourceTree = "<group>"; };
-		074CF6CE167855AE00686606 /* FaunaExampleAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaunaExampleAppDelegate.h; sourceTree = "<group>"; };
-		074CF6CF167855AE00686606 /* FaunaExampleAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleAppDelegate.m; sourceTree = "<group>"; };
+		074CF6CE167855AE00686606 /* FaunaChatAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaunaChatAppDelegate.h; sourceTree = "<group>"; };
+		074CF6CF167855AE00686606 /* FaunaChatAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaunaChatAppDelegate.m; sourceTree = "<group>"; };
 		074CF6D1167855AE00686606 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		074CF6D3167855AE00686606 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		074CF6D5167855AE00686606 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		074CF6D7167855AE00686606 /* FaunaExampleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaunaExampleViewController.h; sourceTree = "<group>"; };
-		074CF6D8167855AE00686606 /* FaunaExampleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleViewController.m; sourceTree = "<group>"; };
-		074CF6DB167855AE00686606 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FaunaExampleViewController.xib; sourceTree = "<group>"; };
+		074CF6D7167855AE00686606 /* FaunaChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaunaChatViewController.h; sourceTree = "<group>"; };
+		074CF6D8167855AE00686606 /* FaunaChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaunaChatViewController.m; sourceTree = "<group>"; };
 		074CF7C916788F7800686606 /* fauna_logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fauna_logo_small.png; sourceTree = "<group>"; };
-		07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleChangePasswordViewController.h; sourceTree = "<group>"; };
-		07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleChangePasswordViewController.m; sourceTree = "<group>"; };
-		07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleChangePasswordViewController.xib; sourceTree = "<group>"; };
-		077E22911682C3A900FB0B30 /* FaunaExampleSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleSignupViewController.h; sourceTree = "<group>"; };
-		077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleSignupViewController.m; sourceTree = "<group>"; };
-		077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleSignupViewController.xib; sourceTree = "<group>"; };
+		07603C2A16A6249900A9A885 /* FaunaChatChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatChangePasswordViewController.h; sourceTree = "<group>"; };
+		07603C2B16A6249900A9A885 /* FaunaChatChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatChangePasswordViewController.m; sourceTree = "<group>"; };
+		07603C2C16A6249900A9A885 /* FaunaChatChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatChangePasswordViewController.xib; sourceTree = "<group>"; };
+		077E22911682C3A900FB0B30 /* FaunaChatSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatSignupViewController.h; sourceTree = "<group>"; };
+		077E22921682C3A900FB0B30 /* FaunaChatSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatSignupViewController.m; sourceTree = "<group>"; };
+		077E22931682C3A900FB0B30 /* FaunaChatSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatSignupViewController.xib; sourceTree = "<group>"; };
 		0786693C16A8D96000B3639C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		07B9D8B616866913002956FF /* FaunaExampleLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleLoginViewController.h; sourceTree = "<group>"; };
-		07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleLoginViewController.m; sourceTree = "<group>"; };
-		07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleLoginViewController.xib; sourceTree = "<group>"; };
-		07E2455F169F83FD007B6CFE /* FaunaExampleReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleReplyViewController.h; sourceTree = "<group>"; };
-		07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleReplyViewController.m; sourceTree = "<group>"; };
-		07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleReplyViewController.xib; sourceTree = "<group>"; };
-		07E2457916A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaExampleMessageEditorViewController.h; sourceTree = "<group>"; };
-		07E2457A16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaExampleMessageEditorViewController.m; sourceTree = "<group>"; };
-		07E2457B16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaExampleMessageEditorViewController.xib; sourceTree = "<group>"; };
+		07B9D8B616866913002956FF /* FaunaChatLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatLoginViewController.h; sourceTree = "<group>"; };
+		07B9D8B716866913002956FF /* FaunaChatLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatLoginViewController.m; sourceTree = "<group>"; };
+		07B9D8B816866913002956FF /* FaunaChatLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatLoginViewController.xib; sourceTree = "<group>"; };
+		07E2455F169F83FD007B6CFE /* FaunaChatReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatReplyViewController.h; sourceTree = "<group>"; };
+		07E24560169F83FD007B6CFE /* FaunaChatReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatReplyViewController.m; sourceTree = "<group>"; };
+		07E24561169F83FD007B6CFE /* FaunaChatReplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatReplyViewController.xib; sourceTree = "<group>"; };
+		07E2457916A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatMessageEditorViewController.h; sourceTree = "<group>"; };
+		07E2457A16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatMessageEditorViewController.m; sourceTree = "<group>"; };
+		07E2457B16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatMessageEditorViewController.xib; sourceTree = "<group>"; };
 		07E2458316A2D3D0007B6CFE /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		07E2458416A2D3D0007B6CFE /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		07E2458516A2D3D0007B6CFE /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
@@ -115,6 +114,7 @@
 		AC95948F16FCFFEC006EA3E2 /* FaunaChatUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaChatUser.h; sourceTree = "<group>"; };
 		AC95949016FCFFEC006EA3E2 /* FaunaChatUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaChatUser.m; sourceTree = "<group>"; };
 		AC95949316FD2233006EA3E2 /* Fauna.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fauna.xcodeproj; path = ../../Fauna.xcodeproj; sourceTree = "<group>"; };
+		ACAA449A16FD246200E00929 /* FaunaChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaunaChatViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,32 +171,32 @@
 			children = (
 				07E2457F16A2D275007B6CFE /* ThirdParty */,
 				074CF7C816788F5100686606 /* Resources */,
-				074CF6CE167855AE00686606 /* FaunaExampleAppDelegate.h */,
-				074CF6CF167855AE00686606 /* FaunaExampleAppDelegate.m */,
-				074CF6D7167855AE00686606 /* FaunaExampleViewController.h */,
-				074CF6D8167855AE00686606 /* FaunaExampleViewController.m */,
-				074CF6DA167855AE00686606 /* FaunaExampleViewController.xib */,
-				077E22911682C3A900FB0B30 /* FaunaExampleSignupViewController.h */,
-				077E22921682C3A900FB0B30 /* FaunaExampleSignupViewController.m */,
-				077E22931682C3A900FB0B30 /* FaunaExampleSignupViewController.xib */,
-				07B9D8B616866913002956FF /* FaunaExampleLoginViewController.h */,
-				07B9D8B716866913002956FF /* FaunaExampleLoginViewController.m */,
-				07B9D8B816866913002956FF /* FaunaExampleLoginViewController.xib */,
-				0711CA0E168BD41C00CEEAA1 /* FaunaExampleRoomViewController.h */,
-				0711CA0F168BD41C00CEEAA1 /* FaunaExampleRoomViewController.m */,
-				0711CA10168BD41C00CEEAA1 /* FaunaExampleRoomViewController.xib */,
-				0711CA14168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.h */,
-				0711CA15168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m */,
-				0711CA16168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib */,
-				07E2455F169F83FD007B6CFE /* FaunaExampleReplyViewController.h */,
-				07E24560169F83FD007B6CFE /* FaunaExampleReplyViewController.m */,
-				07E24561169F83FD007B6CFE /* FaunaExampleReplyViewController.xib */,
-				07E2457916A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.h */,
-				07E2457A16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m */,
-				07E2457B16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib */,
-				07603C2A16A6249900A9A885 /* FaunaExampleChangePasswordViewController.h */,
-				07603C2B16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m */,
-				07603C2C16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib */,
+				074CF6CE167855AE00686606 /* FaunaChatAppDelegate.h */,
+				074CF6CF167855AE00686606 /* FaunaChatAppDelegate.m */,
+				074CF6D7167855AE00686606 /* FaunaChatViewController.h */,
+				074CF6D8167855AE00686606 /* FaunaChatViewController.m */,
+				ACAA449A16FD246200E00929 /* FaunaChatViewController.xib */,
+				077E22911682C3A900FB0B30 /* FaunaChatSignupViewController.h */,
+				077E22921682C3A900FB0B30 /* FaunaChatSignupViewController.m */,
+				077E22931682C3A900FB0B30 /* FaunaChatSignupViewController.xib */,
+				07B9D8B616866913002956FF /* FaunaChatLoginViewController.h */,
+				07B9D8B716866913002956FF /* FaunaChatLoginViewController.m */,
+				07B9D8B816866913002956FF /* FaunaChatLoginViewController.xib */,
+				0711CA0E168BD41C00CEEAA1 /* FaunaChatRoomViewController.h */,
+				0711CA0F168BD41C00CEEAA1 /* FaunaChatRoomViewController.m */,
+				0711CA10168BD41C00CEEAA1 /* FaunaChatRoomViewController.xib */,
+				0711CA14168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.h */,
+				0711CA15168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.m */,
+				0711CA16168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.xib */,
+				07E2455F169F83FD007B6CFE /* FaunaChatReplyViewController.h */,
+				07E24560169F83FD007B6CFE /* FaunaChatReplyViewController.m */,
+				07E24561169F83FD007B6CFE /* FaunaChatReplyViewController.xib */,
+				07E2457916A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.h */,
+				07E2457A16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.m */,
+				07E2457B16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.xib */,
+				07603C2A16A6249900A9A885 /* FaunaChatChangePasswordViewController.h */,
+				07603C2B16A6249900A9A885 /* FaunaChatChangePasswordViewController.m */,
+				07603C2C16A6249900A9A885 /* FaunaChatChangePasswordViewController.xib */,
 				AC543AF816EE526400EEB8E8 /* FaunaCredentials.h */,
 				074CF6C6167855AD00686606 /* Supporting Files */,
 				AC95948916FCFCC4006EA3E2 /* FaunaChatClientKey.h */,
@@ -286,7 +286,7 @@
 		074CF6B2167855AD00686606 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = FaunaExample;
+				CLASSPREFIX = FaunaChat;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = Fauna;
 			};
@@ -339,16 +339,16 @@
 				074CF6D2167855AE00686606 /* Default.png in Resources */,
 				074CF6D4167855AE00686606 /* Default@2x.png in Resources */,
 				074CF6D6167855AE00686606 /* Default-568h@2x.png in Resources */,
-				074CF6DC167855AE00686606 /* FaunaExampleViewController.xib in Resources */,
 				074CF7CA16788F7800686606 /* fauna_logo_small.png in Resources */,
-				077E22951682C3A900FB0B30 /* FaunaExampleSignupViewController.xib in Resources */,
-				07B9D8BA16866913002956FF /* FaunaExampleLoginViewController.xib in Resources */,
-				0711CA12168BD41C00CEEAA1 /* FaunaExampleRoomViewController.xib in Resources */,
-				0711CA18168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.xib in Resources */,
-				07E24563169F83FD007B6CFE /* FaunaExampleReplyViewController.xib in Resources */,
-				07E2457D16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.xib in Resources */,
+				077E22951682C3A900FB0B30 /* FaunaChatSignupViewController.xib in Resources */,
+				07B9D8BA16866913002956FF /* FaunaChatLoginViewController.xib in Resources */,
+				0711CA12168BD41C00CEEAA1 /* FaunaChatRoomViewController.xib in Resources */,
+				0711CA18168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.xib in Resources */,
+				07E24563169F83FD007B6CFE /* FaunaChatReplyViewController.xib in Resources */,
+				07E2457D16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.xib in Resources */,
 				07E2458616A2D3D0007B6CFE /* SVProgressHUD.bundle in Resources */,
-				07603C2E16A6249900A9A885 /* FaunaExampleChangePasswordViewController.xib in Resources */,
+				07603C2E16A6249900A9A885 /* FaunaChatChangePasswordViewController.xib in Resources */,
+				ACAA449B16FD246200E00929 /* FaunaChatViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,16 +377,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				074CF6CC167855AD00686606 /* main.m in Sources */,
-				074CF6D0167855AE00686606 /* FaunaExampleAppDelegate.m in Sources */,
-				074CF6D9167855AE00686606 /* FaunaExampleViewController.m in Sources */,
-				077E22941682C3A900FB0B30 /* FaunaExampleSignupViewController.m in Sources */,
-				07B9D8B916866913002956FF /* FaunaExampleLoginViewController.m in Sources */,
-				0711CA11168BD41C00CEEAA1 /* FaunaExampleRoomViewController.m in Sources */,
-				0711CA17168BD5BB00CEEAA1 /* FaunaExampleMessageComposerViewController.m in Sources */,
-				07E24562169F83FD007B6CFE /* FaunaExampleReplyViewController.m in Sources */,
-				07E2457C16A1EFC6007B6CFE /* FaunaExampleMessageEditorViewController.m in Sources */,
+				074CF6D0167855AE00686606 /* FaunaChatAppDelegate.m in Sources */,
+				074CF6D9167855AE00686606 /* FaunaChatViewController.m in Sources */,
+				077E22941682C3A900FB0B30 /* FaunaChatSignupViewController.m in Sources */,
+				07B9D8B916866913002956FF /* FaunaChatLoginViewController.m in Sources */,
+				0711CA11168BD41C00CEEAA1 /* FaunaChatRoomViewController.m in Sources */,
+				0711CA17168BD5BB00CEEAA1 /* FaunaChatMessageComposerViewController.m in Sources */,
+				07E24562169F83FD007B6CFE /* FaunaChatReplyViewController.m in Sources */,
+				07E2457C16A1EFC6007B6CFE /* FaunaChatMessageEditorViewController.m in Sources */,
 				07E2458716A2D3D0007B6CFE /* SVProgressHUD.m in Sources */,
-				07603C2D16A6249900A9A885 /* FaunaExampleChangePasswordViewController.m in Sources */,
+				07603C2D16A6249900A9A885 /* FaunaChatChangePasswordViewController.m in Sources */,
 				AC95948B16FCFCC4006EA3E2 /* FaunaChatClientKey.m in Sources */,
 				AC95948E16FCFFAA006EA3E2 /* FaunaChatMessage.m in Sources */,
 				AC95949116FCFFEC006EA3E2 /* FaunaChatUser.m in Sources */,
@@ -402,14 +402,6 @@
 				074CF6C9167855AD00686606 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		074CF6DA167855AE00686606 /* FaunaExampleViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				074CF6DB167855AE00686606 /* en */,
-			);
-			name = FaunaExampleViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

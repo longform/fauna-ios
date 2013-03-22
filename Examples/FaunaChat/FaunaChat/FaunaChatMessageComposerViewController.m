@@ -1,5 +1,5 @@
 //
-// FaunaExampleMessageComposerViewController.m
+// FaunaChatMessageComposerViewController.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -17,9 +17,9 @@
 
 #import <Fauna/Fauna.h>
 #import "FaunaChatMessage.h"
-#import "FaunaExampleMessageComposerViewController.h"
+#import "FaunaChatMessageComposerViewController.h"
 
-@implementation FaunaExampleMessageComposerViewController
+@implementation FaunaChatMessageComposerViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
