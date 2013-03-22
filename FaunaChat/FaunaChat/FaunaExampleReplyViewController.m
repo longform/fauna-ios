@@ -24,7 +24,7 @@
 {
   [super viewDidLoad];
   self.title = @"Reply";
-  self.lblMessage.text = self.message.data[@"body"];
+  self.lblMessage.text = self.message.body;
   
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(sendAction:)];
@@ -36,32 +36,18 @@
 
 - (void)editAction:(id)sender {
   FaunaExampleMessageEditorViewController *controller = [[FaunaExampleMessageEditorViewController alloc] initWithNibName:@"FaunaExampleMessageEditorViewController" bundle:nil];
-  controller.messageRef = self.message.reference;
+  controller.messageRef = self.message.ref;
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)sendAction:(id)sender {
-  NSString * textMessage = self.txtMessage.text;
-  [FaunaContext background:^id{
-    NSError *error;
-    FaunaResource* messageResource = [FaunaCommand execute:@"reply_message" params:@{@"body": textMessage} error:&error];
-    if(error) {
-      return error;
-    }
-    NSLog(@"Command executed successfully: %@", messageResource.reference);
-    [FaunaTimeline addInstance:messageResource.reference toTimeline:self.timelineResource error:&error];
-    if(error) {
-      return error;
-    }
-    NSLog(@"Added to timeline successfully");
-    return nil;
-  } success:^(id results) {
-    [self.navigationController dismissModalViewControllerAnimated:YES];
-  } failure:^(NSError *error) {
-    NSLog(@"Command execute error: %@", error);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alert show];
-  }];
+  //NSString * textMessage = self.txtMessage.text;
+
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot reply, yet"
+                                                 delegate:nil
+                                        cancelButtonTitle:@"OK"
+                                        otherButtonTitles:nil, nil];
+  [alert show];
 }
 
 @end

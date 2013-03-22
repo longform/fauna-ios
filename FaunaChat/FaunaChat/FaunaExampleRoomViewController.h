@@ -20,8 +20,8 @@
 
 @interface FaunaExampleRoomViewController : UITableViewController
 
-@property (nonatomic, strong) NSString* timelineResource;
-@property (nonatomic, strong) NSMutableArray* messages;
+@property (nonatomic, strong) FNEventSet *eventSet;
+@property (nonatomic, strong) NSMutableArray *messages;
 
 - (void)reloadTimeline;
 

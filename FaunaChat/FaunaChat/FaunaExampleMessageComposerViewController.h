@@ -19,8 +19,8 @@
 
 @interface FaunaExampleMessageComposerViewController : UIViewController
 
-@property (nonatomic, strong) IBOutlet UITextField *messageField;
+@property IBOutlet UITextField *messageField;
 
-@property (nonatomic, strong) NSString* timelineResource;
+@property FNEventSet *eventSet;
 
 @end

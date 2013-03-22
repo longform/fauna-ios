@@ -15,8 +15,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaExampleMessageComposerViewController.h"
 #import <Fauna/Fauna.h>
+#import "FaunaChatMessage.h"
+#import "FaunaExampleMessageComposerViewController.h"
 
 @implementation FaunaExampleMessageComposerViewController
 
@@ -42,28 +43,17 @@
 }
 
 - (void)sendAction:(id)sender {
-  NSString * message = self.messageField.text;
-  [FaunaContext background:^id{
-    NSError *error;
-    FaunaInstance *instance = [[FaunaInstance alloc] init];
-    instance.className = @"message";
-    instance.data = @{
-                      @"body" : message
-                    };
-    [FaunaInstance create:instance error:&error];
-    if(error) {
-      return error;
-    }
-    /*[FaunaTimeline addInstance:instance.reference toTimeline:self.timelineResource error:&error];
-    if(error) {
-      return error;
-    }*/
-    return nil;
-  } success:^(id results) {
-    NSLog(@"Added to timeline successfully");
+  FaunaChatMessage *message = [FaunaChatMessage new];
+  message.body = self.messageField.text;
+
+  [[message save] onSuccess:^(FaunaChatMessage *msg) {
     [self.navigationController dismissModalViewControllerAnimated:YES];
-  } failure:^(NSError *error) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+  } onError:^(NSError *error) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion]
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
     [alert show];
   }];
 }

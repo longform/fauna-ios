@@ -17,16 +17,15 @@
 
 #import <UIKit/UIKit.h>
 #import <Fauna/Fauna.h>
+#import "FaunaChatMessage.h"
 
 @interface FaunaExampleReplyViewController : UIViewController
 
-@property (nonatomic, strong) IBOutlet UILabel * lblMessage;
+@property IBOutlet UILabel *lblMessage;
 
-@property (nonatomic, strong) IBOutlet UITextField * txtMessage;
+@property IBOutlet UITextField *txtMessage;
 
-@property (nonatomic, strong) IBOutlet FaunaInstance * message;
-
-@property (nonatomic, strong) NSString* timelineResource;
+@property IBOutlet FaunaChatMessage *message;
 
 - (IBAction)sendAction:(id)sender;
 

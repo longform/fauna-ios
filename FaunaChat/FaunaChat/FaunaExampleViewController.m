@@ -15,6 +15,7 @@
 // specific language governing permissions and limitations under the License.
 //
 
+#import "FaunaChatClientKey.h"
 #import "FaunaExampleViewController.h"
 #import "FaunaExampleSignupViewController.h"
 #import "FaunaExampleLoginViewController.h"
@@ -41,33 +42,33 @@
 }
 
 - (IBAction)signupAction:(id)sender {
-  FaunaExampleSignupViewController * controller = [[FaunaExampleSignupViewController alloc] initWithNibName:@"FaunaExampleSignupViewController" bundle:nil];
+  FaunaExampleSignupViewController *controller = [[FaunaExampleSignupViewController alloc] initWithNibName:@"FaunaExampleSignupViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)loginAction:(id)sender {
-  FaunaExampleLoginViewController * controller = [[FaunaExampleLoginViewController alloc] initWithNibName:@"FaunaExampleLoginViewController" bundle:nil];
+  FaunaExampleLoginViewController *controller = [[FaunaExampleLoginViewController alloc] initWithNibName:@"FaunaExampleLoginViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 -(IBAction)chatRoomAction:(id)sender {
-  FaunaExampleRoomViewController * controller = [[FaunaExampleRoomViewController alloc] initWithNibName:@"FaunaExampleRoomViewController" bundle:nil];
+  FaunaExampleRoomViewController *controller = [[FaunaExampleRoomViewController alloc] initWithNibName:@"FaunaExampleRoomViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 -(IBAction)changePasswordAction:(id)sender {
-  FaunaExampleChangePasswordViewController * controller = [[FaunaExampleChangePasswordViewController alloc] initWithNibName:@"FaunaExampleChangePasswordViewController" bundle:nil];
+  FaunaExampleChangePasswordViewController *controller = [[FaunaExampleChangePasswordViewController alloc] initWithNibName:@"FaunaExampleChangePasswordViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)logoutAction:(id)sender {
-  FaunaContext.applicationContext.client.userToken = nil;
+  FNContext.defaultContext = FaunaChatClientKeyContext();
   [self refreshUI];
 }
 
 - (void)refreshUI {
-  BOOL userIsAuthenticated = !!FaunaContext.applicationContext.userToken;
-  for (UIButton * view in @[self.btnChatRoom, self.btnChangePassword, self.btnLogout]) {
+  BOOL userIsAuthenticated = FNContext.defaultContext != FaunaChatClientKeyContext();
+  for (UIButton *view in @[self.btnChatRoom, self.btnChangePassword, self.btnLogout]) {
     view.enabled = userIsAuthenticated;
   }
 }

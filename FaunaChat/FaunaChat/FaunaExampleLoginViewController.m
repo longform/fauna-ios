@@ -15,8 +15,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaExampleLoginViewController.h"
 #import <Fauna/Fauna.h>
+#import "FaunaChatUser.h"
+#import "FaunaExampleLoginViewController.h"
 
 @implementation FaunaExampleLoginViewController
 
@@ -30,19 +31,25 @@
 - (IBAction)loginAction:(id)sender {
   NSString* email = self.emailField.text;
   NSString* password = self.passwordField.text;
-  [FaunaContext background:^id{
-    NSError* error;
-    if(![FaunaUser loginWithEmail:email password:password error:&error]) {
-      return error;
-    }
-    return nil;
-  } success:^(id results) {
-    NSLog(@"Token: %@", FaunaContext.current.userToken);
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat!"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+
+  [[FaunaChatUser contextForEmail:email password:password] onSuccess:^(FNContext *userCtx) {
+    FNContext.defaultContext = userCtx;
+    FNContext.defaultContext.logHTTPTraffic = YES;
+
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                     message:[NSString stringWithFormat:@"Welcome to FaunaChat!"]
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
     [alert show];
     [self.navigationController popViewControllerAnimated:YES];
-  } failure:^(NSError *error) {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+
+  } onError:^(NSError *error) {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                     message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion]
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
     [alert show];
   }];
 }

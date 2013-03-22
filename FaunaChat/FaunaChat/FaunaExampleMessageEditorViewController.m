@@ -17,6 +17,7 @@
 
 #import "FaunaExampleMessageEditorViewController.h"
 #import <Fauna/Fauna.h>
+#import "FaunaChatMessage.h"
 #import "SVProgressHUD.h"
 
 @interface FaunaExampleMessageEditorViewController ()
@@ -25,7 +26,7 @@
 
 - (void)showMessageDetails;
 
-@property (nonatomic, strong) IBOutlet FaunaInstance * message;
+@property (nonatomic, strong) IBOutlet FaunaChatMessage *message;
 
 @end
 
@@ -51,19 +52,12 @@
 
 - (void)loadMessageDetails {
   [SVProgressHUD showWithStatus:@"Loading"];
-  [FaunaContext background:^id{
-    NSError*error;
-    FaunaInstance *instance = [FaunaInstance get:self.messageRef error:&error];
-    if(error) {
-      return error;
-    }
-    return instance;
-  } success:^(FaunaInstance* message) {
+
+  [[FaunaChatMessage get:self.messageRef] onSuccess:^(FaunaChatMessage *message) {
     self.message = message;
-    NSLog(@"Instance details retrieved successfully: %@", self.message);
     [SVProgressHUD showSuccessWithStatus:@"Done"];
     [self showMessageDetails];
-  } failure:^(NSError *error) {
+  } onError:^(NSError *error) {
     [SVProgressHUD dismiss];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
@@ -71,7 +65,7 @@
 }
 
 - (void)showMessageDetails {
-  self.txtMessage.text = self.message.data[@"body"];
+  self.txtMessage.text = self.message.body;
 }
 
 - (void)cancelAction:(id)sender {
@@ -80,23 +74,13 @@
 
 - (IBAction)sendAction:(id)sender {
   [SVProgressHUD showWithStatus:@"Saving"];
-  NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithDictionary:self.message.data];
-  data[@"body"] = self.txtMessage.text;
-  NSDictionary *modifications = @{
-    @"data": data
-  };
-  [FaunaContext background:^id{
-    NSError*error;
-    FaunaInstance *updatedInstance = [FaunaInstance update:self.message.reference changes:modifications error:&error];
-    if(error) {
-      return error;
-    }
-    return updatedInstance;
-  } success:^(FaunaInstance* updatedInstance) {
+  self.message.body = self.txtMessage.text;
+
+  [[self.message save] onSuccess:^(FaunaChatMessage *message) {
+    self.message = message;
     [SVProgressHUD showSuccessWithStatus:@"Done"];
-    NSLog(@"Instance updated successfully: %@", updatedInstance.reference);
     [self.navigationController dismissModalViewControllerAnimated:YES];
-  } failure:^(NSError *error) {
+  } onError:^(NSError *error) {
     [SVProgressHUD dismiss];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];

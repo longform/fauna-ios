@@ -15,26 +15,30 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaCredentials.h"
-#import "FaunaExampleAppDelegate.h"
+#import "FaunaChatClientKey.h"
+#import "FaunaChatUser.h"
+#import "FaunaChatMessage.h"
 #import "FaunaExampleViewController.h"
-
-@interface FaunaExampleAppDelegate()
-  - (void)initializeFauna;
-@end
+#import "FaunaExampleAppDelegate.h"
 
 @implementation FaunaExampleAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  [self initializeFauna];
-  
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+  [FNResource registerClasses:@[
+    [FaunaChatUser class],
+    [FaunaChatMessage class]
+  ]];
+
+  FNContext.defaultContext = FaunaChatClientKeyContext();
+  FNContext.defaultContext.logHTTPTraffic = YES;
+
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.viewController = [[UINavigationController alloc] initWithRootViewController:[[FaunaExampleViewController alloc] initWithNibName:@"FaunaExampleViewController" bundle:nil]];
+
   self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
-    return YES;
+  [self.window makeKeyAndVisible];
+  return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -62,12 +66,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
   // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-#pragma mark - Fauna
-
-- (void)initializeFauna {
-  FaunaContext.applicationContext = [[FaunaContext alloc] initWithClientKeyString:FAUNA_CLIENT_KEY];
 }
 
 @end

@@ -15,13 +15,14 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaExampleChangePasswordViewController.h"
 #import "SVProgressHUD.h"
+#import "FaunaChatClientKey.h"
+#import "FaunaChatUser.h"
+#import "FaunaExampleChangePasswordViewController.h"
 
 @implementation FaunaExampleChangePasswordViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
   [super viewDidLoad];
   self.title = @"Change Password";
   [self.oldPasswordField becomeFirstResponder];
@@ -31,22 +32,30 @@
   [SVProgressHUD showWithStatus:@"Processing"];
   NSString* oldPassword = self.oldPasswordField.text;
   NSString* newPassword = self.passwordField.text;
-  NSString* confirmationPassword = self.confirmationField.text;
-  [FaunaContext background:^id{
-    NSError*error;
-    if(![FaunaUser changePassword:oldPassword newPassword:newPassword confirmation:confirmationPassword error:&error]) {
-      return error;
-    }
-    return nil;
-  } success:^(id results) {
-    [SVProgressHUD showSuccessWithStatus:@"Success"];
-    NSLog(@"Change Password successfully");
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Password Changed!" message:@"Your password was changed! You may need to sign in again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alert show];
-  } failure:^(NSError *error) {
+  NSString* confirmation = self.confirmationField.text;
+
+  [[FaunaChatUser changeSelfPassword:oldPassword newPassword:newPassword confirmation:confirmation] onSuccess:^(id value) {
     [SVProgressHUD dismiss];
-    NSLog(@"Change Password error: %@", error);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+
+    //Set the default context to log out the user.
+    FNContext.defaultContext = FaunaChatClientKeyContext();
+
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Password Changed!"
+                          message:@"Your password was changed! Please sign in again."
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil];
+    [alert show];
+    [self.navigationController popViewControllerAnimated:YES];
+  } onError:^(NSError *error) {
+    [SVProgressHUD dismiss];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:[NSString stringWithFormat:@"Error: %@", error.localizedRecoverySuggestion]
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
     [alert show];
   }];
 }

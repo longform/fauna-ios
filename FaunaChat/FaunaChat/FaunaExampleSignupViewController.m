@@ -15,8 +15,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FaunaExampleSignupViewController.h"
 #import <Fauna/Fauna.h>
+#import "FaunaChatUser.h"
+#import "FaunaExampleSignupViewController.h"
 
 @implementation FaunaExampleSignupViewController
 
@@ -32,23 +33,25 @@
 - (IBAction)signupAction:(id)sender {
   
   // prepare user info data
-  FaunaUser* user = [[FaunaUser alloc] init];
+  FaunaChatUser* user = [FaunaChatUser new];
   user.email = self.emailField.text;
   user.password = self.passwordField.text;
   user.name = self.nameField.text;
-  
-  [FaunaContext background:^id{
-    NSError *error;
-    if(![FaunaUser create:user error:&error]) {
-      return error;
-    }
-    return nil;
-  } success:^(id results) {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"Welcome to FaunaChat %@", user.name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+
+  [[user save] onSuccess:^(id value) {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                     message:[NSString stringWithFormat:@"Welcome to FaunaChat %@", user.name]
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
     [alert show];
     [self.navigationController popViewControllerAnimated:YES];
-  } failure:^(NSError *error) {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error: %@", error] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+  } onError:^(NSError *error) {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                     message:[NSString stringWithFormat:@"Error: %@", error]
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
     [alert show];
   }];
 }

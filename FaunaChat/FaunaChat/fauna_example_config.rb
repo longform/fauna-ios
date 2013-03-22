@@ -37,7 +37,7 @@ puts "Added publisher key #{publisher_key}"
 puts "Added client key #{client_key}"
 
 Fauna.schema do |f|
-  with :class_name => "classes/message" do
+  with :class_name => "classes/messages" do
     event_set "chat"
   end
 end
