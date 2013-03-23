@@ -28,10 +28,13 @@ The code is organized in two projects under a single XCode workspace:
 
 ### Running the Example Project
 
+Make sure you have Ruby 1.9 and the `fauna` gem installed. Then:
+
 1. `git clone git@github.com:fauna/fauna-ios.git`
 2. `cd fauna-ios`
-3. `open Fauna-iOS.xcworkspace`
-4. Run the project.
+3. `env FAUNA_TEST_EMAIL=email@example.com FAUNA_TEST_PASSWORD=pass open Examples/FaunaChat/FaunaChat.xcodeproj/`
+
+Finally, click run in Xcode.
 
 ### Using Fauna SDK in your Xcode Project
 
