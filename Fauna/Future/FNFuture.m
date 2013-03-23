@@ -162,7 +162,7 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 
 - (FNFuture *)flatMap:(FNFuture *(^)(id value))block {
   return [self transform:^FNFuture *(FNFuture *self) {
-    return self.value ? block(self.value) : self;
+    return self.isError ? self : block(self.value);
   }];
 }
 
@@ -176,11 +176,11 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 
 - (FNFuture *)rescue:(FNFuture *(^)(NSError *error))block {
   return [self transform:^FNFuture *(FNFuture *self) {
-    if (self.value) {
-      return self;
-    } else {
+    if (self.isError) {
       FNFuture *next = block(self.error);
       return next ? next : self;
+    } else {
+      return self;
     }
   }];
 }
@@ -219,10 +219,10 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 # pragma mark Private Methods/Helpers
 
 - (void)propagateTo:(FNMutableFuture *)other {
-  if (!self.isError) {
-    [other update:self.value];
-  } else {
+  if (self.isError) {
     [other updateError:self.error];
+  } else {
+    [other update:self.value];
   }
 }
 
