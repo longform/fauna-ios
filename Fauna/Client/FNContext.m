@@ -44,7 +44,7 @@ static FNContext* _defaultContext;
   if (self) {
     _client = client;
     _parent = parent;
-    _cache = cache;
+    _cache = nil;
   }
   return self;
 }
@@ -213,6 +213,8 @@ static FNContext* _defaultContext;
 }
 
 - (FNFuture *)cacheResource:(NSDictionary *)resource references:(NSDictionary *)references {
+  if (!self.cache) return [FNFuture value:nil];
+
   NSMutableArray *futures = [[NSMutableArray alloc] initWithCapacity:(references.count + 2)];
 
   if (resource && resource[@"ref"]) {
