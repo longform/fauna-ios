@@ -219,7 +219,7 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 # pragma mark Private Methods/Helpers
 
 - (void)propagateTo:(FNMutableFuture *)other {
-  if (self.value) {
+  if (!self.isError) {
     [other update:self.value];
   } else {
     [other updateError:self.error];
