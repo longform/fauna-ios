@@ -57,6 +57,7 @@
 		AC896F5016EFFD6C008C6F7B /* NSString+FNStringExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AC896F4F16EFFD6C008C6F7B /* NSString+FNStringExtensions.m */; };
 		AC903B5E16FBA7CE00D7A08B /* NSDictionary+FNDictionaryExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AC903B5D16FBA7CE00D7A08B /* NSDictionary+FNDictionaryExtensions.m */; };
 		AC903B6116FBB5F500D7A08B /* FNRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AC903B6016FBB5F500D7A08B /* FNRequestOperation.m */; };
+		ACAA44A316FD7C2500E00929 /* FNCache.m in Sources */ = {isa = PBXBuildFile; fileRef = ACAA44A216FD7C2500E00929 /* FNCache.m */; };
 		ACADB88116FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.m in Sources */ = {isa = PBXBuildFile; fileRef = ACADB88016FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.m */; };
 		ACB0B4A916E92A6800B6E7AA /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
 		ACBA467516F8D8B6000F2A3B /* FNTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBA467416F8D8B6000F2A3B /* FNTestHelper.m */; };
@@ -165,6 +166,7 @@
 		AC903B5D16FBA7CE00D7A08B /* NSDictionary+FNDictionaryExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+FNDictionaryExtensions.m"; path = "Categories/NSDictionary+FNDictionaryExtensions.m"; sourceTree = "<group>"; };
 		AC903B5F16FBB5F500D7A08B /* FNRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNRequestOperation.h; sourceTree = "<group>"; };
 		AC903B6016FBB5F500D7A08B /* FNRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNRequestOperation.m; sourceTree = "<group>"; };
+		ACAA44A216FD7C2500E00929 /* FNCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNCache.m; sourceTree = "<group>"; };
 		ACADB87F16FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+FNFunctionalEnumeration.h"; path = "Categories/NSArray+FNFunctionalEnumeration.h"; sourceTree = "<group>"; };
 		ACADB88016FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+FNFunctionalEnumeration.m"; path = "Categories/NSArray+FNFunctionalEnumeration.m"; sourceTree = "<group>"; };
 		ACBA467316F8D8B6000F2A3B /* FNTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNTestHelper.h; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				0CF0FACE16FA3C4A0081E7F5 /* FNCache.h */,
+				ACAA44A216FD7C2500E00929 /* FNCache.m */,
 				0786693716A8CEC000B3639C /* FaunaCache.m */,
 				0786693616A8CEC000B3639C /* FaunaCache.h */,
 				0CF0FACB16F925890081E7F5 /* FNSQLiteCache.h */,
@@ -492,6 +495,7 @@
 				AC903B5E16FBA7CE00D7A08B /* NSDictionary+FNDictionaryExtensions.m in Sources */,
 				AC903B6116FBB5F500D7A08B /* FNRequestOperation.m in Sources */,
 				AC87EEE316FCE4B300A0A198 /* FNNetworkStatus.m in Sources */,
+				ACAA44A316FD7C2500E00929 /* FNCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

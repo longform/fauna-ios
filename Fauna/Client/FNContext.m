@@ -31,7 +31,7 @@ static FNContext* _defaultContext;
 
 @property (nonatomic, readonly) FNClient *client;
 @property (nonatomic, readonly) FNContext *parent;
-@property (nonatomic, readonly) NSObject<FNCache> *cache;
+@property (nonatomic, readonly) FNCache *cache;
 
 @end
 
@@ -39,7 +39,7 @@ static FNContext* _defaultContext;
 
 # pragma mark lifecycle
 
-- (id)initWithClient:(FNClient *)client parent:(FNContext*)parent cache:(NSObject<FNCache>*)cache {
+- (id)initWithClient:(FNClient *)client parent:(FNContext *)parent cache:(FNCache *)cache {
   self = [super init];
   if (self) {
     _client = client;

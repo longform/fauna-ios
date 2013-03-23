@@ -45,8 +45,8 @@
 - (void)testPersistentPutAndGet {
   [self prepare];
 
-  NSString const *testKey = @"testKey";
-  NSString const *testFilename = TestUniqueID();
+  NSString *testKey = @"testKey";
+  NSString *testFilename = TestUniqueID();
 
   FNSQLiteCache *cache = [FNSQLiteCache persistentCacheWithName:testFilename];
   NSDictionary *dict = @{@"test": @"sup"};

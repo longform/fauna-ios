@@ -20,7 +20,7 @@
 
 @class FNFuture;
 
-@interface FNSQLiteCache : NSObject <FNCache>
+@interface FNSQLiteCache : FNCache
 + (id)persistentCacheWithName:(const NSString*)name;
 + (id)volatileCache;
 - (id)initPersistentWithName:(const NSString*)name;

@@ -1,5 +1,5 @@
 //
-// FNCache.h
+// FNCache.m
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,14 +15,16 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import "FNCache.h"
 
-@class FNFuture;
+@implementation FNCache
 
-@interface FNCache : NSObject
+- (FNFuture *)putWithKey:(NSString *)key dictionary:(NSDictionary *)dict {
+  @throw @"not implemented";
+}
 
-- (FNFuture *)putWithKey:(NSString *)key dictionary:(NSDictionary *)dict;
-
-- (FNFuture *)getWithKey:(NSString *)key;
+- (FNFuture *)getWithKey:(NSString *)key {
+  @throw @"not implemented";
+}
 
 @end
