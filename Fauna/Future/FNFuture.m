@@ -55,7 +55,7 @@ FNFuture * FNFutureSequence(NSArray *futures) {
 }
 
 FNFuture * FNFutureJoin(NSArray *futures) {
-  return FNFutureAccumulate(futures, @YES, ^(id accum, id __unused value) {
+  return FNFutureAccumulate(futures, nil, ^(id accum, id __unused value) {
     return accum;
   });
 }
@@ -99,23 +99,27 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 # pragma mark Abstract methods
 
 - (id)value {
-  return nil;
+  @throw @"not implemented";
 }
 
 - (NSError *)error {
-  return nil;
+  @throw @"not implemented";
 }
 
 - (BOOL)isCompleted {
-  return NO;
+  @throw @"not implemented";
+}
+
+- (BOOL)isError {
+  @throw @"not implemented";
 }
 
 - (id)get {
-  return nil;
+  @throw @"not implemented";
 }
 
 - (void)onCompletion:(void (^)(FNFuture *))block {
-
+  @throw @"not implemented";
 }
 
 # pragma mark API methods
@@ -132,7 +136,7 @@ FNFuture * FNFutureJoin(NSArray *futures) {
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       [FNFutureScope inScope:scope perform:^{
-        self.value ? succBlock(self.value) : errBlock(self.error);
+        self.isError ? errBlock(self.error) : succBlock(self.value);
       }];
     }];
   }];
@@ -148,9 +152,8 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 
 - (FNFuture *)map:(id (^)(id value))block {
   return [self flatMap:^(id value){
-    id mapped = block(value);
-    if (!mapped) @throw FNInvalidFutureValue(@"Result of map cannot be nil.");
-    return [FNFuture value:mapped]; }];
+    return [FNFuture value:block(value)];
+  }];
 }
 
 - (FNFuture *)map_:(id (^)(void))block {
@@ -168,7 +171,7 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 }
 
 - (FNFuture *)done {
-  return [self map_:^{ return @YES; }];
+  return [self map_:^id{ return nil; }];
 }
 
 - (FNFuture *)rescue:(FNFuture *(^)(NSError *error))block {

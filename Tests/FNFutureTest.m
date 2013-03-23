@@ -67,6 +67,20 @@
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
 }
 
+- (void)testCanHoldNil {
+  [self prepare];
+
+  [[FNFuture inBackground:^id{
+    return nil;
+  }] onSuccess:^(id value) {
+    if (!value) {
+      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testCanHoldNil)];
+    }
+  }];
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
+}
+
 - (void)testMap {
   [self prepare];
 

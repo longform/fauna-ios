@@ -24,14 +24,12 @@
   if (self) {
     _value = value;
     _error = error;
+    _isError = error != nil;
   }
   return self;
 }
 
 - (id)initWithValue:(id)value {
-  if (value == nil) {
-    @throw FNInvalidFutureValue(@"Futures cannot contain a nil value.");
-  }
   return [self initWithValue:value andError:nil];
 }
 

@@ -21,6 +21,7 @@
 
 @property (nonatomic, readonly) id value;
 @property (nonatomic, readonly) NSError *error;
+@property (nonatomic, readonly) BOOL isError;
 
 - (id)initWithValue:(id)value;
 

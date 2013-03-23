@@ -67,7 +67,7 @@ FNFuture * FNFutureJoin(NSArray *futures);
 # pragma mark Instance methods
 
 /*!
- Returns the result of the future represented if set.
+ Returns the normal result of the future represented if set.
  */
 - (id)value;
 
@@ -80,6 +80,11 @@ FNFuture * FNFutureJoin(NSArray *futures);
  Returns whether or not the future has been completed.
  */
 - (BOOL)isCompleted;
+
+/*!
+ Returns whether or not the future has been completed unsuccessfully.
+ */
+- (BOOL)isError;
 
 /*!
  Returns whether or not the operation has been cancelled.
@@ -129,7 +134,7 @@ FNFuture * FNFutureJoin(NSArray *futures);
 - (FNFuture *)map_:(id (^)(void))block;
 
 /*!
- Returns a new future that will contain the value @YES, or this future's error.
+ Returns a new future that will contain nil, or this future's error.
  */
 - (FNFuture *)done;
 

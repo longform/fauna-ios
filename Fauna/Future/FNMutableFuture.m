@@ -27,6 +27,7 @@
 @property id value;
 @property NSError *error;
 @property BOOL isCompleted;
+@property BOOL isError;
 
 @end
 
@@ -93,6 +94,9 @@
 }
 
 - (BOOL)updateErrorIfEmpty:(NSError *)error {
+  if (error == nil) {
+    @throw FNInvalidFutureValue(@"Futures cannot contain a nil error.");
+  }
   return [self completeIfEmpty:nil error:error];
 }
 
@@ -112,6 +116,7 @@
   if (!self.isCompleted) {
     @synchronized (self) {
       if (!self.isCompleted) {
+        self.isError = error != nil;
         self.value = value;
         self.error = error;
         self.isCompleted = YES;

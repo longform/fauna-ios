@@ -29,8 +29,6 @@
     [FNFutureScope inScope:scope perform:^{
       id rv = res.isCancelled ? FNOperationCancelled() : block();
 
-      if (rv == nil) @throw FNInvalidFutureValue(@"Result of future operation cannot be nil.");
-
       if ([rv isKindOfClass:[NSError class]]) {
         [res updateError:rv];
       } else {
