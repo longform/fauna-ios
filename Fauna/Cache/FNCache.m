@@ -19,11 +19,11 @@
 
 @implementation FNCache
 
-- (FNFuture *)putWithKey:(NSString *)key dictionary:(NSDictionary *)dict {
+- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key {
   @throw @"not implemented";
 }
 
-- (FNFuture *)getWithKey:(NSString *)key {
+- (FNFuture *)valueForKey:(NSString *)key {
   @throw @"not implemented";
 }
 

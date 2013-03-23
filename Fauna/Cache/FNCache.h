@@ -21,8 +21,8 @@
 
 @interface FNCache : NSObject
 
-- (FNFuture *)putWithKey:(NSString *)key dictionary:(NSDictionary *)dict;
+- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key;
 
-- (FNFuture *)getWithKey:(NSString *)key;
+- (FNFuture *)valueForKey:(NSString *)key;
 
 @end

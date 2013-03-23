@@ -105,7 +105,7 @@ static int const kCreatedAtColumnOrdinal = 3;
   }
 }
 
-- (FNFuture*)getWithKey:(NSString*)key {
+- (FNFuture*)valueForKey:(NSString *)key {
   // TODO: Assert???
   NSString *query = @"SELECT ROWID, REF, DATA FROM RESOURCES WHERE REF = ?";
   return [self withStatement:query perform:^(sqlite3_stmt* stmt) {
@@ -127,7 +127,7 @@ static int const kCreatedAtColumnOrdinal = 3;
   }];
 }
 
-- (FNFuture*)putWithKey:(NSString*)key dictionary:(NSDictionary*)dict {
+- (FNFuture *)setObject:(NSDictionary *)dict forKey:(NSString *)key {
   // TOOD: Assert?
   return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)" perform:^(sqlite3_stmt* stmt) {
     SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);

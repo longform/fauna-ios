@@ -128,9 +128,12 @@ static FNContext* _defaultContext;
 
 + (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters {
-  return [[self.currentOrRaise.client get:path parameters:parameters]
-          map:^(FNResponse *response) {
-    return response.resource;
+  FNContext *context = self.currentOrRaise;
+
+  return [[context.client get:path parameters:parameters] flatMap:^(FNResponse *res){
+    return [[context cacheResource:res.resource references:res.references] map_:^{
+      return res.resource;
+    }];
   }];
 }
 
@@ -142,10 +145,9 @@ static FNContext* _defaultContext;
         parameters:(NSDictionary *)parameters {
   FNContext* context = self.currentOrRaise;
 
-  return [context cacheResourceResponse:^() {
-    return [[context.client post:path parameters:parameters]
-            map:^(FNResponse *response) {
-      return response.resource;
+  return [[context.client post:path parameters:parameters] flatMap:^(FNResponse *res) {
+    return [[context cacheResource:res.resource references:res.references] map_:^{
+      return res.resource;
     }];
   }];
 }
@@ -158,10 +160,9 @@ static FNContext* _defaultContext;
        parameters:(NSDictionary *)parameters {
   FNContext *context = self.currentOrRaise;
 
-  return [context cacheResourceResponse:^() {
-    return [[context.client put:path parameters:parameters]
-            map:^(FNResponse *response) {
-      return response.resource;
+  return [[context.client put:path parameters:parameters] flatMap:^(FNResponse *res) {
+    return [[context cacheResource:res.resource references:res.references] map_:^{
+      return res.resource;
     }];
   }];
 }
@@ -172,9 +173,12 @@ static FNContext* _defaultContext;
 
 + (FNFuture *)delete:(NSString *)path
           parameters:(NSDictionary *)parameters {
-  return [[self.currentOrRaise.client delete:path parameters:parameters]
-          map:^(FNResponse *response) {
-            return response.resource;
+  FNContext *context = self.currentOrRaise;
+
+  return [[context.client delete:path parameters:parameters] flatMap:^(FNResponse *res) {
+    return [[context cacheResource:@{@"ref": path, @"deleted": @YES} references:@{}] map_:^{
+      return @{};
+    }];
   }];
 }
 
@@ -204,26 +208,26 @@ static FNContext* _defaultContext;
 
 # pragma mark Private cache methods
 
-- (FNFuture *)cacheResourceResponse:(FNFuture* (^)(void))block {
-  return [block() flatMap:^(NSDictionary *res) {
-    // TODO: Assert res[@"ref"] exists;
-    if (res) {
-      return [self propogateToCachesWithRef:res[@"ref"] dict:res];
-    } else {
-      return [FNFuture value:res];
-    }
-  }];
+- (FNFuture *)cachedResourceForRef:(NSString *)ref {
+  return [self.cache valueForKey:ref];
 }
 
-- (FNFuture *)propogateToCachesWithRef:(NSString*)ref dict:(NSDictionary *)dict {
-  FNFuture *localCacheCompletion = [self.cache putWithKey:ref dictionary:dict];
-  if (self.parent) {
-    return [FNFutureSequence(@[localCacheCompletion, [self.parent propogateToCachesWithRef:ref dict:dict]]) map:^(NSArray* rv) {
-      return rv[0];
-    }];
-  } else {
-    return [FNFuture value:dict];
+- (FNFuture *)cacheResource:(NSDictionary *)resource references:(NSDictionary *)references {
+  NSMutableArray *futures = [[NSMutableArray alloc] initWithCapacity:(references.count + 2)];
+
+  if (resource && resource[@"ref"]) {
+    [futures addObject:[self.cache setObject:resource forKey:resource[@"ref"]]];
   }
+
+  [references enumerateKeysAndObjectsUsingBlock:^(NSString *ref, NSDictionary *resource, BOOL *stop) {
+    [futures addObject:[self.cache setObject:resource forKey:ref]];
+  }];
+
+  if (self.parent) {
+    [futures addObject:[self.parent cacheResource:resource references:references]];
+  }
+
+  return FNFutureJoin(futures);
 }
 
 @end

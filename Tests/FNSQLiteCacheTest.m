@@ -31,8 +31,8 @@
 
   NSDictionary *dict = @{@"test": @"sup"};
 
-  [[[cache putWithKey:testKey dictionary:dict] flatMap:^(id wtf) {
-    return [cache getWithKey:testKey];
+  [[[cache setObject:dict forKey:testKey] flatMap:^(id wtf) {
+    return [cache valueForKey:testKey];
   }] onSuccess:^(NSDictionary* rv) {
     if ([rv[@"test"] isEqualToString:@"sup"]) {
       [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testVolatilePutAndGet)];
@@ -51,9 +51,9 @@
   FNSQLiteCache *cache = [FNSQLiteCache persistentCacheWithName:testFilename];
   NSDictionary *dict = @{@"test": @"sup"};
 
-  [[cache putWithKey:testKey dictionary:dict] onSuccess:^(id blah) {
+  [[cache setObject:dict forKey:testKey] onSuccess:^(id blah) {
     FNSQLiteCache *otherCache = [FNSQLiteCache persistentCacheWithName:testFilename];
-    FNFuture *rv = [otherCache getWithKey:testKey];
+    FNFuture *rv = [otherCache valueForKey:testKey];
     [rv onSuccess:^(NSDictionary* rv) {
       if ([rv[@"test"] isEqualToString:@"sup"]) {
         [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testPersistentPutAndGet)];
