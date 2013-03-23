@@ -43,14 +43,20 @@ static FNFuture * FNAccumulateHelper(NSArray *futures, int idx, id seed, id (^ac
   }
 }
 
-FNFuture * FNAccumulate(NSArray *futures, id seed, id (^accumulator)(id accum, id value)) {
+FNFuture * FNFutureAccumulate(NSArray *futures, id seed, id (^accumulator)(id accum, id value)) {
   return FNAccumulateHelper(futures, 0, seed, accumulator);
 }
 
-FNFuture * FNSequence(NSArray *futures) {
-  return FNAccumulate(futures, [NSMutableArray arrayWithCapacity:futures.count], ^id(NSMutableArray *arr, id value) {
+FNFuture * FNFutureSequence(NSArray *futures) {
+  return FNFutureAccumulate(futures, [NSMutableArray arrayWithCapacity:futures.count], ^id(NSMutableArray *arr, id value) {
     [arr addObject:value];
     return arr;
+  });
+}
+
+FNFuture * FNFutureJoin(NSArray *futures) {
+  return FNFutureAccumulate(futures, @YES, ^(id accum, id __unused value) {
+    return accum;
   });
 }
 

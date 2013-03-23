@@ -218,7 +218,7 @@ static FNContext* _defaultContext;
 - (FNFuture *)propogateToCachesWithRef:(NSString*)ref dict:(NSDictionary *)dict {
   FNFuture *localCacheCompletion = [self.cache putWithKey:ref dictionary:dict];
   if (self.parent) {
-    return [FNSequence(@[localCacheCompletion, [self.parent propogateToCachesWithRef:ref dict:dict]]) map:^(NSArray* rv) {
+    return [FNFutureSequence(@[localCacheCompletion, [self.parent propogateToCachesWithRef:ref dict:dict]]) map:^(NSArray* rv) {
       return rv[0];
     }];
   } else {

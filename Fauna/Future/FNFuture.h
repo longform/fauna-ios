@@ -23,12 +23,17 @@ NSException * FNInvalidFutureValue(NSString *format, ...);
 
 NSException * FNFutureAlreadyCompleted(NSString *method, id value);
 
-FNFuture * FNAccumulate(NSArray *futures, id seed, id (^accumulator)(id accum, id value));
+FNFuture * FNFutureAccumulate(NSArray *futures, id seed, id (^accumulator)(id accum, id value));
 
 /*!
  Returns a new future that contains an array of the results of the passed in array of futures.
  */
-FNFuture * FNSequence(NSArray *futures);
+FNFuture * FNFutureSequence(NSArray *futures);
+
+/*!
+ Returns a new future that will complete when all the provided futures complete.
+ */
+FNFuture * FNFutureJoin(NSArray *futures);
 
 @interface FNFuture : NSObject
 

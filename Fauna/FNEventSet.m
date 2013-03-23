@@ -209,7 +209,7 @@
 }
 
 - (FNFuture *)resources {
-  return FNSequence([self.events map:^(FNEvent *ev){
+  return FNFutureSequence([self.events map:^(FNEvent *ev){
     return ev.resource;
   }]);
 }
