@@ -17,6 +17,12 @@
 
 #import "FNMutableFuture.h"
 
+@interface FNFuture ()
+
++ (NSOperationQueue *)sharedOperationQueue;
+
+@end
+
 @interface FNMutableFuture ()
 
 // Used as a signal for future completion
@@ -65,7 +71,7 @@
     }];
 
     NSOperationQueue *q = [NSOperationQueue currentQueue];
-    q = q ?: [NSOperationQueue mainQueue];
+    q = q ?: [FNFuture sharedOperationQueue];
 
     @synchronized (self) {
       if (!self.isCompleted) [op addDependency:self.completionOp];
