@@ -92,7 +92,17 @@ FNFuture * FNFutureJoin(NSArray *futures);
 - (BOOL)isCancelled;
 
 /*!
- Returns the result of the operation represented by this object or nil, if there was an error, blocking if necessary.
+ Blocks on the completion of the future, returning YES if the operation was successful, or NO otherwise.
+ */
+- (BOOL)wait;
+
+/*!
+ Blocks on the completion of the future, returning YES if the operation was successful, or NO otherwise. Sets value or error appropriately.
+ */
+- (BOOL)waitForResult:(id __autoreleasing *)value error:(NSError __autoreleasing **)error;
+
+/*!
+ Blocks on completion of the future and returns the result, or throws on error. For testing purposes only.
  */
 - (id)get;
 

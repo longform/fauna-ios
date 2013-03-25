@@ -25,8 +25,7 @@
 
 @interface FNMutableFuture ()
 
-// Used as a signal for future completion
-@property (nonatomic, readonly) NSOperation *completionOp;
+@property (nonatomic, readonly) NSMutableArray *dependents;
 @property (nonatomic, readonly) FNFuture *cancellationTarget;
 
 // make read/write
@@ -41,7 +40,7 @@
 
 - (id)init {
   if (self = [super init]) {
-    _completionOp = [NSOperation new];
+    _dependents = [NSMutableArray new];
   }
 
   return self;
@@ -49,9 +48,14 @@
 
 # pragma mark Accessors
 
-- (id)get {
-  [self.completionOp waitUntilFinished];
-  return self.value;
+- (BOOL)wait {
+  if (!self.isCompleted) {
+    NSOperation *op = [NSOperation new];
+    [self addCompletionOp:op];
+    [op waitUntilFinished];
+  }
+
+  return !self.isError;
 }
 
 - (void)cancel {
@@ -67,19 +71,14 @@
   } else {
     NSMutableDictionary *scope = [FNFutureScope saveCurrent];
     NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-      [FNFutureScope inScope:scope perform:^{ block(self); }];
+      [FNFutureScope inScope:scope perform:^{
+        block(self);
+      }];
     }];
 
-    NSOperationQueue *q = [NSOperationQueue currentQueue];
-    q = q ?: [FNFuture sharedOperationQueue];
-
-    @synchronized (self) {
-      if (!self.isCompleted) [op addDependency:self.completionOp];
-      [q addOperation:op];
-    }
+    [self addCompletionOp:op];
   }
 }
-
 
 #pragma mark Mutable API
 
@@ -112,8 +111,17 @@
   _cancellationTarget = other;
 }
 
-- (void)operationWasCompleted {
-  [self.completionOp start];
+- (void)addCompletionOp:(NSOperation *)op {
+  BOOL added = NO;
+
+  @synchronized (self) {
+    if (!self.isCompleted) {
+      [self.dependents addObject:op];
+      added = YES;
+    }
+  }
+
+  if (!added) [op start];
 }
 
 - (BOOL)completeIfEmpty:(id)value error:(NSError *)error {
@@ -135,5 +143,17 @@
 
   return updated;
 }
+
+- (void)operationWasCompleted {
+  NSOperationQueue *q = [NSOperationQueue currentQueue];
+  q = q ?: [FNFuture sharedOperationQueue];
+
+  for (NSOperation *op in self.dependents) {
+    [q addOperation:op];
+  }
+
+  _dependents = nil;
+}
+
 
 @end

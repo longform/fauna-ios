@@ -44,8 +44,8 @@
   return YES;
 }
 
-- (id)get {
-  return self.value;
+- (BOOL)wait {
+  return !self.isError;
 }
 
 - (void)onCompletion:(void (^)(FNFuture *))block {

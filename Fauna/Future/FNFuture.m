@@ -114,7 +114,7 @@ FNFuture * FNFutureJoin(NSArray *futures) {
   @throw @"not implemented";
 }
 
-- (id)get {
+- (BOOL)wait {
   @throw @"not implemented";
 }
 
@@ -123,6 +123,26 @@ FNFuture * FNFutureJoin(NSArray *futures) {
 }
 
 # pragma mark API methods
+
+-(BOOL)waitForResult:(__autoreleasing id *)value error:(NSError *__autoreleasing *)error {
+  if (self.wait) {
+    id __autoreleasing v = self.value;
+    *value = v;
+    return YES;
+  } else {
+    NSError __autoreleasing *e = self.error;
+    *error = e;
+    return NO;
+  }
+}
+
+- (id)get {
+  if (self.wait) {
+    return self.value;
+  } else {
+    @throw self.error;
+  }
+}
 
 - (void)cancel {
   self.isCancelled = YES;

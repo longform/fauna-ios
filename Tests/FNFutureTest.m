@@ -23,12 +23,26 @@
 
 @implementation FNFutureTest
 
-- (void)testGet {
+- (void)testWait {
+  id result;
+  NSError *err;
+
   FNFuture *res = [FNFuture inBackground:^{
     return @"foo";
   }];
 
-  GHAssertEquals(@"foo", res.get, @"result did match expected value");
+  GHAssertTrue([res waitForResult:&result error:&err], @"future did not finish successfullly");
+  GHAssertEquals(result, @"foo", @"result did match expected value");
+
+  result = nil;
+  err = nil;
+
+  FNFuture *fail = [FNFuture inBackground:^{
+    return [NSError errorWithDomain:@"fail" code:0 userInfo:@{}];
+  }];
+
+  GHAssertFalse([fail waitForResult:&result error:&err], @"future did not fail");
+  GHAssertEquals(err.domain, @"fail", @"result did match expected value");
 }
 
 - (void)testOnCompletion {
@@ -160,6 +174,28 @@
   }];
 
   FNFuture.currentScope[@"val"] = @"wrong";
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
+}
+
+- (void)testNeverDeadlocksOnMain {
+  [self prepare];
+
+  [[FNFuture onMainThread:^id{
+    FNFuture *f = [[FNFuture inBackground:^{
+      usleep(10000);
+      return @"done";
+    }] map:^(NSString *done) {
+      usleep(10000);
+      return [done stringByAppendingString:@" and done"];
+    }];
+
+    [f wait];
+
+    return nil;
+  }] onSuccess:^(id __unused value) {
+    [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testNeverDeadlocksOnMain)];
+  }];
 
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
 }
