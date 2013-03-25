@@ -115,4 +115,8 @@ FOUNDATION_EXPORT NSString * const FaunaAPIVersion;
  */
 - (FNFuture *)delete:(NSString *)path;
 
+#pragma mark equality
+
+- (BOOL)isEqualToClient:(FNClient *)client;
+
 @end

@@ -126,6 +126,24 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   return [self delete:path parameters:nil];
 }
 
+#pragma mark equality
+
+- (BOOL)isEqualToClient:(FNClient *)client {
+  return self == client || (client && [self.authString isEqualToString:client.authString]);
+}
+
+- (BOOL)isEqual:(id)object {
+  return self == object || (object && [object isKindOfClass:[self class]] && [self isEqualToClient:object]);
+}
+
+- (NSUInteger)hash {
+  NSUInteger result = 1;
+  NSUInteger prime = 1789;
+
+  result = prime * result + self.authString.hash;
+  return result;
+}
+
 #pragma mark Private methods
 
 - (FNFuture *)performRequestWithMethod:(NSString *)method

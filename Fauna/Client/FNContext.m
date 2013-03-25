@@ -190,6 +190,12 @@ static FNContext* _defaultContext;
   self.client.logHTTPTraffic = log;
 }
 
+#pragma equality
+
+- (BOOL)isEquivalentToContext:(FNContext *)context {
+  return self == context || (context && [self.client isEqualToClient:context.client]);
+}
+
 # pragma mark Private methods
 
 + (FNContext *)scopedContext {

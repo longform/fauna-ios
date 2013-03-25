@@ -127,4 +127,8 @@
 
 - (void)setLogHTTPTraffic:(BOOL)log;
 
+#pragma mark equality
+
+- (BOOL)isEquivalentToContext:(FNContext *)context;
+
 @end

@@ -238,6 +238,44 @@ static void FNInitClassRegistry() {
   return [FNEventSet eventSetWithRef:[self.ref stringByAppendingFormat:@"/%@", name]];
 }
 
+#pragma mark NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+  [coder encodeObject:self.dictionary forKey:@"dictionary"];
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+  self = [super init];
+  if (self) {
+    _dictionary = [coder decodeObjectForKey:@"dictionary"];
+  }
+  return self;
+}
+
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+  return [[self.class allocWithZone:zone] initWithDictionary:self.dictionary];
+}
+
+#pragma mark equality
+
+- (BOOL)isEqualToResource:(FNResource *)resource {
+  return self == resource || (resource && [self.dictionary isEqualToDictionary:resource.dictionary]);
+}
+
+- (BOOL)isEqual:(id)object {
+  return self == object || (object && [object isKindOfClass:[self class]] && [self isEqualToResource:object]);
+}
+
+- (NSUInteger)hash {
+  NSUInteger result = 1;
+  NSUInteger prime = 9431;
+
+  result = prime * result + self.dictionary.hash;
+  return result;
+}
+
 #pragma mark private Methods/helpers
 
 + (BOOL)allowNewResources {
