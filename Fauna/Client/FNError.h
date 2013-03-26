@@ -21,7 +21,6 @@
 FOUNDATION_EXPORT NSString * const FNErrorDomain;
 
 FOUNDATION_EXPORT NSInteger const FNErrorOperationCancelledCode;
-FOUNDATION_EXPORT NSInteger const FNErrorOperationFailedCode;
 FOUNDATION_EXPORT NSInteger const FNErrorRequestTimeoutCode;
 FOUNDATION_EXPORT NSInteger const FNErrorBadRequestCode;
 FOUNDATION_EXPORT NSInteger const FNErrorUnauthorizedCode;
@@ -29,8 +28,6 @@ FOUNDATION_EXPORT NSInteger const FNErrorNotFoundCode;
 FOUNDATION_EXPORT NSInteger const FNErrorInternalServerErrorCode;
 
 NSError * FNOperationCancelled();
-
-NSError * FNOperationFailed();
 
 NSError * FNRequestTimeout();
 
@@ -47,5 +44,23 @@ NSException * FNContextNotDefined();
 NSException * FNInvalidResource(NSString *format, ...);
 
 NSException * FNInvalidResourceClass(NSString *format, ...);
+
+@interface NSError (FNError)
+
+- (BOOL)isFNError;
+
+- (BOOL)isFNOperationCancelled;
+
+- (BOOL)isFNRequestTimeout;
+
+- (BOOL)isFNBadRequest;
+
+- (BOOL)isFNUnauthorized;
+
+- (BOOL)isFNNotFound;
+
+- (BOOL)isFNInternalServerError;
+
+@end
 
 #endif

@@ -20,8 +20,7 @@
 NSString * const FNErrorDomain = @"org.fauna";
 
 NSInteger const FNErrorOperationCancelledCode = 0;
-NSInteger const FNErrorOperationFailedCode = 1;
-NSInteger const FNErrorRequestTimeoutCode = 2;
+NSInteger const FNErrorRequestTimeoutCode = 1;
 NSInteger const FNErrorBadRequestCode = 400;
 NSInteger const FNErrorUnauthorizedCode = 401;
 NSInteger const FNErrorNotFoundCode = 404;
@@ -30,12 +29,6 @@ NSInteger const FNErrorInternalServerErrorCode = 500;
 NSError * FNOperationCancelled() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorOperationCancelledCode
-                         userInfo:@{}];
-}
-
-NSError * FNOperationFailed() {
-  return [NSError errorWithDomain:FNErrorDomain
-                             code:FNErrorOperationFailedCode
                          userInfo:@{}];
 }
 
@@ -88,3 +81,35 @@ NSException * FNInvalidResourceClass(NSString *format, ...) {
   va_end(args);
   return [NSException exceptionWithName:@"FNInvalidResourceClass" reason:reason userInfo:@{}];
 }
+
+@implementation NSError (FNError)
+
+- (BOOL)isFNError {
+  return self.domain == FNErrorDomain;
+}
+
+- (BOOL)isFNOperationCancelled {
+  return self.isFNError && self.code == FNErrorOperationCancelledCode;
+}
+
+- (BOOL)isFNRequestTimeout {
+  return self.isFNError && self.code == FNErrorRequestTimeoutCode;
+}
+
+- (BOOL)isFNBadRequest {
+  return self.isFNError && self.code == FNErrorBadRequestCode;
+}
+
+- (BOOL)isFNUnauthorized {
+  return self.isFNError && self.code == FNErrorUnauthorizedCode;
+}
+
+- (BOOL)isFNNotFound {
+  return self.isFNError && self.code == FNErrorNotFoundCode;
+}
+
+- (BOOL)isFNInternalServerError {
+  return self.isFNError && self.code == FNErrorInternalServerErrorCode;
+}
+
+@end

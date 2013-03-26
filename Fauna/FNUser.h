@@ -65,6 +65,18 @@
 + (FNFuture *)contextForUniqueID:(NSString *)uniqueID password:(NSString *)password;
 
 /*!
+ Returns a future containing @YES if no user exists with the given email, or @NO otherwise.
+ @param email the email to test
+ */
++ (FNFuture *)isEmailAvailable:(NSString *)email;
+
+/*!
+ Returns a future containing @YES if no user exists with the given unique ID, or @NO otherwise.
+ @param uniqueID the unique ID to test
+ */
++ (FNFuture *)isUniqueIDAvailable:(NSString *)uniqueID;
+
+/*!
  Set a new user's email. Set on a new user in order to create with an email address.
  @param email the user's email
  */

@@ -18,6 +18,8 @@
 #import "FNFuture.h"
 #import "FNUser.h"
 #import "FNContext.h"
+#import "FNError.h"
+#import "NSString+FNStringExtensions.h"
 
 @implementation FNUser
 
@@ -69,6 +71,32 @@
   return [[self tokenForUniqueID:uniqueID password:password] map:^(NSString *token) {
             return [FNContext contextWithKey:token];
           }];
+}
+
++ (FNFuture *)isEmailAvailable:(NSString *)email {
+  NSString *path = [NSString stringWithFormat:@"users/email_availability/%@", [email urlEscapedWithEncoding:NSUTF8StringEncoding]];
+  return [[FNContext get:path] transform:^(FNFuture *result) {
+    if (!result.isError) {
+      return [FNFuture value:@NO];
+    } else if (result.isError && result.error.isFNNotFound) {
+      return [FNFuture value:@YES];
+    } else {
+      return result;
+    }
+  }];
+}
+
++ (FNFuture *)isUniqueIDAvailable:(NSString *)uniqueID {
+  NSString *path = [NSString stringWithFormat:@"users/unique_id_availability/%@", [uniqueID urlEscapedWithEncoding:NSUTF8StringEncoding]];
+  return [[FNContext get:path] transform:^(FNFuture *result) {
+    if (!result.isError) {
+      return [FNFuture value:@NO];
+    } else if (result.isError && result.error.isFNNotFound) {
+      return [FNFuture value:@YES];
+    } else {
+      return result;
+    }
+  }];
 }
 
 - (void)setEmail:(NSString *)email {
