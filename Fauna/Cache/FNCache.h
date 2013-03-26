@@ -16,13 +16,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FNResource.h"
 
 @class FNFuture;
 
 @interface FNCache : NSObject
 
+- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key at:(FNTimestamp)timestamp;
+
 - (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key;
 
 - (FNFuture *)valueForKey:(NSString *)key;
 
+- (FNFuture *)updateIfNewer:(NSDictionary *)dict forKey:(NSString *)key date:(FNTimestamp)timestamp;
 @end

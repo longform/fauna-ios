@@ -19,12 +19,19 @@
 
 @implementation FNCache
 
-- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key {
+- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key at:(FNTimestamp)timestamp {
   @throw @"not implemented";
+}
+
+- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key {
+  return [self setObject:value forKey:key at:FNTimestampFromNSDate([NSDate date])];
 }
 
 - (FNFuture *)valueForKey:(NSString *)key {
   @throw @"not implemented";
 }
 
+- (FNFuture *)updateIfNewer:(NSDictionary *)dict forKey:(NSString *)key date:(FNTimestamp)timestamp {
+  @throw @"not implemented";
+}
 @end

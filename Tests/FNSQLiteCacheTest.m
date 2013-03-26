@@ -63,4 +63,32 @@
 
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
 }
+
+- (void)testUpdateIfNewer {
+  [self prepare];
+  NSString *testKey = @"testKey";
+  FNSQLiteCache *cache = [FNSQLiteCache volatileCache];
+  NSDate *now = [NSDate date];
+  FNTimestamp originalTime = FNTimestampFromNSDate(now);
+  FNTimestamp newerTime = FNTimestampFromNSDate([now dateByAddingTimeInterval:60]);
+
+  NSDictionary *newDict = @{@"test2": @"sup"};
+  NSDictionary *dict = @{@"test": @"sup"};
+  FNFuture* updateFuture = [[cache setObject:dict forKey:testKey at:originalTime] flatMap:^(id wtf) {
+    return [cache updateIfNewer:newDict forKey:testKey date:newerTime];
+  }];
+
+  [updateFuture flatMap:^(id wtf) {
+    FNFuture *rv = [cache valueForKey:testKey];
+    [rv onSuccess:^(NSDictionary *rv) {
+      if ([rv[@"test2"] isEqualToString:@"sup"]) {
+        [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testUpdateIfNewer)];
+      }
+    }];
+
+    return rv;
+  }];
+
+  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
+}
 @end

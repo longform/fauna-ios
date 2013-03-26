@@ -129,7 +129,6 @@ static FNContext* _defaultContext;
 + (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters {
   FNContext *context = self.currentOrRaise;
-
   return [[context.client get:path parameters:parameters] flatMap:^(FNResponse *res){
     return [[context cacheResource:res.resource references:res.references] map_:^{
       return res.resource;
@@ -139,6 +138,17 @@ static FNContext* _defaultContext;
 
 + (FNFuture *)get:(NSString *)path {
   return [self get:path parameters:nil];
+}
+
++ (FNFuture *)get:(NSString *)path ref:(NSString *)ref {
+  FNContext *context = self.currentOrRaise;
+  return [[context.cache valueForKey:ref] flatMap:^(id value) {
+    if (value == nil) {
+      return [self get:path];
+    } else {
+      return [FNFuture value:value];
+    }
+  }];
 }
 
 + (FNFuture *)post:(NSString *)path

@@ -13,17 +13,15 @@
 // under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
-//
 
 #import <Foundation/Foundation.h>
-#import "FNCache.h"
+#import <sqlite3.h>
 
 @class FNFuture;
 
-@interface FNSQLiteCache : FNCache
-+ (id)persistentCacheWithName:(const NSString*)name;
-+ (id)volatileCache;
-- (id)initPersistentWithName:(const NSString*)name;
-- (id)initInMemory;
+@interface FNSQLiteConnectionThread : NSThread
+- (void)main;
+- (id)initWithConnection:(sqlite3*)db;
+- (FNFuture*)withConnectionPerform:(id(^)(sqlite3*))block;
 - (void)close;
 @end

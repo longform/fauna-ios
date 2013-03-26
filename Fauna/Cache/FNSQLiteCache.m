@@ -18,6 +18,7 @@
 #import "FNSQLiteCache.h"
 #import "FNFuture.h"
 #import "FNResource.h"
+#import "FNSQLiteConnectionThread.h"
 #import <sqlite3.h>
 
 typedef int SQLITE_STATUS;
@@ -26,7 +27,7 @@ static int const kDataColumnOrdinal = 2;
 static int const kCreatedAtColumnOrdinal = 3;
 
 @interface FNSQLiteCache () {
-  sqlite3 *database;
+  FNSQLiteConnectionThread *connection;
 }
 @end
 
@@ -42,6 +43,7 @@ static int const kCreatedAtColumnOrdinal = 3;
 
 - (id)initWithFilename:(NSString*)name {
   if(self = [super init]) {
+    sqlite3 *database;
     SQLITE_STATUS status = sqlite3_open([name fileSystemRepresentation], &database);
     if(status != SQLITE_OK) {
       const char *errMsg;
@@ -54,6 +56,9 @@ static int const kCreatedAtColumnOrdinal = 3;
       NSLog(@"FNSQLite: Unable to open database %s (%i): %s", [name UTF8String], status, errMsg);
       return nil;
     }
+
+    connection = [[FNSQLiteConnectionThread alloc] initWithConnection:database];
+    [connection start];
   }
   return self;
 }
@@ -84,14 +89,16 @@ static int const kCreatedAtColumnOrdinal = 3;
 
 - (BOOL)createTables {
   // Creates the Resources table.
-  SQLITE_STATUS status = sqlite3_exec(database,
-               "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, CREATED_AT INTEGER)",
-               NULL, NULL, NULL);
-  if(status != SQLITE_OK) {
-    NSLog(@"FNCache: failed to create table");
-    return NO;
-  }
-  return YES;
+  return [[connection withConnectionPerform:^(sqlite3* database) {
+    SQLITE_STATUS status = sqlite3_exec(database,
+                 "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, CREATED_AT INTEGER)",
+                 NULL, NULL, NULL);
+    if(status != SQLITE_OK) {
+      NSLog(@"FNCache: failed to create table");
+      return @(NO);
+    }
+    return @(YES);
+  }] get];
 }
 
 - (void)dealloc {
@@ -99,35 +106,33 @@ static int const kCreatedAtColumnOrdinal = 3;
 }
 
 - (void)close {
-  SQLITE_STATUS status = sqlite3_close(database);
-  if(status != SQLITE_OK) {
-    NSLog(@"FNSQLiteCache: database close failed (%d): %s", status, sqlite3_errmsg(database));
-  }
+  [connection close];
 }
 
 - (FNFuture*)valueForKey:(NSString *)key {
   // TODO: Assert???
-  NSString *query = @"SELECT ROWID, REF, DATA FROM RESOURCES WHERE REF = ?";
+  NSString *query = @"SELECT ROWID, REF, DATA, CREATED_AT FROM RESOURCES WHERE REF = ?";
   return [self withStatement:query perform:^(sqlite3_stmt* stmt) {
     SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind key to statement."}];
     }
-    return (id)[[self executeNextStep:stmt] map:^(NSNumber* statusNum) {
-      int status = [statusNum integerValue];
-      if (status == SQLITE_ROW) {
-        int bytes = sqlite3_column_bytes(stmt, kDataColumnOrdinal);
-        NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(stmt, kDataColumnOrdinal) length:bytes];
-        NSDictionary *data = nil;
-        data = [NSKeyedUnarchiver unarchiveObjectWithData:blobData];
-        return (id)data;
-      }
+    status = [self executeNextStep:stmt];
+    if (status == SQLITE_ROW) {
+      int bytes = sqlite3_column_bytes(stmt, kDataColumnOrdinal);
+      NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(stmt, kDataColumnOrdinal) length:bytes];
+      NSDictionary *data = nil;
+      data = [NSKeyedUnarchiver unarchiveObjectWithData:blobData];
+      return (id)data;
+    } else if (status == SQLITE_DONE) {
+      return (id)nil;
+    } else {
       return [NSError errorWithDomain:@"poop" code:123 userInfo:@{}];
-    }];
+    }
   }];
 }
 
-- (FNFuture *)setObject:(NSDictionary *)dict forKey:(NSString *)key {
+- (FNFuture *)setObject:(NSDictionary *)dict forKey:(NSString *)key at:(FNTimestamp)timestamp {
   // TOOD: Assert?
   return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)" perform:^(sqlite3_stmt* stmt) {
     SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);
@@ -141,45 +146,65 @@ static int const kCreatedAtColumnOrdinal = 3;
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
     }
 
-    status = sqlite3_bind_int64(stmt, kCreatedAtColumnOrdinal, FNTimestampFromNSDate([NSDate date]));
+    status = sqlite3_bind_int64(stmt, kCreatedAtColumnOrdinal, timestamp);
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
     }
 
-    return (id)[self executeNextStep:stmt];
+    return (id)@([self executeNextStep:stmt]);
   }];
 }
 
-- (FNFuture*)executeNextStep:(sqlite3_stmt *)stmt {
-  return [[FNFuture inBackground:^{
-    int status;
-    @synchronized(self) {
-      status = sqlite3_step(stmt);
-    };
-    return @(status);
-  }] flatMap:^(NSNumber* statusNum) {
-    int status = [statusNum intValue];
-
-    if (status == SQLITE_BUSY || status == SQLITE_LOCKED) {
-      // TODO: Backoff
-      usleep(5000);
-      return [self executeNextStep:stmt];
-    } else {
-      return [FNFuture value:statusNum];
+- (FNFuture *)updateIfNewer:(NSDictionary *)dict forKey:(NSString *)key date:(FNTimestamp)timestamp {
+  return [self withStatement:@"UPDATE RESOURCES SET DATA = ?, CREATED_AT = ? WHERE REF = ? AND CREATED_AT < ?" perform:^(sqlite3_stmt* stmt) {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
+    SQLITE_STATUS status = sqlite3_bind_blob(stmt, 1, [data bytes], [data length], SQLITE_TRANSIENT);
+    if (status != SQLITE_OK) {
+      // explode
     }
+
+    status = sqlite3_bind_int64(stmt, 2, timestamp);
+    if (status != SQLITE_OK) {
+      // explode
+    }
+
+   status = sqlite3_bind_text(stmt, 3, [key UTF8String], -1, SQLITE_TRANSIENT);
+   if (status != SQLITE_OK) {
+     // explode
+   }
+
+   status = sqlite3_bind_int64(stmt, 4, timestamp);
+   if (status != SQLITE_OK) {
+     // explode
+   }
+
+   return (id)@([self executeNextStep:stmt]);
   }];
 }
 
-- (FNFuture*)withStatement:(NSString*)sql perform:(FNFuture*(^)(sqlite3_stmt*))block {
-  sqlite3_stmt *stmt;
-  SQLITE_STATUS status = sqlite3_prepare_v2(database, [sql UTF8String], -1, &stmt, NULL);
-  if (status != SQLITE_OK){
-    NSLog(@"FNCache: Unable to prepare statement (%d): %s", status, sqlite3_errmsg(database));
-    return nil;
+- (SQLITE_STATUS)executeNextStep:(sqlite3_stmt *)stmt {
+  int status;
+  status = sqlite3_step(stmt);
+  if (status == SQLITE_BUSY || status == SQLITE_LOCKED) {
+    // TODO: Backoff
+    usleep(5000);
+    return [self executeNextStep:stmt];
+  } else {
+    return status;
   }
-  return [block(stmt) ensure:^() {
-    id __unused x = self;
+}
+
+- (FNFuture*)withStatement:(NSString*)sql perform:(id(^)(sqlite3_stmt*))block {
+  return [connection withConnectionPerform:^(sqlite3 *database) {
+    sqlite3_stmt *stmt;
+    SQLITE_STATUS status = sqlite3_prepare_v2(database, [sql UTF8String], -1, &stmt, NULL);
+    if (status != SQLITE_OK) {
+      NSLog(@"FNCache: Unable to prepare statement (%d): %s", status, sqlite3_errmsg(database));
+      return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind value to statement."}];
+    }
+    id rv = block(stmt);
     sqlite3_finalize(stmt);
+    return rv;
   }];
 }
 @end
