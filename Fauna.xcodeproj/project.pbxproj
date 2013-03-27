@@ -132,6 +132,7 @@
 		0C73421916FA3F3B0007796B /* FNSQLiteCacheTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNSQLiteCacheTest.m; sourceTree = "<group>"; };
 		0C8693331700DDE700CE5033 /* FNSQLiteConnectionThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNSQLiteConnectionThread.h; sourceTree = "<group>"; };
 		0C8693341700DDE700CE5033 /* FNSQLiteConnectionThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNSQLiteConnectionThread.m; sourceTree = "<group>"; };
+		0CBB9C15170259CC00F885C1 /* FNContext+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FNContext+Internal.h"; sourceTree = "<group>"; };
 		0CF0FACB16F925890081E7F5 /* FNSQLiteCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNSQLiteCache.h; sourceTree = "<group>"; };
 		0CF0FACC16F925890081E7F5 /* FNSQLiteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNSQLiteCache.m; sourceTree = "<group>"; };
 		0CF0FACE16FA3C4A0081E7F5 /* FNCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FNCache.h; sourceTree = "<group>"; };
@@ -286,6 +287,7 @@
 		07603C3016A6445300A9A885 /* Client */ = {
 			isa = PBXGroup;
 			children = (
+				0CBB9C15170259CC00F885C1 /* FNContext+Internal.h */,
 				075959F716C167FD00426133 /* FNContext.h */,
 				075959F816C167FD00426133 /* FNContext.m */,
 				ACE3EC7216EA7AF200E1C2B1 /* FNClient.h */,

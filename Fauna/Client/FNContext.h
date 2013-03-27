@@ -16,12 +16,17 @@
 //
 
 @class FNFuture;
+@class FNClient;
+@class FNCache;
 
 /*!
  Fauna API Context
  */
 @interface FNContext : NSObject
 
+#pragma mark properties
+@property (nonatomic, readonly) FNClient *client;
+@property (nonatomic, readonly) FNCache *cache;
 #pragma mark lifecycle
 
 /*!
@@ -100,28 +105,6 @@
  @param block The block to be executed in the context.
  */
 - (void)performInContext:(void (^)(void))block;
-
-#pragma mark HTTP requests
-
-+ (FNFuture *)get:(NSString *)path
-       parameters:(NSDictionary *)parameters;
-
-+ (FNFuture *)get:(NSString *)path;
-
-+ (FNFuture *)post:(NSString *)path
-        parameters:(NSDictionary *)parameters;
-
-+ (FNFuture *)post:(NSString *)path;
-
-+ (FNFuture *)put:(NSString *)path
-       parameters:(NSDictionary *)parameters;
-
-+ (FNFuture *)put:(NSString *)path;
-
-+ (FNFuture *)delete:(NSString *)path
-          parameters:(NSDictionary *)parameters;
-
-+ (FNFuture *)delete:(NSString *)path;
 
 #pragma mark debugging
 

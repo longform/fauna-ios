@@ -15,7 +15,8 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FNContext.h"
+#import "FNClient.h"
+#import "FNContext+Internal.h"
 #import "FNFuture.h"
 #import "FNEventSet.h"
 #import "NSArray+FNFunctionalEnumeration.h"
@@ -100,7 +101,9 @@
   if (after > -1) params[@"after"] = FNTimestampToNSNumber(after);
   if (count > -1) params[@"count"] = @(count);
 
-  return [[FNContext get:fullRef parameters:params] map:^(NSDictionary *dict) {
+  FNContext *ctx = FNContext.currentOrRaise;
+
+  return [[ctx.client get:fullRef parameters:params] map:^(NSDictionary *dict) {
     return [FNEventSetPage resourceWithDictionary:dict];
   }];
 }
@@ -154,7 +157,9 @@
 }
 
 - (FNFuture *)addRef:(NSString *)ref {
-  return [[FNContext post:self.ref parameters:@{@"resource": ref}] map:^(NSDictionary *dict) {
+  FNContext *ctx = FNContext.currentOrRaise;
+
+  return [[ctx.client post:self.ref parameters:@{@"resource": ref}] map:^(NSDictionary *dict) {
     return [FNResource resourceWithDictionary:dict];
   }];
 }
@@ -164,7 +169,9 @@
 }
 
 - (FNFuture *)removeRef:(NSString *)ref {
-  return [[FNContext delete:self.ref parameters:@{@"resource": ref}] map:^(NSDictionary *dict) {
+  FNContext *ctx = FNContext.currentOrRaise;
+
+  return [[ctx.client delete:self.ref parameters:@{@"resource": ref}] map:^(NSDictionary *dict) {
     return [FNResource resourceWithDictionary:dict];
   }];
 }

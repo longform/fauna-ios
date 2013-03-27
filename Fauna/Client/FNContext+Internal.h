@@ -1,5 +1,5 @@
 //
-// FNInstance.m
+// FNContext.h
 //
 // Copyright (c) 2013 Fauna, Inc.
 //
@@ -15,31 +15,10 @@
 // specific language governing permissions and limitations under the License.
 //
 
-#import "FNError.h"
-#import "FNFuture.h"
-#import "FNEventSet.h"
-#import "FNClient.h"
-#import "FNContext+Internal.h"
-#import "FNInstance.h"
+#import "FNContext.h"
 
-@implementation FNInstance
+@interface FNContext ()
 
-+ (FNEventSet *)all {
-  if (!self.faunaClass) {
-    @throw FNInvalidResourceClass(@"+faunaClass is not defined on %@.", self);
-  }
-
-  return [FNEventSet eventSetWithRef:self.faunaClass];
-}
-
-+ (BOOL)allowNewResources {
-  return YES;
-}
-
-- (FNFuture *)destroy {
-  FNContext *ctx = FNContext.currentOrRaise;
-
-  return [ctx.client delete:self.ref].done;
-}
++ (FNContext *)currentOrRaise;
 
 @end

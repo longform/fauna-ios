@@ -40,7 +40,6 @@ typedef id(^PerformBlock)(sqlite3*);
 @end
 
 @interface FNSQLiteConnectionThread () {
-  NSPort *port;
   sqlite3 *database;
 }
 @end
@@ -61,9 +60,7 @@ typedef id(^PerformBlock)(sqlite3*);
 
 - (void)main {
   NSRunLoop *loop = [NSRunLoop currentRunLoop];
-  port = [NSPort port];
-  [loop addPort:port forMode:NSDefaultRunLoopMode];
-  while (![self isCancelled] && [loop runMode:NSDefaultRunLoopMode beforeDate:[[NSDate alloc] initWithTimeIntervalSinceNow:60]]);
+  while(![self isCancelled]) { @autoreleasepool { [loop run]; } }
 }
 
 - (FNFuture*)withConnectionPerform:(id(^)(sqlite3*))block {
@@ -79,6 +76,12 @@ typedef id(^PerformBlock)(sqlite3*);
 
 - (void)runBlock:(FNPerformContext*)context {
   id rv = context.block(database);
-  [context.future update:rv];
+
+  if ([rv isKindOfClass:[NSError class]]) {
+    [context.future updateError:rv];
+  } else {
+    [context.future update:rv];
+  }
 }
+
 @end

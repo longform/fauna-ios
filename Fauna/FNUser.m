@@ -17,7 +17,8 @@
 
 #import "FNFuture.h"
 #import "FNUser.h"
-#import "FNContext.h"
+#import "FNClient.h"
+#import "FNContext+Internal.h"
 
 @implementation FNUser
 
@@ -40,11 +41,12 @@
     @"new_password_confirmation": confirmation
   };
 
-  return [FNContext put:@"users/self/config/password" parameters:params].done;
+
+  return [FNContext.currentOrRaise.client put:@"users/self/config/password" parameters:params].done;
 }
 
 + (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password {
-  return [[FNContext post:@"tokens"
+  return [[FNContext.currentOrRaise.client post:@"tokens"
                parameters:@{@"email": email, @"password": password}]
           map:^(NSDictionary *resource) {
     return resource[@"token"];
@@ -52,7 +54,7 @@
 }
 
 + (FNFuture *)tokenForUniqueID:(NSString *)uniqueID password:(NSString *)password {
-  return [[FNContext post:@"tokens"
+  return [[FNContext.currentOrRaise.client post:@"tokens"
                parameters:@{@"unique_id": uniqueID, @"password": password}]
           map:^(NSDictionary *resource) {
             return resource[@"token"];

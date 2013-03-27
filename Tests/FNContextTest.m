@@ -18,6 +18,12 @@
 @interface FNContextTest : GHAsyncTestCase { }
 @end
 
+@interface FNContext ()
+
++ (FNContext *)currentOrRaise;
+
+@end
+
 @implementation FNContextTest
 
 - (void)testUsesDefaultContext {
@@ -25,7 +31,7 @@
 
   FNContext.defaultContext = TestPublisherContext();
 
-  [[FNContext get:@"users"] onSuccess:^(id value) {
+  [[FNContext.currentContext.client get:@"users"] onSuccess:^(id value) {
     [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testUsesDefaultContext)];
   }];
 
@@ -38,7 +44,7 @@
   [self prepare];
 
   [TestPublisherContext() performInContext:^{
-    [[FNContext get:@"users"] onSuccess:^(id value) {
+    [[FNContext.currentContext.client get:@"users"] onSuccess:^(id value) {
       [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testUsesScopedContext)];
     }];
   }];
@@ -55,18 +61,18 @@
 
   FNContext.defaultContext = clientCtx;
 
-  FNFuture *result = [[FNContext get:@"users"] rescue:^(NSError *error) {
+  FNFuture *result = [[FNContext.currentContext.client get:@"users"] rescue:^(NSError *error) {
     return [publisherCtx inContext:^{
-      FNFuture *res1 = [FNContext get:@"users/sets"];
+      FNFuture *res1 = [FNContext.currentContext.client get:@"users/sets"];
 
-      FNFuture *resFail = [FNContext get:@"keys/publisher"];
+      FNFuture *resFail = [FNContext.currentContext.client get:@"keys/publisher"];
       [resFail onSuccess:^(id value) {
         [self notify:kGHUnitWaitStatusFailure forSelector:@selector(testStacksScopedContexts)];
       }];
 
       FNFuture *res2 = [resFail rescue:^(NSError *error) {
         return [pwContext inContext:^{
-          return [FNContext get:@"keys/publisher"];
+          return [FNContext.currentContext.client get:@"keys/publisher"];
         }];
       }];
 
@@ -74,7 +80,7 @@
         [self notify:kGHUnitWaitStatusFailure forSelector:@selector(testStacksScopedContexts)];
       }
 
-      FNFuture *res3 = [FNContext get:@"classes"];
+      FNFuture *res3 = [FNContext.currentContext.client get:@"classes"];
 
       return [res1 flatMap:^(id sets) {
         return [res2 flatMap:^(id keys) {
@@ -103,7 +109,7 @@
   FNContext.defaultContext = nil;
 
   @try {
-    [FNContext get:@"users"];
+    [FNContext.currentOrRaise.client get:@"users"];
     GHFail(@"Did not throw any exception");
   } @catch (NSException *e) {
     GHAssertEqualStrings(e.name, FNContextNotDefined().name, @"Did not throw FNContextNotDefined");

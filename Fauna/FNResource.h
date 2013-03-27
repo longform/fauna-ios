@@ -23,6 +23,8 @@ FOUNDATION_EXPORT FNTimestamp const FNTimestampMin;
 FOUNDATION_EXPORT FNTimestamp const FNFirst;
 FOUNDATION_EXPORT FNTimestamp const FNLast;
 
+FNTimestamp FNNow();
+
 NSDate * FNTimestampToNSDate(FNTimestamp ts);
 FNTimestamp FNTimestampFromNSDate(NSDate *date);
 NSNumber * FNTimestampToNSNumber(FNTimestamp ts);

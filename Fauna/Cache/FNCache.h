@@ -21,12 +21,9 @@
 @class FNFuture;
 
 @interface FNCache : NSObject
+- (id)initWithParent:(FNCache*)parent;
 
-- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key at:(FNTimestamp)timestamp;
-
-- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key;
-
+- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key timestamp:(FNTimestamp)timestamp;
 - (FNFuture *)valueForKey:(NSString *)key;
 
-- (FNFuture *)updateIfNewer:(NSDictionary *)dict forKey:(NSString *)key date:(FNTimestamp)timestamp;
 @end

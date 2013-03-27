@@ -16,22 +16,43 @@
 //
 
 #import "FNCache.h"
+#import "FNFuture.h"
+
+@interface FNCache ()
+@property (nonatomic, readonly) FNCache* parent;
+@end
 
 @implementation FNCache
-
-- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key at:(FNTimestamp)timestamp {
-  @throw @"not implemented";
+- (id)initWithParent:(FNCache*)parent {
+  if (self = [super init]) {
+    _parent = parent;
+  }
+  return self;
 }
 
-- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key {
-  return [self setObject:value forKey:key at:FNTimestampFromNSDate([NSDate date])];
+- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key timestamp:(FNTimestamp)timestamp {
+  return [self propogateToParent:^(FNCache* cache) {
+    return [cache addObjectToCache:value forKey:key timestamp:timestamp];
+  }];
+}
+
+- (FNFuture *)addObjectToCache:(NSDictionary *)value forKey:(NSString *)key timestamp:(FNTimestamp)timestamp {
+  @throw @"not implemented";
 }
 
 - (FNFuture *)valueForKey:(NSString *)key {
   @throw @"not implemented";
 }
 
-- (FNFuture *)updateIfNewer:(NSDictionary *)dict forKey:(NSString *)key date:(FNTimestamp)timestamp {
-  @throw @"not implemented";
+- (FNFuture *)propogateToParent:(FNFuture *(^)(FNCache *))operation {
+  FNFuture *selfCompletion = operation(self);
+
+  if (self.parent) {
+    FNFuture *parentCompletion = [self.parent propogateToParent:operation];
+    return [parentCompletion flatMap_: ^ { return selfCompletion; }];
+  } else {
+    return selfCompletion;
+  }
 }
 @end
+
