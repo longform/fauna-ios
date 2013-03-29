@@ -77,7 +77,7 @@ static void FNNetworkStatusCallback(SCNetworkReachabilityRef target, SCNetworkRe
       }
     }
 
-    if (flags & kSCNetworkReachabilityFlagsIsFNStatusWWAN) {
+    if (flags & kSCNetworkReachabilityFlagsIsWWAN) {
       status = FNStatusWWAN;
     }
   }
