@@ -17,9 +17,17 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+  FNStatusOffline,
+  FNStatusWifi,
+  FNStatusWWAN
+} FNStatus;
+
 @interface FNNetworkStatus : NSObject
 
 + (void)start;
+
++ (FNStatus)status;
 
 + (BOOL)isOnline;
 

@@ -16,39 +16,55 @@
 //
 
 #import "FNContext.h"
+#import "FNContextConfig.h"
 #import "FNFuture.h"
 #import "FNError.h"
 #import "FNClient.h"
+#import "FNNetworkStatus.h"
 #import "FNCache.h"
 #import "FNSQLiteCache.h"
 #import "NSString+FNStringExtensions.h"
 
 NSString * const FNFutureScopeContextKey = @"FNContext";
 
-static FNContext* _defaultContext;
+static FNContext *_defaultContext;
+
+static FNContextConfig *_defaultConfig;
+
+static FNContextConfig *DefaultDefaultConfig() {
+  static FNContextConfig *config;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    config = [FNContextConfig configWithMaxAge:60 WWANAge:60 timeout:120 fallbackOnError:NO];
+  });
+
+  return config;
+}
 
 @interface FNContext ()
 
-@property (nonatomic, readonly) FNContext *parent;
+@property (nonatomic, readonly) FNContextConfig *config;
 
 @end
 
 @implementation FNContext
 
-# pragma mark lifecycle
+#pragma mark lifecycle
 
-- (id)initWithClient:(FNClient *)client parent:(FNContext *)parent cache:(FNCache *)cache {
+- (id)initWithClient:(FNClient *)client cache:(FNCache *)cache config:(FNContextConfig *)config {
   self = [super init];
   if (self) {
     _client = client;
-    _parent = parent;
-    _cache = nil;
+    _cache = cache;
+    _config = config;
   }
   return self;
 }
 
 - (id)initWithClient:(FNClient *)client {
-  return [self initWithClient:client parent:nil cache:[FNSQLiteCache persistentCacheWithName:[client getAuthHash]]];
+  FNContextConfig *config = [FNContext defaultConfig] ?: DefaultDefaultConfig();
+  FNCache *cache = [FNSQLiteCache cacheWithName:[client getAuthHash]];
+  return [self initWithClient:client cache:cache config:config];
 }
 
 - (id)initWithKey:(NSString*)keyString {
@@ -75,7 +91,7 @@ static FNContext* _defaultContext;
   return [[self alloc] initWithPublisherEmail:email password:password];
 }
 
-# pragma mark Public methods
+#pragma mark Public methods
 
 - (instancetype)asUser:(NSString *)userRef {
   return [[self.class alloc] initWithClient:[self.client asUser:userRef]];
@@ -89,14 +105,16 @@ static FNContext* _defaultContext;
   _defaultContext = context;
 }
 
-+ (FNContext *)currentContext {
-  return self.scopedContext ?: self.defaultContext;
++ (FNContextConfig *)defaultConfig {
+  return _defaultConfig;
 }
 
-+ (FNContext *)currentOrRaise {
-  FNContext *ctx = self.currentContext;
-  if (!ctx) @throw FNContextNotDefined();
-  return ctx;
++ (void)setDefaultConfig:(FNContextConfig *)config {
+  _defaultConfig = config;
+}
+
++ (FNContext *)currentContext {
+  return self.scopedContext ?: self.defaultContext;
 }
 
 - (id)inContext:(id (^)(void))block {
@@ -119,16 +137,52 @@ static FNContext* _defaultContext;
   }
 }
 
-- (id)transient:(id (^)(void))block {
-  FNContext *child = [[FNContext alloc] initWithClient:self.client parent:self cache:[FNSQLiteCache volatileCache]];
-  return [child inContext:block];
-}
-
 - (void)setLogHTTPTraffic:(BOOL)log {
   self.client.logHTTPTraffic = log;
 }
 
-# pragma mark Private methods
+#pragma mark HTTP methods
+
++ (FNFuture *)get:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [self.currentOrRaise.client get:path parameters:parameters];
+}
+
++ (FNFuture *)post:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [self.currentOrRaise.client post:path parameters:parameters];
+}
+
++ (FNFuture *)put:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [self.currentOrRaise.client put:path parameters:parameters];
+}
+
++ (FNFuture *)delete:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [self.currentOrRaise.client delete:path parameters:parameters];
+}
+
+
++ (FNFuture *)getResource:(NSString *)path {
+  FNStatus status = [FNNetworkStatus status];
+}
+
++ (FNFuture *)postResource:(NSString *)path parameters:(NSDictionary *)parameters {
+
+}
+
++ (FNFuture *)putResource:(NSString *)path parameters:(NSDictionary *)parameters {
+
+}
+
++ (FNFuture *)deleteResource:(NSString *)path {
+  
+}
+
+#pragma mark Private methods
+
++ (FNContext *)currentOrRaise {
+  FNContext *ctx = self.currentContext;
+  if (!ctx) @throw FNContextNotDefined();
+  return ctx;
+}
 
 + (FNContext *)scopedContext {
   return FNFuture.currentScope[FNFutureScopeContextKey];

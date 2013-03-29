@@ -18,10 +18,14 @@
 #import <sqlite3.h>
 
 @class FNFuture;
+@class FNSQLiteConnection;
 
-@interface FNSQLiteConnectionThread : NSThread
-- (void)main;
-- (id)initWithConnection:(sqlite3*)db;
-- (FNFuture*)withConnectionPerform:(id(^)(sqlite3*))block;
+@interface FNSQLiteConnectionThread: NSObject
+
+- (id)initWithSQLitePath:(NSString *)path;
+
+- (FNFuture *)withConnection:(id(^)(FNSQLiteConnection *))block;
+
 - (void)close;
+
 @end

@@ -15,20 +15,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
+#import "FNTimestamp.h"
+
 @class FNFuture;
-
-typedef int64_t FNTimestamp;
-FOUNDATION_EXPORT FNTimestamp const FNTimestampMax;
-FOUNDATION_EXPORT FNTimestamp const FNTimestampMin;
-FOUNDATION_EXPORT FNTimestamp const FNFirst;
-FOUNDATION_EXPORT FNTimestamp const FNLast;
-
-FNTimestamp FNNow();
-
-NSDate * FNTimestampToNSDate(FNTimestamp ts);
-FNTimestamp FNTimestampFromNSDate(NSDate *date);
-NSNumber * FNTimestampToNSNumber(FNTimestamp ts);
-FNTimestamp FNTimestampFromNSNumber(NSNumber *number);
 
 @interface FNResource : NSObject
 

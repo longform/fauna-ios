@@ -37,7 +37,6 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 - (id)initWithResource:(NSDictionary *)resource references:(NSDictionary *)references {
   self = [super init];
   if (self) {
-    [FNNetworkStatus start];
     _resource = resource ?: @{};
     _references = references ?: @{};
   }
@@ -61,6 +60,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 - (id)initWithAuthString:(NSString *)authString {
   self = [super init];
   if (self) {
+    [FNNetworkStatus start];
     _authString = authString;
     _authHeaderValue = [@"Basic " stringByAppendingString:authString.base64Encoded];
 

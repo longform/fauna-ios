@@ -14,73 +14,64 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-#import "FNSQLiteConnectionThread.h"
 #import <sqlite3.h>
-#import "FNMutableFuture.h"
+#import "FNError.h"
 #import "FNFuture.h"
+#import "FNSQLiteConnection.h"
+#import "NSThread+FNFutureOperations.h"
+#import "FNSQLiteConnectionThread.h"
 
-typedef int SQLITE_STATUS;
+@interface FNSQLiteConnectionThread ()
 
-@interface FNPerformContext : NSObject
-typedef id(^PerformBlock)(sqlite3*);
-@property (nonatomic,readonly,strong) PerformBlock block;
-@property (nonatomic,readonly,strong) FNMutableFuture* future;
+@property (nonatomic, readonly) FNSQLiteConnection *connection;
+@property (nonatomic, readonly) NSThread *thread;
 
-- (id)initWithBlock:(PerformBlock)block future:(FNMutableFuture*)future;
-@end
-
-@implementation FNPerformContext
-- (id)initWithBlock:(PerformBlock)block future:(FNMutableFuture*)future {
-  if (self = [super init]) {
-    _block = block;
-    _future = future;
-  }
-  return self;
-}
-@end
-
-@interface FNSQLiteConnectionThread () {
-  sqlite3 *database;
-}
 @end
 
 @implementation FNSQLiteConnectionThread
 
-- (id)initWithConnection:(sqlite3*)db {
-  if (self = [super init]) {
-    database = db;
+#pragma mark lifecycle
+
+- (id)initWithSQLitePath:(NSString *)path {
+  if(self = [super init]) {
+    _connection = [[FNSQLiteConnection alloc] initWithSQLitePath:path];
+    _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadLoop) object:nil];
   }
+
   return self;
 }
 
+#pragma mark Public methods
+
 - (void)close {
-  [self cancel];
-  sqlite3_close(database);
+  [self.thread runBlock:^id{
+    [self.connection close];
+    return nil;
+  }];
 }
 
-- (void)main {
-  NSRunLoop *loop = [NSRunLoop currentRunLoop];
-  while(![self isCancelled]) { @autoreleasepool { [loop run]; } }
-}
+#pragma mark Private methods
 
-- (FNFuture*)withConnectionPerform:(id(^)(sqlite3*))block {
-  if (![self isCancelled]) {
-    FNMutableFuture *future = [[FNMutableFuture alloc] init];
-    FNPerformContext *context = [[FNPerformContext alloc] initWithBlock:block future:future];
-    [self performSelector:@selector(runBlock:) onThread:self withObject:context waitUntilDone:NO];
-    return future;
-  } else {
-    @throw @"Thread has been canceled.";
+
+- (void)threadLoop {
+  while (!self.connection.isClosed) {
+    @autoreleasepool {
+      [[NSRunLoop currentRunLoop] run];
+    }
   }
 }
 
-- (void)runBlock:(FNPerformContext*)context {
-  id rv = context.block(database);
-
-  if ([rv isKindOfClass:[NSError class]]) {
-    [context.future updateError:rv];
+- (FNFuture *)withConnection:(id(^)(FNSQLiteConnection *))block {
+  if (!self.connection.isClosed) {
+    return [self.thread runBlock:^{
+      if (!self.connection.isClosed) {
+        return block(self.connection);
+      } else {
+        return [NSError errorWithDomain:@"blah" code:42 userInfo:@{@"msg": @"thread has been cancelled"}];
+      }
+    }];
   } else {
-    [context.future update:rv];
+    return [FNFuture error:[NSError errorWithDomain:@"blah" code:42 userInfo:@{@"msg": @"thread has been cancelled"}]];
   }
 }
 

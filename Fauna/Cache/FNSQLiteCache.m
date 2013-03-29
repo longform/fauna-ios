@@ -22,98 +22,24 @@
 #import <sqlite3.h>
 
 typedef int SQLITE_STATUS;
-static int const kRefColumnOrdinal = 1;
-static int const kDataColumnOrdinal = 2;
-static int const kCreatedAtColumnOrdinal = 3;
-
-static NSError * PrepareStatementError() {
-  return [NSError errorWithDomain:@"org.fauna.FNCache" code:1 userInfo:@{@"msg":@"Unable to prepare statement."}];
-}
-
-static NSError * BindValueError() {
- return [NSError errorWithDomain:@"FNCache" code:2 userInfo:@{@"msg":@"Unable to bind value to statement."}];
-}
-
-static NSError * CacheInsertError() {
-  return [NSError errorWithDomain:@"org.fauna.FNCache" code:3 userInfo:@{@"msg": @"Cache insert failed"}];
-}
-
-static SQLITE_STATUS executeStep(sqlite3_stmt *stmt) {
-  int status = sqlite3_step(stmt);
-
-  if (status == SQLITE_BUSY || status == SQLITE_LOCKED) {
-    // TODO: Backoff
-    // [self performSelector:@selector(executeNextStep:) withObject:(__bridge id)stmt afterDelay:.005];
-    usleep(5000);
-    return executeStep(stmt);
-  } else {
-    return status;
-  }
-}
-
-static SQLITE_STATUS withStatement(sqlite3* database, const char* sql, NSError __autoreleasing **err, SQLITE_STATUS(^prepareBlock)(sqlite3_stmt*), SQLITE_STATUS(^resultBlock)(sqlite3_stmt*)) {
-  sqlite3_stmt* stmt;
-  SQLITE_STATUS status;
-
-  status = sqlite3_prepare_v2(database, sql, -1, &stmt, NULL);
-  if (status != SQLITE_OK) {
-    *err = PrepareStatementError();
-    return status;
-  }
-
-  if (!prepareBlock(stmt)) {
-    return sqlite3_finalize(stmt);
-  }
-
-  status = executeStep(stmt);
-
-  while (status == SQLITE_ROW) {
-    if (!resultBlock(stmt)) {
-      return sqlite3_finalize(stmt);
-    }
-  }
-
-  return sqlite3_finalize(stmt);
-}
 
 @interface FNSQLiteCache () {
-  FNSQLiteConnectionThread *connection;
+  @property (nonatomic, readonly) FNSQLiteConnectionThread *connection;
 }
 @end
 
 @implementation FNSQLiteCache
 
-+ (id)persistentCacheWithName:(NSString*)name {
-  return [[FNSQLiteCache alloc] initPersistentWithName:name];
-}
+#pragma mark lifecycle
 
-+ (id)volatileCache {
-  return [[FNSQLiteCache alloc] initInMemory];
-}
-
-- (id)initWithFilename:(NSString*)name {
+- (id)initWithSQLitePath:(NSString *)path {
   if(self = [super init]) {
-    sqlite3 *database;
-    SQLITE_STATUS status = sqlite3_open([name fileSystemRepresentation], &database);
-    if(status != SQLITE_OK) {
-      const char *errMsg;
-      if (database) {
-        errMsg = sqlite3_errmsg(database);
-      } else {
-        errMsg = "Database handle could not be allocated.";
-      }
-
-      NSLog(@"FNSQLite: Unable to open database %s (%i): %s", [name UTF8String], status, errMsg);
-      return nil;
-    }
-
-    connection = [[FNSQLiteConnectionThread alloc] initWithConnection:database];
-    [connection start];
+    _connection = [[FNSQLiteConnectionThread alloc] initWithSQLitePath:path];
   }
   return self;
 }
 
-- (id)initPersistentWithName:(NSString*) name {
+- (id)initWithName:(NSString *)name {
   NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
   NSString *documentFolderPath = [searchPaths objectAtIndex:0];
   NSString *databasePath = [documentFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-cache.db", name]];
@@ -121,47 +47,32 @@ static SQLITE_STATUS withStatement(sqlite3* database, const char* sql, NSError _
 
   // must create tables if database file doesn't exist yet
   BOOL mustCreateTables = ![fileManager fileExistsAtPath:databasePath];
-  FNSQLiteCache *rv = [self initWithFilename:databasePath];
+  FNSQLiteCache *rv = [self initWithSQLitePath:databasePath];
   if (mustCreateTables && ![rv createTables]) {
     return nil;
   }
   return rv;
 }
 
-- (id)initInMemory {
-  FNSQLiteCache *rv = [self initWithFilename:@":memory:"];
-  if (![rv createTables]) {
-    return nil;
-  }
-  return rv;
-}
-
-
-- (BOOL)createTables {
-  // Creates the Resources table.
-  return [[connection withConnectionPerform:^(sqlite3* database) {
-    SQLITE_STATUS status = sqlite3_exec(database,
-                 "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, CREATED_AT INTEGER)",
-                 NULL, NULL, NULL);
-    if(status != SQLITE_OK) {
-      NSLog(@"FNCache: failed to create table");
-      return @(NO);
-    }
-    return @(YES);
-  }] get];
-}
-
 - (void)dealloc {
   [self close];
 }
 
-- (void)close {
-  [connection close];
+#pragma mark Class methods
+
++ (id)cacheWithName:(NSString*)name {
+  return [[FNSQLiteCache alloc] initWithName:name];
 }
 
-- (FNFuture*)valueForKey:(NSString *)key {
+#pragma mark Public methods
+
+- (void)close {
+  [self.connection close];
+}
+
+- (FNFuture *)valueForKey:(NSString *)key {
   // TODO: Assert???
-  return [connection withConnectionPerform:^(sqlite3* database) {
+  return [self.connection withConnection:^(FNSQLiteConnection *db) {
     NSDictionary __block *value;
     NSError __block *err;
 
@@ -243,6 +154,22 @@ static SQLITE_STATUS withStatement(sqlite3* database, const char* sql, NSError _
       return err ?: CacheInsertError();
     }
   }];
+}
+
+#pragma mark Private methods
+
+- (BOOL)createTables {
+  // Creates the Resources table.
+  return [[connection withConnectionPerform:^(sqlite3* database) {
+    SQLITE_STATUS status = sqlite3_exec(database,
+                 "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, CREATED_AT INTEGER)",
+                 NULL, NULL, NULL);
+    if(status != SQLITE_OK) {
+      NSLog(@"FNCache: failed to create table");
+      return @(NO);
+    }
+    return @(YES);
+  }] get];
 }
 
 @end

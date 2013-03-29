@@ -21,9 +21,11 @@
 @class FNFuture;
 
 @interface FNCache : NSObject
-- (id)initWithParent:(FNCache*)parent;
 
-- (FNFuture *)setObject:(NSDictionary *)value forKey:(NSString *)key timestamp:(FNTimestamp)timestamp;
-- (FNFuture *)valueForKey:(NSString *)key;
+- (FNFuture *)setObject:(NSDictionary *)value extraPaths:(NSArray *)paths timestamp:(FNTimestamp)timestamp;
+
+- (FNFuture *)removeObjectForPath:(NSString *)path;
+
+- (FNFuture *)objectForPath:(NSString *)path;
 
 @end

@@ -19,11 +19,7 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "FNNetworkStatus.h"
 
-static int const Offline = 0;
-static int const Wifi = 1;
-static int const Cellular = 2;
-
-static int _status = 0;
+static FNStatus _status = 0;
 static SCNetworkReachabilityRef reachabilityRef = NULL;
 
 @interface FNNetworkStatus ()
@@ -54,41 +50,47 @@ static void FNNetworkStatusCallback(SCNetworkReachabilityRef target, SCNetworkRe
   });
 }
 
-+ (BOOL)isOnline {
-  return _status != Offline;
++ (FNStatus)status {
+  return _status;
 }
 
-+ (BOOL)isCellular {
-  return _status == Cellular;
++ (BOOL)isOnline {
+  return _status != FNStatusOffline;
+}
+
++ (BOOL)isFNStatusWWAN {
+  return _status == FNStatusWWAN;
 }
 
 + (void)updateReachability:(SCNetworkReachabilityFlags)flags {
   int prev = _status;
-  int status = Offline;
+  int status = FNStatusOffline;
 
   if (flags & kSCNetworkReachabilityFlagsReachable) {
     if (flags & kSCNetworkReachabilityFlagsConnectionRequired) {
-      status = Wifi;
+      status = FNStatusWifi;
     }
 
     if (flags & (kSCNetworkReachabilityFlagsConnectionOnDemand | kSCNetworkReachabilityFlagsConnectionOnTraffic)) {
       if (!(flags & kSCNetworkReachabilityFlagsInterventionRequired)) {
-        status = Wifi;
+        status = FNStatusWifi;
       }
     }
 
-    if (flags & kSCNetworkReachabilityFlagsIsWWAN) {
-      status = Cellular;
+    if (flags & kSCNetworkReachabilityFlagsIsFNStatusWWAN) {
+      status = FNStatusWWAN;
     }
   }
 
   if (prev != status) {
-    if (prev == Offline || status == Offline) [self willChangeValueForKey:@"isOnline"];
-    if (prev == Cellular || status == Cellular) [self willChangeValueForKey:@"isCellular"];
+    [self willChangeValueForKey:@"status"];
+    if (prev == FNStatusOffline || status == FNStatusOffline) [self willChangeValueForKey:@"isOnline"];
+    if (prev == FNStatusWWAN || status == FNStatusWWAN) [self willChangeValueForKey:@"isFNStatusWWAN"];
     _status = status;
     OSMemoryBarrier();
-    if (prev == Offline || status == Offline) [self didChangeValueForKey:@"isOnline"];
-    if (prev == Cellular || status == Cellular) [self didChangeValueForKey:@"isCellular"];
+    [self didChangeValueForKey:@"status"];
+    if (prev == FNStatusOffline || status == FNStatusOffline) [self didChangeValueForKey:@"isOnline"];
+    if (prev == FNStatusWWAN || status == FNStatusWWAN) [self didChangeValueForKey:@"isFNStatusWWAN"];
   }
 }
 

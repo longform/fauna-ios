@@ -15,6 +15,8 @@
 // specific language governing permissions and limitations under the License.
 //
 
+#import "FNResource.h"
+
 @class FNFuture;
 @class FNClient;
 @class FNCache;
@@ -105,6 +107,37 @@
  @param block The block to be executed in the context.
  */
 - (void)performInContext:(void (^)(void))block;
+
+#pragma mark http methods
+
++ (FNFuture *)get:(NSString *)path parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)post:(NSString *)path parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)put:(NSString *)path parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)delete:(NSString *)path parameters:(NSDictionary *)parameters;
+
+
++ (FNFuture *)getResource:(NSString *)path;
+
++ (FNFuture *)postResource:(NSString *)path parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)putResource:(NSString *)path parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)deleteResource:(NSString *)path;
+
+
++ (FNFuture *)getEventsPage:(NSString *)path before:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count;
+
++ (FNFuture *)getCreatesPage:(NSString *)path before:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count;
+
++ (FNFuture *)getUpdatesPage:(NSString *)path before:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count;
+
++ (FNFuture *)addToSet:(NSString *)set resource:(NSString *)resource;
+
++ (FNFuture *)removeFromSet:(NSString *)set resource:(NSString *)resource;
+
 
 #pragma mark debugging
 
