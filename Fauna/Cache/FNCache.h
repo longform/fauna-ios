@@ -18,6 +18,10 @@
 #import <Foundation/Foundation.h>
 #import "FNResource.h"
 
+NSError * CacheReadError();
+
+NSError * CacheWriteError();
+
 @class FNFuture;
 
 @interface FNCache : NSObject

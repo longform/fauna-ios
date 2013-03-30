@@ -10,8 +10,8 @@
 
 @interface NSThread (FNFutureOperations)
 
-- (FNFuture *)runBlock:(id (^)(void))block modes:(NSArray *)modes;
+- (FNFuture *)performBlock:(id (^)(void))block modes:(NSArray *)modes;
 
-- (FNFuture *)runBlock:(id (^)(void))block;
+- (FNFuture *)performBlock:(id (^)(void))block;
 
 @end

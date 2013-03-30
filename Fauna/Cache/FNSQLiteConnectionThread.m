@@ -36,6 +36,7 @@
   if(self = [super init]) {
     _connection = [[FNSQLiteConnection alloc] initWithSQLitePath:path];
     _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadLoop) object:nil];
+    [_thread start];
   }
 
   return self;
@@ -44,7 +45,7 @@
 #pragma mark Public methods
 
 - (void)close {
-  [self.thread runBlock:^id{
+  [self.thread performBlock:^id{
     [self.connection close];
     return nil;
   }];
@@ -61,9 +62,9 @@
   }
 }
 
-- (FNFuture *)withConnection:(id(^)(FNSQLiteConnection *))block {
+- (FNFuture *)withConnection:(id(^)(FNSQLiteConnection *db))block {
   if (!self.connection.isClosed) {
-    return [self.thread runBlock:^{
+    return [self.thread performBlock:^{
       if (!self.connection.isClosed) {
         return block(self.connection);
       } else {

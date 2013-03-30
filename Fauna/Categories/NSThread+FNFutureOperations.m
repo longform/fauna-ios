@@ -45,7 +45,13 @@
 }
 
 - (FNFuture *)performBlock:(id (^)(void))block {
-  return [self performBlock:block modes:@[]];
+  FNBlockAction *action = [FNBlockAction new];
+  action.block = block;
+  action.future = [FNMutableFuture new];
+
+  [action performSelector:@selector(run) onThread:self withObject:nil waitUntilDone:NO];
+
+  return action.future;
 }
 
 @end

@@ -23,43 +23,41 @@
 @end
 
 @implementation FNSQLiteCacheTest
-- (void)testVolatilePutAndGet {
-  [self prepare];
-
-  FNSQLiteCache *cache = [FNSQLiteCache volatileCache];
-  NSString *testKey = @"testKey";
-
-  NSDictionary *dict = @{@"test": @"sup"};
-
-  [[[cache setObject:dict forKey:testKey timestamp:FNNow()] flatMap:^(id wtf) {
-    return [cache valueForKey:testKey];
-  }] onSuccess:^(NSDictionary* rv) {
-    if ([rv[@"test"] isEqualToString:@"sup"]) {
-      [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testVolatilePutAndGet)];
-    }
-  }];
-
-  [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
-}
 
 - (void)testPersistentPutAndGet {
   [self prepare];
 
-  NSString *testKey = @"testKey";
   NSString *testFilename = TestUniqueID();
 
-  FNSQLiteCache *cache = [FNSQLiteCache persistentCacheWithName:testFilename];
-  NSDictionary *dict = @{@"test": @"sup"};
+  FNSQLiteCache *cache = [FNSQLiteCache cacheWithName:testFilename];
+  NSDictionary *dict = @{@"ref":@"tests/sup", @"test": @"sup"};
 
-  [[cache setObject:dict forKey:testKey timestamp:FNNow()] onSuccess:^(id blah) {
-    FNSQLiteCache *otherCache = [FNSQLiteCache persistentCacheWithName:testFilename];
-    FNFuture *rv = [otherCache valueForKey:testKey];
-    [rv onSuccess:^(NSDictionary* rv) {
-      if ([rv[@"test"] isEqualToString:@"sup"]) {
-        [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testPersistentPutAndGet)];
-      }
+  NSLog(@"dsafadsf");
+  [[cache setObject:dict extraPaths:@[@"other/sup"] timestamp:FNNow()] onSuccess:^(id blah) {
+    FNSQLiteCache *otherCache = [FNSQLiteCache cacheWithName:testFilename];
+
+    FNFuture *rv1 = [[otherCache objectForPath:@"tests/sup"] map:^(NSDictionary *rv) {
+      NSLog(@"whut %@", @([rv[@"test"] isEqualToString:@"sup"]));
+      return @([rv[@"test"] isEqualToString:@"sup"]);
     }];
+
+    FNFuture *rv2 = [[otherCache objectForPath:@"other/sup"] map:^(NSDictionary *rv) {
+      NSLog(@"whut %@", @([rv[@"test"] isEqualToString:@"sup"]));
+      return @([rv[@"test"] isEqualToString:@"sup"]);
+    }];
+
+    [rv1 onSuccess:^(NSNumber *b1) {
+      [rv2 onSuccess:^(NSNumber *b2) {
+        if (b1.boolValue && b2.boolValue) {
+          [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testPersistentPutAndGet)];
+        }
+      }];
+    }];
+  } onError:^(NSError *err){
+    NSLog(@"whut %@", err);
   }];
+
+  NSLog(@"here");
 
   [self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
 }

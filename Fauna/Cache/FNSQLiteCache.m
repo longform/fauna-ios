@@ -19,13 +19,31 @@
 #import "FNFuture.h"
 #import "FNResource.h"
 #import "FNSQLiteConnectionThread.h"
+#import "FNSQLiteConnection.h"
 #import <sqlite3.h>
 
 typedef int SQLITE_STATUS;
 
-@interface FNSQLiteCache () {
-  @property (nonatomic, readonly) FNSQLiteConnectionThread *connection;
-}
+static NSInteger const CacheVersion = 1;
+
+static NSString * const ResourcesDDL = @"\
+CREATE TABLE IF NOT EXISTS resources ( \
+  id INTEGER PRIMARY KEY NOT NULL \
+  data BLOB NOT NULL \
+  access_time INTEGER NOT NULL \
+  update_time INTEGER NOT NULL \
+); \
+CREATE TABLE IF NOT EXISTS resource_aliases ( \
+  alias BLOB PRIMARY KEY NOT NULL \
+  resource_id INTEGER NOT NULL \
+  is_derived INTEGER NOT NULL \
+); \
+CREATE INDEX IF NOT EXISTS by_resource_id on resource_aliases (resource_id ASC)";
+
+@interface FNSQLiteCache ()
+
+@property (nonatomic, readonly) FNSQLiteConnectionThread *connection;
+
 @end
 
 @implementation FNSQLiteCache
@@ -70,64 +88,51 @@ typedef int SQLITE_STATUS;
   [self.connection close];
 }
 
-- (FNFuture *)valueForKey:(NSString *)key {
+- (FNFuture *)objectForPath:(NSString *)path {
   // TODO: Assert???
   return [self.connection withConnection:^(FNSQLiteConnection *db) {
     NSDictionary __block *value;
-    NSError __block *err;
+    SQLITE_STATUS status;
 
-    SQLITE_STATUS status = withStatement(database, "SELECT ROWID, REF, DATA, CREATED_AT FROM RESOURCES WHERE REF = ?", &err, ^(sqlite3_stmt* stmt) {
-      SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);
-      if (status != SQLITE_OK) {
-        err = BindValueError();
-      }
-
-      return status;
-    }, ^(sqlite3_stmt *stmt){
-      int bytes = sqlite3_column_bytes(stmt, kDataColumnOrdinal);
-      NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(stmt, kDataColumnOrdinal) length:bytes];
+    status = [db performQuery:@"SELECT ROWID, REF, DATA, CREATED_AT, FROM RESOURCES WHERE REF = ?" prepare:^(sqlite3_stmt *stmt){
+      return sqlite3_bind_text(stmt, 1, [path UTF8String], -1, SQLITE_TRANSIENT);
+    } result:^(sqlite3_stmt *stmt) {
+      int bytes = sqlite3_column_bytes(stmt, 2);
+      NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(stmt, 2) length:bytes];
       value = [NSKeyedUnarchiver unarchiveObjectWithData:blobData];
       return SQLITE_OK;
-    });
+    }];
 
-    return status == SQLITE_OK ? value : err;
+    return status == SQLITE_OK ? value : CacheReadError();
   }];
 }
 
-- (FNFuture *)addObjectToCache:(NSDictionary *)dict forKey:(NSString *)key at:(FNTimestamp)timestamp {
+- (FNFuture *)setObject:(NSDictionary *)value extraPaths:(NSArray *)paths timestamp:(FNTimestamp)timestamp {
   // TOOD: Assert?
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:value];
 
-  return [connection withConnectionPerform:^id(sqlite3* database) {
-    NSError __block *err;
+  return [self.connection withConnection:^id(FNSQLiteConnection *db) {
     SQLITE_STATUS status;
 
-    status = withStatement(database, "INSERT OR ABORT INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)", &err, ^(sqlite3_stmt* stmt) {
-      SQLITE_STATUS status = SQLITE_OK;
-
+    status = [db performQuery:@"INSERT OR ABORT INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)" prepare:^(sqlite3_stmt *stmt) {
+      SQLITE_STATUS status = sqlite3_bind_text(stmt, 1, [paths[0] UTF8String], -1, SQLITE_TRANSIENT);
+    
       if (status == SQLITE_OK) {
-        status = sqlite3_bind_text(stmt, 0, [key UTF8String], -1, SQLITE_TRANSIENT);
+        status = sqlite3_bind_blob(stmt, 2, [data bytes], [data length], SQLITE_TRANSIENT);
       }
 
       if (status == SQLITE_OK) {
-        status = sqlite3_bind_blob(stmt, kDataColumnOrdinal, [data bytes], [data length], SQLITE_TRANSIENT);
-      }
-
-      if (status == SQLITE_OK) {
-        status = sqlite3_bind_int64(stmt, kCreatedAtColumnOrdinal, timestamp);
-      }
-
-      if (status != SQLITE_OK) {
-        err = BindValueError();
+        status = sqlite3_bind_int64(stmt, 3, timestamp);
       }
 
       return status;
-    }, ^(sqlite3_stmt __unused *stmt){ return SQLITE_OK; });
+    }];
 
     if (status == SQLITE_OK) {
       return nil;
     } else if (status == SQLITE_CONSTRAINT) {
-      status = withStatement(database, "UPDATE RESOURCES SET DATA = ?, CREATED_AT = ? WHERE REF = ? AND CREATED_AT < ?", &err, ^(sqlite3_stmt* stmt) {
+
+      status = [db performQuery:@"UPDATE RESOURCES SET DATA = ?, CREATED_AT = ? WHERE REF = ? AND CREATED_AT < ?" prepare:^(sqlite3_stmt *stmt) {
         SQLITE_STATUS status = sqlite3_bind_blob(stmt, 1, [data bytes], [data length], SQLITE_TRANSIENT);
 
         if (status == SQLITE_OK) {
@@ -135,41 +140,60 @@ typedef int SQLITE_STATUS;
         }
 
         if (status == SQLITE_OK) {
-          status = sqlite3_bind_text(stmt, 3, [key UTF8String], -1, SQLITE_TRANSIENT);
+          status = sqlite3_bind_text(stmt, 3, [paths[0] UTF8String], -1, SQLITE_TRANSIENT);
         }
 
         if (status == SQLITE_OK) {
           status = sqlite3_bind_int64(stmt, 4, timestamp);
         }
 
-        if (status != SQLITE_OK) {
-          err = BindValueError();
-        }
-
         return status;
-      }, ^(sqlite3_stmt __unused *stmt){ return SQLITE_OK; });
+      }];
 
-      return status == SQLITE_OK ? nil : err;
-    } else {
-      return err ?: CacheInsertError();
+      if (status == SQLITE_OK) {
+        return nil;
+      }
     }
+
+    return CacheWriteError();
   }];
 }
 
 #pragma mark Private methods
 
-- (BOOL)createTables {
+- (BOOL)createOrUpdateTables {
   // Creates the Resources table.
-  return [[connection withConnectionPerform:^(sqlite3* database) {
-    SQLITE_STATUS status = sqlite3_exec(database,
-                 "CREATE TABLE IF NOT EXISTS RESOURCES (REF TEXT PRIMARY KEY, DATA BLOB, CREATED_AT INTEGER)",
-                 NULL, NULL, NULL);
+  NSNumber *rv = [[self.connection withConnection:^id(FNSQLiteConnection *db) {
+    SQLITE_STATUS status;
+    NSInteger __block version = 0;
+
+    [db performQuery:@"CREATE TABLE IF NOT EXISTS version (version INTEGER NOT NULL)" prepare:^(sqlite3_stmt *stmt) { return SQLITE_OK; }];
+
+    [db performQuery:@"SELECT version from version limit 1" prepare:^int(sqlite3_stmt *stmt) {
+      return SQLITE_OK;
+    } result:^int(sqlite3_stmt *stmt) {
+      version = sqlite3_column_int(stmt, 1);
+      return SQLITE_OK;
+    }];
+
+    if (version != CacheVersion) {
+      [db performQuery:@"BEGIN" prepare:^int(sqlite3_stmt *stmt) { return SQLITE_OK; }];
+      [db performQuery:@"COMMIT" prepare:^int(sqlite3_stmt *stmt) { return SQLITE_OK; }];
+
+    }
+
+    status = [db performQuery:@"CREATE TABLE IF NOT EXISTS 'resources' ('ref' TEXT PRIMARY KEY, 'data' BLOB, 'timestamp' INT" prepare:^(sqlite3_stmt *stmt) {
+      return SQLITE_OK;
+    }];
+
     if(status != SQLITE_OK) {
       NSLog(@"FNCache: failed to create table");
       return @(NO);
     }
     return @(YES);
   }] get];
+
+  return rv.boolValue;
 }
 
 @end

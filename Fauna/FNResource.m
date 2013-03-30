@@ -18,8 +18,7 @@
 #import "FNFuture.h"
 #import "FNError.h"
 #import "FNTimestamp.h"
-#import "FNClient.h"
-#import "FNContext+Internal.h"
+#import "FNContext.h"
 #import "FNResource.h"
 #import "FNInstance.h"
 #import "FNUser.h"
@@ -126,9 +125,7 @@ static void FNInitClassRegistry() {
 }
 
 + (FNFuture *)get:(NSString *)ref {
-  FNContext *ctx = FNContext.currentOrRaise;
-  // CACHE!!!!!
-  return [[ctx.client get:ref parameters:@{}] map:^(NSDictionary *resource) {
+  return [[FNContext getResource:ref] map:^(NSDictionary *resource) {
     return [self resourceWithDictionary:resource];
   }];
 }
@@ -145,11 +142,8 @@ static void FNInitClassRegistry() {
     @throw FNInvalidResource(@"New resources of %@ cannot be saved.", self.class);
   }
 
-  FNContext *ctx = FNContext.currentOrRaise;
-
-  // CACHE!!!
-  FNFuture *res = self.ref ? [ctx.client put:self.ref parameters:self.dictionary] :
-    [ctx.client post:self.faunaClass parameters:self.dictionary];
+  FNFuture *res = self.ref ? [FNContext putResource:self.ref parameters:self.dictionary] :
+    [FNContext postResource:self.faunaClass parameters:self.dictionary];
 
   return [res map:^(NSDictionary *resource) {
     return [self.class resourceWithDictionary:resource];

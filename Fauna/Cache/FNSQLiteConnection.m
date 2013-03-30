@@ -12,18 +12,6 @@
 
 typedef int SQLITE_STATUS;
 
-static NSError * PrepareStatementError() {
-  return [NSError errorWithDomain:@"org.fauna.FNCache" code:1 userInfo:@{@"msg":@"Unable to prepare statement."}];
-}
-
-static NSError * BindValueError() {
-  return [NSError errorWithDomain:@"FNCache" code:2 userInfo:@{@"msg":@"Unable to bind value to statement."}];
-}
-
-static NSError * CacheInsertError() {
-  return [NSError errorWithDomain:@"org.fauna.FNCache" code:3 userInfo:@{@"msg": @"Cache insert failed"}];
-}
-
 @interface FNSQLiteConnection ()
 
 @property (nonatomic, readonly) sqlite3 *database;
@@ -59,15 +47,15 @@ static NSError * CacheInsertError() {
 
 #pragma mark Public methods
 
-- (NSError *)withTransaction:(BOOL(^)(void))block {
+- (BOOL)withTransaction:(BOOL(^)(void))block {
   [self performQuery:@"BEGIN TRANSACTION" prepare:^int(sqlite3_stmt __unused *stmt) { return SQLITE_OK; }];
 
   if (block()) {
     [self performQuery:@"COMMIT TRANSACTION" prepare:^int(sqlite3_stmt __unused *stmt) { return SQLITE_OK; }];
-    return nil;
+    return YES;
   } else {
     [self performQuery:@"ROLLBACK TRANSACTION" prepare:^int(sqlite3_stmt __unused *stmt) { return SQLITE_OK; }];
-    return [NSError errorWithDomain:@"failed" code:1231 userInfo:@{}];
+    return NO;
   }
 }
 
@@ -84,41 +72,38 @@ static SQLITE_STATUS step(sqlite3_stmt *stmt) {
   }
 }
 
-- (NSError *)performQuery:(NSString *)sql prepare:(int (^)(sqlite3_stmt *))prepareBlock result:(int (^)(sqlite3_stmt *))resultBlock {
+- (int)performQuery:(NSString *)sql prepare:(int(^)(sqlite3_stmt *stmt))prepareBlock result:(int(^)(sqlite3_stmt *stmt))resultBlock {
   sqlite3_stmt *stmt;
   SQLITE_STATUS status;
 
   status = sqlite3_prepare_v2(self.database, [sql UTF8String], -1, &stmt, NULL);
   if (status != SQLITE_OK) {
-    return PrepareStatementError();
+    return status;
   }
 
   if (SQLITE_OK != prepareBlock(stmt)) {
-    sqlite3_finalize(stmt);
-    return PrepareStatementError();
+    return sqlite3_finalize(stmt);
   }
 
   status = step(stmt);
 
   while (status == SQLITE_ROW) {
     if (SQLITE_OK != resultBlock(stmt)) {
-      sqlite3_finalize(stmt);
-      return BindValueError();
+      return sqlite3_finalize(stmt);
     }
     status = step(stmt);
   }
 
-  switch (sqlite3_finalize(stmt)) {
-    case SQLITE_OK:
-      return nil;
-    case SQLITE_DONE:
-      return nil;
-    default:
-      return [NSError errorWithDomain:@"blak" code:1231 userInfo:@{}];
+  status = sqlite3_finalize(stmt);
+
+  if (status == SQLITE_OK || status == SQLITE_DONE) {
+    return SQLITE_OK;
+  } else {
+    return status;
   }
 }
 
-- (NSError *)performQuery:(NSString *)sql prepare:(int (^)(sqlite3_stmt *))prepareBlock {
+- (SQLITE_STATUS)performQuery:(NSString *)sql prepare:(int (^)(sqlite3_stmt *))prepareBlock {
   return [self performQuery:sql prepare:prepareBlock result:^int(sqlite3_stmt __unused *stmt){ return SQLITE_OK; }];
 }
 

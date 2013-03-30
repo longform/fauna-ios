@@ -22,9 +22,11 @@
 
 @interface FNSQLiteCache : FNCache
 
-+ (id)cacheWithName:(const NSString*)name;
+- (id)initWithName:(NSString *)name;
 
-- (id)initWithName:(const NSString*)name;
+- initWithSQLitePath:(NSString *)name;
+
++ (id)cacheWithName:(NSString *)name;
 
 - (void)close;
 

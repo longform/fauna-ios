@@ -16,11 +16,11 @@
 
 - (id)initWithSQLitePath:(NSString *)path;
 
-- (NSError *)withTransaction:(BOOL(^)(void))block;
+- (BOOL)withTransaction:(BOOL(^)(void))block;
 
-- (NSError *)performQuery:(NSString *)sql prepare:(int(^)(sqlite3_stmt *))prepareBlock result:(int(^)(sqlite3_stmt *))resultBlock;
+- (int)performQuery:(NSString *)sql prepare:(int(^)(sqlite3_stmt *stmt))prepareBlock result:(int(^)(sqlite3_stmt *stmt))resultBlock;
 
-- (NSError *)performQuery:(NSString *)sql prepare:(int(^)(sqlite3_stmt *))prepareBlock;
+- (int)performQuery:(NSString *)sql prepare:(int(^)(sqlite3_stmt *stmt))prepareBlock;
 
 - (void)close;
 

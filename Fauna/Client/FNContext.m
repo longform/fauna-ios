@@ -159,21 +159,59 @@ static FNContextConfig *DefaultDefaultConfig() {
   return [self.currentOrRaise.client delete:path parameters:parameters];
 }
 
-
 + (FNFuture *)getResource:(NSString *)path {
-  FNStatus status = [FNNetworkStatus status];
+  return [[self get:path parameters:@{}] map:^(FNResponse *res){
+    return res.resource;
+  }];
 }
 
 + (FNFuture *)postResource:(NSString *)path parameters:(NSDictionary *)parameters {
-
+  return [[self post:path parameters:parameters] map:^(FNResponse *res){
+    return res.resource;
+  }];
 }
 
 + (FNFuture *)putResource:(NSString *)path parameters:(NSDictionary *)parameters {
-
+  return [[self put:path parameters:parameters] map:^(FNResponse *res){
+    return res.resource;
+  }];
 }
 
 + (FNFuture *)deleteResource:(NSString *)path {
-  
+  return [[self delete:path parameters:@{}] map:^(FNResponse *res){
+    return res.resource;
+  }];
+}
+
+
++ (FNFuture *)getEventsPage:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [[self get:path parameters:parameters] map:^(FNResponse *res){
+    return res.resource;
+  }];
+}
+
++ (FNFuture *)getCreatesPage:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [[self get:[path stringByAppendingString:@"/creates"] parameters:parameters] map:^(FNResponse *res){
+    return res.resource;
+  }];
+}
+
++ (FNFuture *)getUpdatesPage:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [[self get:[path stringByAppendingString:@"/updates"] parameters:parameters] map:^(FNResponse *res){
+    return res.resource;
+  }];
+}
+
++ (FNFuture *)addToSet:(NSString *)path resource:(NSString *)resource {
+  return [[self post:path parameters:@{@"resource": resource}] map:^(FNResponse *res){
+    return res.resource;
+  }];
+}
+
++ (FNFuture *)removeFromSet:(NSString *)path resource:(NSString *)resource {
+  return [[self delete:path parameters:@{@"resource": resource}] map:^(FNResponse *res){
+    return res.resource;
+  }];
 }
 
 #pragma mark Private methods

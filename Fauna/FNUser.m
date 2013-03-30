@@ -17,8 +17,7 @@
 
 #import "FNFuture.h"
 #import "FNUser.h"
-#import "FNClient.h"
-#import "FNContext+Internal.h"
+#import "FNContext.h"
 
 @implementation FNUser
 
@@ -41,24 +40,25 @@
     @"new_password_confirmation": confirmation
   };
 
-
-  return [FNContext.currentOrRaise.client put:@"users/self/config/password" parameters:params].done;
+  return [FNContext put:@"users/self/config/password" parameters:params].done;
 }
 
 + (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password {
-  return [[FNContext.currentOrRaise.client post:@"tokens"
-               parameters:@{@"email": email, @"password": password}]
-          map:^(NSDictionary *resource) {
+  return [[FNContext post:@"tokens" parameters:@{@"email": email, @"password": password}] map:^(NSDictionary *resource){
     return resource[@"token"];
   }];
 }
 
 + (FNFuture *)tokenForUniqueID:(NSString *)uniqueID password:(NSString *)password {
-  return [[FNContext.currentOrRaise.client post:@"tokens"
-               parameters:@{@"unique_id": uniqueID, @"password": password}]
-          map:^(NSDictionary *resource) {
-            return resource[@"token"];
-          }];
+  return [[FNContext post:@"tokens" parameters:@{@"unique_id": uniqueID, @"password": password}] map:^(NSDictionary *resource){
+    return resource[@"token"];
+  }];
+}
+
++ (FNFuture *)tokenForRef:(NSString *)ref password:(NSString *)password {
+  return [[FNContext post:@"tokens" parameters:@{@"ref": ref, @"password": password}] map:^(NSDictionary *resource){
+    return resource[@"token"];
+  }];
 }
 
 + (FNFuture *)contextForEmail:(NSString *)email password:(NSString *)password {
@@ -69,6 +69,12 @@
 
 + (FNFuture *)contextForUniqueID:(NSString *)uniqueID password:(NSString *)password {
   return [[self tokenForUniqueID:uniqueID password:password] map:^(NSString *token) {
+            return [FNContext contextWithKey:token];
+          }];
+}
+
++ (FNFuture *)contextForRef:(NSString *)ref password:(NSString *)password {
+  return [[self tokenForRef:ref password:password] map:^(NSString *token) {
             return [FNContext contextWithKey:token];
           }];
 }

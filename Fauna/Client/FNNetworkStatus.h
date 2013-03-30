@@ -31,6 +31,6 @@ typedef enum {
 
 + (BOOL)isOnline;
 
-+ (BOOL)isCellular;
++ (BOOL)isWWAN;
 
 @end

@@ -58,7 +58,7 @@ static void FNNetworkStatusCallback(SCNetworkReachabilityRef target, SCNetworkRe
   return _status != FNStatusOffline;
 }
 
-+ (BOOL)isFNStatusWWAN {
++ (BOOL)isWWAN {
   return _status == FNStatusWWAN;
 }
 
@@ -85,12 +85,12 @@ static void FNNetworkStatusCallback(SCNetworkReachabilityRef target, SCNetworkRe
   if (prev != status) {
     [self willChangeValueForKey:@"status"];
     if (prev == FNStatusOffline || status == FNStatusOffline) [self willChangeValueForKey:@"isOnline"];
-    if (prev == FNStatusWWAN || status == FNStatusWWAN) [self willChangeValueForKey:@"isFNStatusWWAN"];
+    if (prev == FNStatusWWAN || status == FNStatusWWAN) [self willChangeValueForKey:@"isWWAN"];
     _status = status;
     OSMemoryBarrier();
     [self didChangeValueForKey:@"status"];
     if (prev == FNStatusOffline || status == FNStatusOffline) [self didChangeValueForKey:@"isOnline"];
-    if (prev == FNStatusWWAN || status == FNStatusWWAN) [self didChangeValueForKey:@"isFNStatusWWAN"];
+    if (prev == FNStatusWWAN || status == FNStatusWWAN) [self didChangeValueForKey:@"isWWAN"];
   }
 }
 

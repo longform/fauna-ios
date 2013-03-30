@@ -18,6 +18,14 @@
 #import "FNCache.h"
 #import "FNFuture.h"
 
+NSError * CacheReadError() {
+  return [NSError errorWithDomain:@"org.fauna.FNCache" code:1 userInfo:@{@"msg":@"Cache read failed."}];
+}
+
+NSError * CacheWriteError() {
+  return [NSError errorWithDomain:@"org.fauna.FNCache" code:2 userInfo:@{@"msg": @"Cache write failed"}];
+}
+
 @implementation FNCache
 
 - (FNFuture *)setObject:(NSDictionary *)value extraPaths:(NSArray *)paths timestamp:(FNTimestamp)timestamp {

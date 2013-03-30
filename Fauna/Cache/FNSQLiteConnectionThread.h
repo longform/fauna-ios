@@ -24,7 +24,7 @@
 
 - (id)initWithSQLitePath:(NSString *)path;
 
-- (FNFuture *)withConnection:(id(^)(FNSQLiteConnection *))block;
+- (FNFuture *)withConnection:(id(^)(FNSQLiteConnection *db))block;
 
 - (void)close;
 

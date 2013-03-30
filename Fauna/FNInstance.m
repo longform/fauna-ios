@@ -18,8 +18,7 @@
 #import "FNError.h"
 #import "FNFuture.h"
 #import "FNEventSet.h"
-#import "FNClient.h"
-#import "FNContext+Internal.h"
+#import "FNContext.h"
 #import "FNInstance.h"
 
 @implementation FNInstance
@@ -37,9 +36,7 @@
 }
 
 - (FNFuture *)destroy {
-  FNContext *ctx = FNContext.currentOrRaise;
-
-  return [ctx.client delete:self.ref].done;
+  return [FNContext deleteResource:self.ref].done;
 }
 
 @end

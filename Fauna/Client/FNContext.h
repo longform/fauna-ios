@@ -128,15 +128,15 @@
 + (FNFuture *)deleteResource:(NSString *)path;
 
 
-+ (FNFuture *)getEventsPage:(NSString *)path before:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count;
++ (FNFuture *)getEventsPage:(NSString *)path parameters:(NSDictionary *)parameters;
 
-+ (FNFuture *)getCreatesPage:(NSString *)path before:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count;
++ (FNFuture *)getCreatesPage:(NSString *)path parameters:(NSDictionary *)parameters;
 
-+ (FNFuture *)getUpdatesPage:(NSString *)path before:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count;
++ (FNFuture *)getUpdatesPage:(NSString *)path parameters:(NSDictionary *)parameters;
 
-+ (FNFuture *)addToSet:(NSString *)set resource:(NSString *)resource;
++ (FNFuture *)addToSet:(NSString *)path resource:(NSString *)resource;
 
-+ (FNFuture *)removeFromSet:(NSString *)set resource:(NSString *)resource;
++ (FNFuture *)removeFromSet:(NSString *)path resource:(NSString *)resource;
 
 
 #pragma mark debugging
