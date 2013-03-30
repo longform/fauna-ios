@@ -103,8 +103,21 @@ static SQLITE_STATUS step(sqlite3_stmt *stmt) {
   }
 }
 
-- (SQLITE_STATUS)performQuery:(NSString *)sql prepare:(int (^)(sqlite3_stmt *))prepareBlock {
-  return [self performQuery:sql prepare:prepareBlock result:^int(sqlite3_stmt __unused *stmt){ return SQLITE_OK; }];
+- (int)performQuery:(NSString *)sql prepare:(int (^)(sqlite3_stmt *))prepareBlock {
+  return [self performQuery:sql prepare:prepareBlock result:^(sqlite3_stmt __unused *stmt){ return SQLITE_OK; }];
+}
+
+- (int)performQuery:(NSString *)sql result:(int (^)(sqlite3_stmt *))resultBlock {
+  return [self performQuery:sql prepare:^(sqlite3_stmt __unused *stmt){ return SQLITE_OK; } result:resultBlock];
+}
+
+- (int)performQuery:(NSString *)sql {
+  return [self performQuery:sql prepare:^(sqlite3_stmt __unused *stmt){ return SQLITE_OK; } result:^(sqlite3_stmt __unused *stmt){ return SQLITE_OK; }];
+}
+
+- (NSString *)lastErrorMessage {
+  const char *msg = sqlite3_errmsg(self.database);
+  return msg == NULL ? nil : [NSString stringWithCString:msg encoding:NSUTF8StringEncoding];
 }
 
 - (void)close {

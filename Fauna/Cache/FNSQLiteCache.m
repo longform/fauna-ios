@@ -28,14 +28,14 @@ static NSInteger const CacheVersion = 1;
 
 static NSString * const ResourcesDDL = @"\
 CREATE TABLE IF NOT EXISTS resources ( \
-  id INTEGER PRIMARY KEY NOT NULL \
-  data BLOB NOT NULL \
-  access_time INTEGER NOT NULL \
+  id INTEGER PRIMARY KEY NOT NULL, \
+  data BLOB NOT NULL, \
+  access_time INTEGER NOT NULL, \
   update_time INTEGER NOT NULL \
 ); \
 CREATE TABLE IF NOT EXISTS resource_aliases ( \
-  alias BLOB PRIMARY KEY NOT NULL \
-  resource_id INTEGER NOT NULL \
+  alias BLOB PRIMARY KEY NOT NULL, \
+  resource_id INTEGER NOT NULL, \
   is_derived INTEGER NOT NULL \
 ); \
 CREATE INDEX IF NOT EXISTS by_resource_id on resource_aliases (resource_id ASC)";
@@ -61,15 +61,13 @@ CREATE INDEX IF NOT EXISTS by_resource_id on resource_aliases (resource_id ASC)"
   NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
   NSString *documentFolderPath = [searchPaths objectAtIndex:0];
   NSString *databasePath = [documentFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-cache.db", name]];
-  NSFileManager *fileManager = [NSFileManager defaultManager];
 
-  // must create tables if database file doesn't exist yet
-  BOOL mustCreateTables = ![fileManager fileExistsAtPath:databasePath];
-  FNSQLiteCache *rv = [self initWithSQLitePath:databasePath];
-  if (mustCreateTables && ![rv createTables]) {
-    return nil;
+  self = [self initWithSQLitePath:databasePath];
+  if (self) {
+    [self createOrUpdateTables];
   }
-  return rv;
+
+  return self;
 }
 
 - (void)dealloc {
@@ -88,20 +86,38 @@ CREATE INDEX IF NOT EXISTS by_resource_id on resource_aliases (resource_id ASC)"
   [self.connection close];
 }
 
-- (FNFuture *)objectForPath:(NSString *)path {
+- (FNFuture *)objectForPath:(NSString *)path after:(FNTimestamp)after {
   // TODO: Assert???
   return [self.connection withConnection:^(FNSQLiteConnection *db) {
+    NSUInteger __block resID;
     NSDictionary __block *value;
     SQLITE_STATUS status;
 
-    status = [db performQuery:@"SELECT ROWID, REF, DATA, CREATED_AT, FROM RESOURCES WHERE REF = ?" prepare:^(sqlite3_stmt *stmt){
+    status = [db performQuery:@"SELECT r.update_time, r.data, r.id FROM resources AS r JOIN resource_aliases as a on r.id = a.resource_id WHERE a.alias = ?"
+                      prepare:^(sqlite3_stmt *stmt){
       return sqlite3_bind_text(stmt, 1, [path UTF8String], -1, SQLITE_TRANSIENT);
     } result:^(sqlite3_stmt *stmt) {
-      int bytes = sqlite3_column_bytes(stmt, 2);
-      NSData *blobData = [NSData dataWithBytes:sqlite3_column_blob(stmt, 2) length:bytes];
-      value = [NSKeyedUnarchiver unarchiveObjectWithData:blobData];
+      FNTimestamp updateTime = sqlite3_column_int64(stmt, 0);
+
+      if (updateTime >= after) {
+        int bytes = sqlite3_column_bytes(stmt, 1);
+        NSData *data = [NSData dataWithBytes:sqlite3_column_blob(stmt, 1) length:bytes];
+        value = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        resID = sqlite3_column_int(stmt, 2);
+      }
+
       return SQLITE_OK;
     }];
+
+    if (value) {
+      status = [db performQuery:@"UPDATE resources SET access_time = ? WHERE id = ?" prepare:^(sqlite3_stmt *stmt) {
+        SQLITE_STATUS status = sqlite3_bind_int64(stmt, 1, FNNow());
+
+        if (status == SQLITE_OK) status = sqlite3_bind_int(stmt, 2, resID);
+
+        return status;
+      }];
+    }
 
     return status == SQLITE_OK ? value : CacheReadError();
   }];
@@ -164,30 +180,39 @@ CREATE INDEX IF NOT EXISTS by_resource_id on resource_aliases (resource_id ASC)"
 - (BOOL)createOrUpdateTables {
   // Creates the Resources table.
   NSNumber *rv = [[self.connection withConnection:^id(FNSQLiteConnection *db) {
-    SQLITE_STATUS status;
+    SQLITE_STATUS status = SQLITE_OK;
+
+    if (status == SQLITE_OK) status = [db performQuery:@"CREATE TABLE IF NOT EXISTS version (version INTEGER NOT NULL)"];
+
     NSInteger __block version = 0;
-
-    [db performQuery:@"CREATE TABLE IF NOT EXISTS version (version INTEGER NOT NULL)" prepare:^(sqlite3_stmt *stmt) { return SQLITE_OK; }];
-
-    [db performQuery:@"SELECT version from version limit 1" prepare:^int(sqlite3_stmt *stmt) {
-      return SQLITE_OK;
-    } result:^int(sqlite3_stmt *stmt) {
-      version = sqlite3_column_int(stmt, 1);
-      return SQLITE_OK;
-    }];
-
-    if (version != CacheVersion) {
-      [db performQuery:@"BEGIN" prepare:^int(sqlite3_stmt *stmt) { return SQLITE_OK; }];
-      [db performQuery:@"COMMIT" prepare:^int(sqlite3_stmt *stmt) { return SQLITE_OK; }];
-
+    if (status == SQLITE_OK) {
+      status = [db performQuery:@"SELECT version from version limit 1" result:^int(sqlite3_stmt *stmt) {
+        version = sqlite3_column_int(stmt, 1);
+        return SQLITE_OK;
+      }];
     }
 
-    status = [db performQuery:@"CREATE TABLE IF NOT EXISTS 'resources' ('ref' TEXT PRIMARY KEY, 'data' BLOB, 'timestamp' INT" prepare:^(sqlite3_stmt *stmt) {
-      return SQLITE_OK;
-    }];
+    if (version != CacheVersion) {
+      NSLog(@"Initializing new cache tables.");
+
+      if (status == SQLITE_OK) status = [db performQuery:@"DELETE FROM version"];
+
+      if (status == SQLITE_OK) status = [db performQuery:@"DROP TABLE IF EXISTS resources"];
+
+      if (status == SQLITE_OK) status = [db performQuery:@"DROP TABLE IF EXISTS resource_aliases"];
+
+      if (status == SQLITE_OK) status = [db performQuery:ResourcesDDL];
+
+      if (status == SQLITE_OK) {
+        status = [db performQuery:@"INSERT INTO VERSION (version) VALUES (?)" prepare:^int(sqlite3_stmt *stmt) {
+          return sqlite3_bind_int(stmt, 1, CacheVersion);
+        }];
+      }
+    }
 
     if(status != SQLITE_OK) {
-      NSLog(@"FNCache: failed to create table");
+      NSString *msg = db.lastErrorMessage ?: @"reason unknown";
+      NSLog(@"FNCache: failed to create table: %@", msg);
       return @(NO);
     }
     return @(YES);

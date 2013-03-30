@@ -11,9 +11,7 @@
 		074CF7991678713F00686606 /* Fauna.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 074CF7981678713F00686606 /* Fauna.h */; };
 		075959F916C167FD00426133 /* FNContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 075959F816C167FD00426133 /* FNContext.m */; };
 		075959FA16C16A1300426133 /* FNContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 075959F716C167FD00426133 /* FNContext.h */; };
-		0786693816A8CEC000B3639C /* FaunaCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0786693716A8CEC000B3639C /* FaunaCache.m */; };
 		0786693A16A8D74900B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
-		0786693B16A8D94600B3639C /* FaunaCache.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0786693616A8CEC000B3639C /* FaunaCache.h */; };
 		07D9FFAA16DF34E100D6173F /* FNUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D9FFA916DF34E100D6173F /* FNUser.m */; };
 		07D9FFAB16DF376400D6173F /* FNUser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07D9FFA816DF34E100D6173F /* FNUser.h */; };
 		07F28A6616C36FEF006EE2A8 /* FNInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F28A6516C36FEF006EE2A8 /* FNInstance.m */; };
@@ -110,7 +108,6 @@
 				07F28A6A16C37B17006EE2A8 /* FNInstance.h in CopyFiles */,
 				07F28A6B16C37B17006EE2A8 /* FNResource.h in CopyFiles */,
 				075959FA16C16A1300426133 /* FNContext.h in CopyFiles */,
-				0786693B16A8D94600B3639C /* FaunaCache.h in CopyFiles */,
 				074CF7991678713F00686606 /* Fauna.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,8 +121,6 @@
 		074CF7981678713F00686606 /* Fauna.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fauna.h; sourceTree = "<group>"; };
 		075959F716C167FD00426133 /* FNContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNContext.h; sourceTree = "<group>"; };
 		075959F816C167FD00426133 /* FNContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNContext.m; sourceTree = "<group>"; };
-		0786693616A8CEC000B3639C /* FaunaCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCache.h; sourceTree = "<group>"; };
-		0786693716A8CEC000B3639C /* FaunaCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaCache.m; sourceTree = "<group>"; };
 		0786693916A8D74900B3639C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		07D9FFA816DF34E100D6173F /* FNUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNUser.h; sourceTree = "<group>"; };
 		07D9FFA916DF34E100D6173F /* FNUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNUser.m; sourceTree = "<group>"; };
@@ -321,8 +316,6 @@
 			children = (
 				0CF0FACE16FA3C4A0081E7F5 /* FNCache.h */,
 				ACAA44A216FD7C2500E00929 /* FNCache.m */,
-				0786693716A8CEC000B3639C /* FaunaCache.m */,
-				0786693616A8CEC000B3639C /* FaunaCache.h */,
 				0CF0FACB16F925890081E7F5 /* FNSQLiteCache.h */,
 				0CF0FACC16F925890081E7F5 /* FNSQLiteCache.m */,
 				0C8693331700DDE700CE5033 /* FNSQLiteConnectionThread.h */,
@@ -499,7 +492,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0786693816A8CEC000B3639C /* FaunaCache.m in Sources */,
 				075959F916C167FD00426133 /* FNContext.m in Sources */,
 				07F28A6616C36FEF006EE2A8 /* FNInstance.m in Sources */,
 				07F28A6916C37143006EE2A8 /* FNResource.m in Sources */,

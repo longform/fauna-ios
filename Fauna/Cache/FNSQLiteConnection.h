@@ -22,6 +22,12 @@
 
 - (int)performQuery:(NSString *)sql prepare:(int(^)(sqlite3_stmt *stmt))prepareBlock;
 
+- (int)performQuery:(NSString *)sql result:(int(^)(sqlite3_stmt *stmt))resultBlock;
+
+- (int)performQuery:(NSString *)sql;
+
+- (NSString *)lastErrorMessage;
+
 - (void)close;
 
 @end

@@ -36,7 +36,7 @@ NSError * CacheWriteError() {
   @throw @"not implemented";
 }
 
-- (FNFuture *)objectForPath:(NSString *)path {
+- (FNFuture *)objectForPath:(NSString *)path after:(FNTimestamp)after {
   @throw @"not implemented";
 }
 

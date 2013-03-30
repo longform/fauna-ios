@@ -30,6 +30,6 @@ NSError * CacheWriteError();
 
 - (FNFuture *)removeObjectForPath:(NSString *)path;
 
-- (FNFuture *)objectForPath:(NSString *)path;
+- (FNFuture *)objectForPath:(NSString *)path after:(FNTimestamp)after;
 
 @end
