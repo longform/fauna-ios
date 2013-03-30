@@ -39,11 +39,11 @@
 #pragma mark Public methods
 
 - (FNFuture *)pageBefore:(FNTimestamp)before {
-  return [self pageAfter:before count:-1];
+  return [self pageBefore:before count:-1];
 }
 
 - (FNFuture *)pageBefore:(FNTimestamp)before count:(NSInteger)count {
-  return [self eventsWithBefore:before after:-1 count:-1 filter:nil];
+  return [self eventsWithBefore:before after:-1 count:count filter:nil];
 }
 
 - (FNFuture *)pageAfter:(FNTimestamp)after {
