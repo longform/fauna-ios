@@ -104,6 +104,10 @@
 #pragma mark HTTP requests
 
 + (FNFuture *)get:(NSString *)path
+       parameters:(NSDictionary *)parameters
+      rawResponse:(BOOL)rawResponse;
+
++ (FNFuture *)get:(NSString *)path
        parameters:(NSDictionary *)parameters;
 
 + (FNFuture *)get:(NSString *)path;

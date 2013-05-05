@@ -18,6 +18,7 @@
 #import "FNContext.h"
 #import "FNFuture.h"
 #import "FNEventSet.h"
+#import "FNClient.h"
 #import "NSArray+FNFunctionalEnumeration.h"
 
 @implementation FNEventSet
@@ -100,8 +101,10 @@
   if (after > -1) params[@"after"] = FNTimestampToNSNumber(after);
   if (count > -1) params[@"size"] = @(count);
 
-  return [[FNContext get:fullRef parameters:params] map:^(NSDictionary *dict) {
-    return [FNEventSetPage resourceWithDictionary:dict];
+  return [[FNContext get:fullRef parameters:params rawResponse:YES] map:^(FNResponse *res) {
+    FNEventSetPage *eventSet = (FNEventSetPage *)[FNEventSetPage resourceWithDictionary:res.resource];
+    eventSet.resources = [res.references allValues];
+    return eventSet;
   }];
 }
 
@@ -206,12 +209,6 @@
   }
 
   return _events;
-}
-
-- (FNFuture *)resources {
-  return FNFutureSequence([self.events map:^(FNEvent *ev){
-    return ev.resource;
-  }]);
 }
 
 @end

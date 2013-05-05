@@ -108,7 +108,7 @@
 
 - (NSArray *)events;
 
-- (FNFuture *)resources;
+@property (nonatomic, retain) NSArray *resources;
 
 @end
 

@@ -127,14 +127,26 @@ static FNContext* _defaultContext;
 }
 
 + (FNFuture *)get:(NSString *)path
-       parameters:(NSDictionary *)parameters {
-  FNContext *context = self.currentOrRaise;
-
-  return [[context.client get:path parameters:parameters] flatMap:^(FNResponse *res){
-    return [[context cacheResource:res.resource references:res.references] map_:^{
-      return res.resource;
+       parameters:(NSDictionary *)parameters
+      rawResponse:(BOOL)rawResponse {
+    FNContext *context = self.currentOrRaise;
+    
+    return [[context.client get:path parameters:parameters] flatMap:^(FNResponse *res){
+        return [[context cacheResource:res.resource references:res.references] map_:^ id {
+            if (rawResponse) {
+                return res;
+            }
+            else {
+                return res.resource;
+            }
+        }];
     }];
-  }];
+}
+
+
++ (FNFuture *)get:(NSString *)path
+       parameters:(NSDictionary *)parameters {
+    return [self get:path parameters:parameters rawResponse:NO];
 }
 
 + (FNFuture *)get:(NSString *)path {
