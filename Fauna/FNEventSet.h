@@ -78,7 +78,11 @@
 
 @property (nonatomic, readonly) NSString *query;
 
+@property (nonatomic, readonly) BOOL minimized;
+
 - (id)initWithQueryFunction:(NSString *)function parameters:(NSArray *)parameters;
+
+- (id)initWithQueryFunction:(NSString *)function parameters:(NSArray *)parameters minimized:(BOOL)minimized;
 
 @end
 

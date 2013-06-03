@@ -124,17 +124,31 @@
 @implementation FNQueryEventSet
 
 - (id)initWithQueryFunction:(NSString *)function parameters:(NSArray *)parameters {
+    self = [super init];
+    if (self) {
+        _function = function;
+        _parameters = parameters;
+        _minimized = NO;
+        _query = self.generateQuery;
+    }
+    return self;
+
+}
+
+- (id)initWithQueryFunction:(NSString *)function parameters:(NSArray *)parameters minimized:(BOOL)minimized {
   self = [super init];
   if (self) {
     _function = function;
     _parameters = parameters;
+    _minimized = minimized;
     _query = self.generateQuery;
   }
   return self;
 }
 
 -(NSString *)ref {
-  return [NSString stringWithFormat:@"query?query=%@", self.query];
+    return _minimized ? [NSString stringWithFormat:@"query/minimized?query=%@", self.query] :
+                        [NSString stringWithFormat:@"query?query=%@", self.query];
 }
 
 #pragma mark Private methods
