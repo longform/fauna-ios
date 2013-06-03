@@ -94,7 +94,18 @@
 }
 
 - (FNFuture *)eventsWithBefore:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count filter:(NSString *)filter {
-  NSString *fullRef = filter ? [self.ref stringByAppendingFormat:@"/%@", filter] : self.ref;
+    NSString *fullRef = self.ref;
+    if (filter) {
+        if ([self.ref rangeOfString:@"query?"].location != NSNotFound) {
+            NSArray *components = [self.ref componentsSeparatedByString:@"query?"];
+            if ([components count] > 1) {
+                fullRef = [NSString stringWithFormat:@"query/creates?%@", [self.ref componentsSeparatedByString:@"query?"][1]];
+            }
+        }
+        else {
+            fullRef = [self.ref stringByAppendingFormat:@"/%@", filter];
+        }
+    }
   NSMutableDictionary *params = self.baseParams;
 
   if (before > -1) params[@"before"] = FNTimestampToNSNumber(before);
