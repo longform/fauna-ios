@@ -29,25 +29,16 @@
 @property (nonatomic) NSURLRequest *request;
 @property (nonatomic) NSHTTPURLResponse *response;
 @property (nonatomic) id responseData;
+@property (nonatomic) NSData *data;
+@property (nonatomic) NSURLSession *URLSession;
+@property (nonatomic) NSURLSessionTask *task;
 @property (nonatomic) NSError *error;
 @property (nonatomic) FNFuture *future;
 
 @property (nonatomic) NSOutputStream *responseStream;
-@property (nonatomic) NSURLConnection *connection;
 @property (nonatomic) NSSet *runLoopModes;
 
 @end
-
-static NSThread * FNRequestThread() {
-  static NSThread *thread;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    thread = [[NSThread alloc] initWithTarget:[FNRequestOperation class] selector:@selector(threadStart) object:nil];
-    [thread start];
-  });
-
-  return thread;
-}
 
 @implementation FNRequestOperation
 
@@ -58,7 +49,6 @@ static NSThread * FNRequestThread() {
 - (id)initWithRequest:(NSURLRequest *)request {
   self = [super init];
   if (self) {
-    self.runLoopModes = [NSSet setWithObject:NSRunLoopCommonModes];
     self.request = request;
 
     FNMutableFuture *future = [[FNMutableFuture alloc] init];
@@ -79,20 +69,88 @@ static NSThread * FNRequestThread() {
 }
 
 - (void)start {
-  @synchronized (self) {
-    [self performSelector:@selector(startOnThread) onThread:FNRequestThread() withObject:nil waitUntilDone:NO modes:[self.runLoopModes allObjects]];
-
-    [self willChangeValueForKey:@"isExecuting"];
-    self.isExecuting = YES;
-    [self didChangeValueForKey:@"isExecuting"];
+  if (self.isCancelled) {
+    [self finish];
+  } else {
+    if (_isBackgroundEnabled) {
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"Fauna"];
+        configuration.requestCachePolicy = NSURLRequestReloadRevalidatingCacheData;
+        self.URLSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    }
+    else {
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.requestCachePolicy = NSURLRequestReloadRevalidatingCacheData;
+        self.URLSession = [NSURLSession sessionWithConfiguration:configuration];
+    }
+      
+    if (_isBackgroundEnabled) {
+      self.task = [self.URLSession downloadTaskWithRequest:self.request];
+    }
+    else {
+      self.task = [self.URLSession dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+          [self parseData:data response:response error:error];
+      }];
+    }
   }
+
+  [self willChangeValueForKey:@"isExecuting"];
+  self.isExecuting = YES;
+  [self didChangeValueForKey:@"isExecuting"];
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
+    if (self.isCancelled) {
+        [self finish];
+    } else {
+        self.data = [NSData dataWithContentsOfFile:[location path]];
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    if (self.isCancelled) {
+        [self finish];
+    }
+    else {
+        [self parseData:self.data response:task.response error:error];
+    }
+}
+
+- (void)parseData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error {
+    NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
+    
+    NSError *err;
+    id json = data.length == 0 ? @{} : [NSJSONSerialization JSONObjectWithData:data options:0 error:&err];
+    
+    if (code >= 200 && code <= 299) {
+        if (json) {
+            self.responseData = json;
+        } else {
+            self.error = err;
+        }
+    } else if (code == 404) {
+        self.error = FNNotFound();
+    } else if (code == 400) {
+        if (json) {
+            NSString *desc = ((NSDictionary *)json)[@"error"];
+            NSDictionary *paramErrors = ((NSDictionary *)json)[@"param_errors"];
+            self.error = FNBadRequest(desc, paramErrors);
+        } else {
+            self.error = FNBadRequest(@"Bad Request", @{});
+        }
+    } else if (code == 401) {
+        self.error = FNUnauthorized();
+    } else {
+        self.error = FNInternalServerError();
+    }
+    
+    [self finish];
 }
 
 - (void)cancel {
   @synchronized (self) {
     if (!self.isFinished && !self.isCancelled) {
-      [self performSelector:@selector(cancelOnThread) onThread:FNRequestThread() withObject:nil waitUntilDone:NO modes:[self.runLoopModes allObjects]];
-
+      [self.task cancel];
+        
       [self willChangeValueForKey:@"isExecuting"];
       [self willChangeValueForKey:@"isCancelled"];
       self.isExecuting = NO;
@@ -114,101 +172,6 @@ static NSThread * FNRequestThread() {
   self.isFinished = YES;
   [self didChangeValueForKey:@"isFinished"];
   [self didChangeValueForKey:@"isExecuting"];
-}
-
-- (void)startOnThread {
-  @synchronized (self) {
-    if (self.isCancelled) {
-      [self finish];
-    } else {
-      self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
-
-      for (NSString *mode in self.runLoopModes) {
-        [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-      }
-
-      [self.connection start];
-    }
-  }
-}
-
-- (void)cancelOnThread {
-  if (self.connection) [self.connection cancel];
-}
-
-+ (void)threadStart {
-  while (YES) {
-    @autoreleasepool {
-      [[NSRunLoop currentRunLoop] run];
-    }
-  }
-}
-
-#pragma mark NSURLConnectionDelegate
-
-- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection {
-  return NO;
-}
-
-- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
-  return request;
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-  NSAssert([response isKindOfClass:[NSHTTPURLResponse class]], @"response is not an HTTP response.");
-
-  self.response = (NSHTTPURLResponse *)response;
-  self.responseStream = [NSOutputStream outputStreamToMemory];
-  [self.responseStream open];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-  if ([self.responseStream hasSpaceAvailable]) [self.responseStream write:[data bytes] maxLength:[data length]];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-  NSInteger code = self.response.statusCode;
-  NSData *data = [self.responseStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
-
-  NSError *err;
-  id json = data.length == 0 ? @{} : [NSJSONSerialization JSONObjectWithData:data options:0 error:&err];
-  [self.responseStream close];
-
-  if (code >= 200 && code <= 299) {
-    if (json) {
-      self.responseData = json;
-    } else {
-      self.error = err;
-    }
-  } else if (code == 404) {
-    self.error = FNNotFound();
-  } else if (code == 400) {
-    if (json) {
-      NSString *desc = ((NSDictionary *)json)[@"error"];
-      NSDictionary *paramErrors = ((NSDictionary *)json)[@"param_errors"];
-      self.error = FNBadRequest(desc, paramErrors);
-    } else {
-      self.error = FNBadRequest(@"Bad Request", @{});
-    }
-  } else if (code == 401) {
-    self.error = FNUnauthorized();
-  } else {
-    self.error = FNInternalServerError();
-  }
-
-  [self finish];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-  if (self.responseStream) [self.responseStream close];
-
-  self.error = error;
-
-  [self finish];
-}
-
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
-  return self.isCancelled ? nil : cachedResponse;
 }
 
 @end

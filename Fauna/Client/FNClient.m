@@ -226,6 +226,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
 
 + (FNFuture *)performRequest:(NSURLRequest *)request {
   FNRequestOperation *op = [[FNRequestOperation alloc] initWithRequest:request];
+  op.isBackgroundEnabled = [request.HTTPMethod isEqualToString:@"GET"];
   [self.sharedOperationQueue addOperation:op];
   return op.future;
 }
