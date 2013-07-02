@@ -224,6 +224,11 @@ static FNContext* _defaultContext;
   }
 }
 
+- (void)setIsBackgroundEnabled:(BOOL)isBackgroundEnabled {
+    _isBackgroundEnabled = isBackgroundEnabled;
+    self.client.isBackgroundEnabled = isBackgroundEnabled;
+}
+
 # pragma mark Private cache methods
 
 - (FNFuture *)cachedResourceForRef:(NSString *)ref {

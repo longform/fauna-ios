@@ -154,7 +154,8 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   [req setValue:self.authHeaderValue forHTTPHeaderField:@"Authorization"];
   if (self.traceID) [req setValue:self.traceID forHTTPHeaderField:@"X-TRACE-ID"];
 
-  return [[self.class performRequest:req] transform:^FNFuture *(FNFuture *f) {
+  return [[self.class performRequest:req inBackground:self.isBackgroundEnabled]
+          transform:^FNFuture *(FNFuture *f) {
 
     if (self.logHTTPTraffic) {
       id request = req.description;
@@ -224,9 +225,9 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   return req;
 }
 
-+ (FNFuture *)performRequest:(NSURLRequest *)request {
++ (FNFuture *)performRequest:(NSURLRequest *)request inBackground:(BOOL)inBackground {
   FNRequestOperation *op = [[FNRequestOperation alloc] initWithRequest:request];
-  op.isBackgroundEnabled = [request.HTTPMethod isEqualToString:@"GET"];
+  op.isBackgroundEnabled = inBackground;
   [self.sharedOperationQueue addOperation:op];
   return op.future;
 }

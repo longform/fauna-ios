@@ -74,22 +74,19 @@
   } else {
     if (_isBackgroundEnabled) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"Fauna"];
+        configuration.discretionary = YES;
         configuration.requestCachePolicy = NSURLRequestReloadRevalidatingCacheData;
         self.URLSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        self.task = [self.URLSession downloadTaskWithRequest:self.request];
     }
     else {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.allowsCellularAccess = YES;
         configuration.requestCachePolicy = NSURLRequestReloadRevalidatingCacheData;
         self.URLSession = [NSURLSession sessionWithConfiguration:configuration];
-    }
-      
-    if (_isBackgroundEnabled) {
-      self.task = [self.URLSession downloadTaskWithRequest:self.request];
-    }
-    else {
-      self.task = [self.URLSession dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-          [self parseData:data response:response error:error];
-      }];
+        self.task = [self.URLSession dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            [self parseData:data response:response error:error];
+        }];
     }
   }
 

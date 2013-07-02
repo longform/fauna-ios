@@ -22,6 +22,14 @@
  */
 @interface FNContext : NSObject
 
+#pragma mark properties
+
+/*!
+ Enables background fetching for network operations
+ */
+@property (nonatomic) BOOL isBackgroundEnabled;
+
+
 #pragma mark lifecycle
 
 /*!
