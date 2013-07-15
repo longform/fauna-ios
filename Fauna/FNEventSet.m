@@ -114,7 +114,9 @@
 
   return [[FNContext get:fullRef parameters:params rawResponse:YES] map:^(FNResponse *res) {
     FNEventSetPage *eventSet = (FNEventSetPage *)[FNEventSetPage resourceWithDictionary:res.resource];
-    eventSet.resources = [res.references allValues];
+      if ([eventSet respondsToSelector:@selector(setResources:)]) {
+          eventSet.resources = [res.references allValues];
+      }
     return eventSet;
   }];
 }
