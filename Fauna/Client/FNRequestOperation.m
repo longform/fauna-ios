@@ -85,6 +85,7 @@
             [self parseData:data response:response error:error];
         }];
     }
+    [self.task resume];
   }
 
   [self willChangeValueForKey:@"isExecuting"];
