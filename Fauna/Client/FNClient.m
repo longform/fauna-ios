@@ -29,8 +29,7 @@
 #define API_VERSION @"v1"
 
 NSString * const FaunaAPIVersion = API_VERSION;
-NSString * const FaunaAPIBaseURL = @"https://rest.fauna.org";
-NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VERSION @"/";
+NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
 
 @implementation FNResponse
 
@@ -189,7 +188,7 @@ NSString * const FaunaAPIBaseURLWithVersion = @"https://rest.fauna.org/" API_VER
   static NSURL *url = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    url = [NSURL URLWithString:FaunaAPIBaseURLWithVersion];
+    url = [NSURL URLWithString:FaunaAPIBaseURL];
   });
 
   return url;

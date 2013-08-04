@@ -72,6 +72,7 @@
   if (self.isCancelled) {
     [self finish];
   } else {
+      NSLog(@"Starting request for %@", self.request.URL);
     if (_isBackgroundEnabled) {
         self.URLSession = [self backgroundSession];;
         self.task = [self.URLSession downloadTaskWithRequest:self.request];

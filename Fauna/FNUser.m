@@ -49,7 +49,7 @@
   return [[FNContext post:@"tokens"
                parameters:@{@"email": email, @"password": password}]
           map:^(NSDictionary *resource) {
-    return resource[@"token"];
+    return resource[@"secret"];
   }];
 }
 
@@ -57,7 +57,7 @@
   return [[FNContext post:@"tokens"
                parameters:@{@"unique_id": uniqueID, @"password": password}]
           map:^(NSDictionary *resource) {
-            return resource[@"token"];
+            return resource[@"secret"];
           }];
 }
 

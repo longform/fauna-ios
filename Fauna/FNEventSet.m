@@ -39,52 +39,52 @@
 
 #pragma mark Public methods
 
-- (FNFuture *)pageBefore:(FNTimestamp)before {
+- (FNFuture *)pageBefore:(NSString *)before {
   return [self pageBefore:before count:-1];
 }
 
-- (FNFuture *)pageBefore:(FNTimestamp)before count:(NSInteger)count {
-  return [self eventsWithBefore:before after:-1 count:count filter:nil];
+- (FNFuture *)pageBefore:(NSString *)before count:(NSInteger)count {
+  return [self eventsWithBefore:before after:nil count:count filter:nil];
 }
 
-- (FNFuture *)pageAfter:(FNTimestamp)after {
+- (FNFuture *)pageAfter:(NSString *)after {
   return [self pageAfter:after count:-1];
 }
 
-- (FNFuture *)pageAfter:(FNTimestamp)after count:(NSInteger)count {
-  return [self eventsWithBefore:-1 after:after count:count filter:nil];
+- (FNFuture *)pageAfter:(NSString *)after count:(NSInteger)count {
+  return [self eventsWithBefore:nil after:after count:count filter:nil];
 }
 
-- (FNFuture *)createsBefore:(FNTimestamp)before {
+- (FNFuture *)createsBefore:(NSString *)before {
   return [self createsBefore:before count:-1];
 }
 
-- (FNFuture *)createsBefore:(FNTimestamp)before count:(NSInteger)count {
-  return [self eventsWithBefore:before after:-1 count:count filter:@"creates"];
+- (FNFuture *)createsBefore:(NSString *)before count:(NSInteger)count {
+  return [self eventsWithBefore:before after:nil count:count filter:@"creates"];
 }
 
-- (FNFuture *)createsAfter:(FNTimestamp)after {
+- (FNFuture *)createsAfter:(NSString *)after {
   return [self createsAfter:after count:-1];
 }
 
-- (FNFuture *)createsAfter:(FNTimestamp)after count:(NSInteger)count {
-  return [self eventsWithBefore:-1 after:after count:count filter:@"creates"];
+- (FNFuture *)createsAfter:(NSString *)after count:(NSInteger)count {
+  return [self eventsWithBefore:nil after:after count:count filter:@"creates"];
 }
 
-- (FNFuture *)updatesBefore:(FNTimestamp)before {
+- (FNFuture *)updatesBefore:(NSString *)before {
   return [self updatesBefore:before count:-1];
 }
 
-- (FNFuture *)updatesBefore:(FNTimestamp)before count:(NSInteger)count {
-  return [self eventsWithBefore:before after:-1 count:count filter:@"updates"];
+- (FNFuture *)updatesBefore:(NSString *)before count:(NSInteger)count {
+  return [self eventsWithBefore:before after:nil count:count filter:@"updates"];
 }
 
-- (FNFuture *)updatesAfter:(FNTimestamp)after {
+- (FNFuture *)updatesAfter:(NSString *)after {
   return [self updatesAfter:after count:-1];
 }
 
-- (FNFuture *)updatesAfter:(FNTimestamp)after count:(NSInteger)count {
-  return [self eventsWithBefore:-1 after:after count:count filter:@"updates"];
+- (FNFuture *)updatesAfter:(NSString *)after count:(NSInteger)count {
+  return [self eventsWithBefore:nil after:after count:count filter:@"updates"];
 }
 
 #pragma mark Private methods
@@ -93,23 +93,18 @@
   return [NSMutableDictionary new];
 }
 
-- (FNFuture *)eventsWithBefore:(FNTimestamp)before after:(FNTimestamp)after count:(NSInteger)count filter:(NSString *)filter {
-    NSString *fullRef = self.ref;
-    if (filter) {
-        if ([self.ref rangeOfString:@"query?"].location != NSNotFound) {
-            NSArray *components = [self.ref componentsSeparatedByString:@"query?"];
-            if ([components count] > 1) {
-                fullRef = [NSString stringWithFormat:@"query/creates?%@", [self.ref componentsSeparatedByString:@"query?"][1]];
-            }
-        }
-        else {
-            fullRef = [self.ref stringByAppendingFormat:@"/%@", filter];
-        }
+- (FNFuture *)eventsWithBefore:(NSString *)before after:(NSString *)after count:(NSInteger)count filter:(NSString *)filter {
+    NSString *fullRef = [NSString stringWithFormat:@"%@/events", self.ref];
+    if ([self.ref rangeOfString:@"query?"].location != NSNotFound) {
+        fullRef = @"query";
+    }
+    else if (filter) {
+        fullRef = [self.ref stringByAppendingFormat:@"/%@", filter];
     }
   NSMutableDictionary *params = self.baseParams;
 
-  if (before > -1) params[@"before"] = FNTimestampToNSNumber(before);
-  if (after > -1) params[@"after"] = FNTimestampToNSNumber(after);
+  if (before) params[@"before"] = before;
+  if (after) params[@"after"] = after;
   if (count > -1) params[@"size"] = @(count);
 
   return [[FNContext get:fullRef parameters:params rawResponse:YES] map:^(FNResponse *res) {
@@ -149,8 +144,8 @@
 }
 
 -(NSString *)ref {
-    return _minimized ? [NSString stringWithFormat:@"query/minimized?query=%@", self.query] :
-                        [NSString stringWithFormat:@"query?query=%@", self.query];
+    return _minimized ? [NSString stringWithFormat:@"query/minimized?q=%@", self.query] :
+                        [NSString stringWithFormat:@"query?q=%@", self.query];
 }
 
 #pragma mark Private methods
@@ -162,9 +157,9 @@
     if ([param isKindOfClass:[FNQueryEventSet class]]) {
       [ps addObject:((FNQueryEventSet *)param).query];
     } else if ([param isKindOfClass:[FNEventSet class]]) {
-      [ps addObject:[NSString stringWithFormat:@"'%@'", ((FNEventSet *)param).ref]];
+      [ps addObject:[NSString stringWithFormat:@"%@", ((FNEventSet *)param).ref]];
     } else {
-      [ps addObject:[NSString stringWithFormat:@"'%@'", param]];
+      [ps addObject:[NSString stringWithFormat:@"%@", param]];
     }
   }
 
@@ -172,7 +167,7 @@
 }
 
 - (NSMutableDictionary *)baseParams {
-  return [NSMutableDictionary dictionaryWithObject:self.query forKey:@"query"];
+  return [NSMutableDictionary dictionaryWithObject:self.query forKey:@"q"];
 }
 
 @end

@@ -44,29 +44,29 @@
 
 #pragma mark Public methods
 
-- (FNFuture *)pageBefore:(FNTimestamp)before;
+- (FNFuture *)pageBefore:(NSString *)before;
 
-- (FNFuture *)pageBefore:(FNTimestamp)before count:(NSInteger)count;
+- (FNFuture *)pageBefore:(NSString *)before count:(NSInteger)count;
 
-- (FNFuture *)pageAfter:(FNTimestamp)after;
+- (FNFuture *)pageAfter:(NSString *)after;
 
-- (FNFuture *)pageAfter:(FNTimestamp)after count:(NSInteger)count;
+- (FNFuture *)pageAfter:(NSString *)after count:(NSInteger)count;
 
-- (FNFuture *)createsBefore:(FNTimestamp)before;
+- (FNFuture *)createsBefore:(NSString *)before;
 
-- (FNFuture *)createsBefore:(FNTimestamp)before count:(NSInteger)count;
+- (FNFuture *)createsBefore:(NSString *)before count:(NSInteger)count;
 
-- (FNFuture *)createsAfter:(FNTimestamp)after;
+- (FNFuture *)createsAfter:(NSString *)after;
 
-- (FNFuture *)createsAfter:(FNTimestamp)after count:(NSInteger)count;
+- (FNFuture *)createsAfter:(NSString *)after count:(NSInteger)count;
 
-- (FNFuture *)updatesBefore:(FNTimestamp)before;
+- (FNFuture *)updatesBefore:(NSString *)before;
 
-- (FNFuture *)updatesBefore:(FNTimestamp)before count:(NSInteger)count;
+- (FNFuture *)updatesBefore:(NSString *)before count:(NSInteger)count;
 
-- (FNFuture *)updatesAfter:(FNTimestamp)after;
+- (FNFuture *)updatesAfter:(NSString *)after;
 
-- (FNFuture *)updatesAfter:(FNTimestamp)after count:(NSInteger)count;
+- (FNFuture *)updatesAfter:(NSString *)after count:(NSInteger)count;
 
 @end
 

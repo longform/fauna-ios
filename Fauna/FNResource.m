@@ -107,7 +107,7 @@ static void FNInitClassRegistry() {
 
   FNResourceClassRegistry[@"users"] = [FNUser class];
   FNResourceClassRegistry[@"publisher"] = [FNPublisher class];
-  FNResourceClassRegistry[@"sets"] = [FNEventSetPage class];
+  FNResourceClassRegistry[@"events"] = [FNEventSetPage class];
 }
 
 #pragma mark lifecycle
