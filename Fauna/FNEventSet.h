@@ -106,9 +106,9 @@
 
 - (NSInteger)deletes;
 
-- (FNTimestamp)after;
+- (NSString *)after;
 
-- (FNTimestamp)before;
+- (NSString *)before;
 
 - (NSArray *)events;
 
