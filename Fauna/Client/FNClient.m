@@ -215,10 +215,12 @@ NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
   } else {
     [req setValue:@"application/json charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 
-    NSError __autoreleasing *err;
-    NSData *json = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&err];
-    if (!json) return nil;
-    req.HTTPBody = json;
+      if (parameters) {
+        NSError __autoreleasing *err;
+        NSData *json = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&err];
+        if (!json) return nil;
+        req.HTTPBody = json;
+      }
   }
 
   return req;
