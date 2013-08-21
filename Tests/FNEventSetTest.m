@@ -86,26 +86,26 @@
 
 - (void)testJoinStringGeneration {
   FNQueryEventSet *q = FNJoin(@"publisher/sets/foo", @"sets/bar", @"sets/baz");
-  GHAssertEqualStrings(q.query, @"join('publisher/sets/foo','sets/bar','sets/baz')", @"query");
-  GHAssertEqualStrings(q.ref, @"query?q=join('publisher/sets/foo','sets/bar','sets/baz')", @"ref");
+  GHAssertEqualStrings(q.query, @"join('publisher/sets/foo','sets/bar','sets/baz')", @"queries");
+  GHAssertEqualStrings(q.ref, @"queries?q=join('publisher/sets/foo','sets/bar','sets/baz')", @"ref");
 }
 
 - (void)testUnionStringGeneration {
   FNQueryEventSet *q = FNUnion(@"publisher/sets/foo", @"users/self/sets/bar");
-  GHAssertEqualStrings(q.query, @"union('publisher/sets/foo','users/self/sets/bar')", @"query");
-  GHAssertEqualStrings(q.ref, @"query?q=union('publisher/sets/foo','users/self/sets/bar')", @"ref");
+  GHAssertEqualStrings(q.query, @"union('publisher/sets/foo','users/self/sets/bar')", @"queries");
+  GHAssertEqualStrings(q.ref, @"queries?q=union('publisher/sets/foo','users/self/sets/bar')", @"ref");
 }
 
 - (void)testIntersectionStringGeneration {
   FNQueryEventSet *q = FNIntersection(@"publisher/sets/foo", @"users/self/sets/bar");
-  GHAssertEqualStrings(q.query, @"intersection('publisher/sets/foo','users/self/sets/bar')", @"query");
-  GHAssertEqualStrings(q.ref, @"query?q=intersection('publisher/sets/foo','users/self/sets/bar')", @"ref");
+  GHAssertEqualStrings(q.query, @"intersection('publisher/sets/foo','users/self/sets/bar')", @"queries");
+  GHAssertEqualStrings(q.ref, @"queries?q=intersection('publisher/sets/foo','users/self/sets/bar')", @"ref");
 }
 
 - (void)testDifferenceStringGeneration {
   FNQueryEventSet *q = FNDifference(@"publisher/sets/foo", @"users/self/sets/bar");
-  GHAssertEqualStrings(q.query, @"difference('publisher/sets/foo','users/self/sets/bar')", @"query");
-  GHAssertEqualStrings(q.ref, @"query?q=difference('publisher/sets/foo','users/self/sets/bar')", @"ref");
+  GHAssertEqualStrings(q.query, @"difference('publisher/sets/foo','users/self/sets/bar')", @"queries");
+  GHAssertEqualStrings(q.ref, @"queries?q=difference('publisher/sets/foo','users/self/sets/bar')", @"ref");
 }
 
 @end

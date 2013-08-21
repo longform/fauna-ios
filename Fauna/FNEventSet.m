@@ -95,8 +95,8 @@
 
 - (FNFuture *)eventsWithBefore:(NSString *)before after:(NSString *)after count:(NSInteger)count filter:(NSString *)filter {
     NSString *fullRef = [NSString stringWithFormat:@"%@/events", self.ref];
-    if ([self.ref rangeOfString:@"query?"].location != NSNotFound) {
-        fullRef = @"query";
+    if ([self.ref rangeOfString:@"queries?"].location != NSNotFound) {
+        fullRef = @"queries";
     }
     else if (filter) {
         fullRef = [self.ref stringByAppendingFormat:@"/%@", filter];
@@ -144,8 +144,8 @@
 }
 
 -(NSString *)ref {
-    return _minimized ? [NSString stringWithFormat:@"query/minimized?q=%@", self.query] :
-                        [NSString stringWithFormat:@"query?q=%@", self.query];
+    return _minimized ? [NSString stringWithFormat:@"queries/minimized?q=%@", self.query] :
+                        [NSString stringWithFormat:@"queries?q=%@", self.query];
 }
 
 #pragma mark Private methods
