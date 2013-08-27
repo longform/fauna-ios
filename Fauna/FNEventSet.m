@@ -215,12 +215,12 @@
   return ((NSNumber *)self.dictionary[@"deletes"]).integerValue;
 }
 
-- (FNTimestamp)before {
-  return FNTimestampFromNSNumber(self.dictionary[@"before"]);
+- (NSString *)before {
+  return self.dictionary[@"before"];
 }
 
-- (FNTimestamp)after {
-  return FNTimestampFromNSNumber(self.dictionary[@"after"]);
+- (NSString *)after {
+  return self.dictionary[@"after"];
 }
 
 - (NSArray *)events {
