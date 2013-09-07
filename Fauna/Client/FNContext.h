@@ -121,6 +121,10 @@
 + (FNFuture *)get:(NSString *)path;
 
 + (FNFuture *)post:(NSString *)path
+        parameters:(NSDictionary *)parameters
+       rawResponse:(BOOL)rawResponse;
+
++ (FNFuture *)post:(NSString *)path
         parameters:(NSDictionary *)parameters;
 
 + (FNFuture *)post:(NSString *)path;

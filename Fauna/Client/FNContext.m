@@ -155,11 +155,23 @@ static FNContext* _defaultContext;
 
 + (FNFuture *)post:(NSString *)path
         parameters:(NSDictionary *)parameters {
+    return [self post:path parameters:parameters rawResponse:NO];
+}
+
+
++ (FNFuture *)post:(NSString *)path
+        parameters:(NSDictionary *)parameters
+       rawResponse:(BOOL)rawResponse {
   FNContext* context = self.currentOrRaise;
 
   return [[context.client post:path parameters:parameters] flatMap:^(FNResponse *res) {
-    return [[context cacheResource:res.resource references:res.references] map_:^{
-      return res.resource;
+    return [[context cacheResource:res.resource references:res.references] map_:^ id {
+        if (rawResponse) {
+            return res;
+        }
+        else {
+            return res.resource;
+        }
     }];
   }];
 }

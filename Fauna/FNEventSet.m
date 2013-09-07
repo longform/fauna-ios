@@ -101,19 +101,29 @@
     else if (filter) {
         fullRef = [self.ref stringByAppendingFormat:@"/%@", filter];
     }
-  NSMutableDictionary *params = self.baseParams;
+    NSMutableDictionary *params = self.baseParams;
 
-  if (before) params[@"before"] = before;
-  if (after) params[@"after"] = after;
-  if (count > -1) params[@"size"] = @(count);
+    if (before) params[@"before"] = before;
+    if (after) params[@"after"] = after;
+    if (count > -1) params[@"size"] = @(count);
 
-  return [[FNContext get:fullRef parameters:params rawResponse:YES] map:^(FNResponse *res) {
-    FNEventSetPage *eventSet = (FNEventSetPage *)[FNEventSetPage resourceWithDictionary:res.resource];
-      if ([eventSet respondsToSelector:@selector(setResources:)]) {
-          eventSet.resources = [res.references allValues];
-      }
-    return eventSet;
-  }];
+    id (^responseBlock)(id value) = ^(FNResponse *res) {
+        FNEventSetPage *eventSet = (FNEventSetPage *)[FNEventSetPage resourceWithDictionary:res.resource];
+        if ([eventSet respondsToSelector:@selector(setResources:)]) {
+            eventSet.resources = [res.references allValues];
+        }
+        return eventSet;
+    };
+    if ([self.ref rangeOfString:@"queries?"].location != NSNotFound && [params[@"q"] length] > 2048) {
+        return [[FNContext post:fullRef
+                    parameters:params
+                   rawResponse:YES] map:responseBlock];
+    }
+    else {
+        return [[FNContext get:fullRef
+                    parameters:params
+                   rawResponse:YES] map:responseBlock];
+    }
 }
 
 @end

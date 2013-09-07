@@ -213,13 +213,21 @@ NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
       req.URL = url;
     }
   } else {
-    [req setValue:@"application/json charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+      if (![path isEqualToString:@"queries"]) {
+          [req setValue:@"application/json charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+      }
 
       if (parameters) {
-        NSError __autoreleasing *err;
-        NSData *json = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&err];
-        if (!json) return nil;
-        req.HTTPBody = json;
+          if (![path isEqualToString:@"queries"]) {
+            NSError __autoreleasing *err;
+            NSData *json = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&err];
+            if (!json) return nil;
+            req.HTTPBody = json;
+          }
+          else {
+              NSString *bodyString = [NSString stringWithFormat:@"q=%@", parameters[@"q"]];
+              req.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+          }
       }
   }
 
