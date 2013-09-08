@@ -258,6 +258,10 @@
   return self;
 }
 
+-(NSString *)eventRef {
+    return [NSString stringWithFormat:@"%@/events/%@/create", _ref, FNTimestampToNSNumber(_timestamp)];
+}
+
 - (FNEventSet *)eventSet {
   return [FNEventSet eventSetWithRef:self.eventSetRef];
 }

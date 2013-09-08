@@ -128,6 +128,8 @@
 @property (nonatomic, readonly) NSString *eventSetRef;
 @property (nonatomic, readonly) NSString *action;
 
+- (NSString *)eventRef;
+
 - (FNEventSet *)eventSet;
 
 - (FNFuture *)resource;
