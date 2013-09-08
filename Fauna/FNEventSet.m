@@ -94,7 +94,7 @@
 }
 
 - (FNFuture *)eventsWithBefore:(NSString *)before after:(NSString *)after count:(NSInteger)count filter:(NSString *)filter {
-    NSString *fullRef = [NSString stringWithFormat:@"%@/events", self.ref];
+    NSString *fullRef = self.resourcesOnly ? self.ref : [NSString stringWithFormat:@"%@/events", self.ref];
     if ([self.ref rangeOfString:@"queries?"].location != NSNotFound) {
         fullRef = @"queries";
     }

@@ -68,6 +68,8 @@
 
 - (FNFuture *)updatesAfter:(NSString *)after count:(NSInteger)count;
 
+@property (nonatomic) BOOL resourcesOnly;
+
 @end
 
 @interface FNQueryEventSet : FNEventSet
