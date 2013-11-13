@@ -151,6 +151,7 @@ NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
   NSMutableURLRequest *req = [self.class requestWithMethod:method path:path parameters:parameters];
 
   [req setValue:self.authHeaderValue forHTTPHeaderField:@"Authorization"];
+  [req setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
   if (self.traceID) [req setValue:self.traceID forHTTPHeaderField:@"X-TRACE-ID"];
 
   return [[self.class performRequest:req inBackground:self.isBackgroundEnabled]
