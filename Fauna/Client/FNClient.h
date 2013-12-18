@@ -31,7 +31,7 @@ FOUNDATION_EXPORT NSString * const FaunaAPIVersion;
 
 @interface FNClient : NSObject
 
-@property (nonatomic) NSString *traceID;
+@property (nonatomic, retain) NSString *traceID;
 
 @property (nonatomic) BOOL logHTTPTraffic;
 

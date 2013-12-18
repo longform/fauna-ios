@@ -19,7 +19,7 @@
 
 @class FNFuture;
 
-@interface FNRequestOperation : NSOperation <NSURLSessionDownloadDelegate>
+@interface FNRequestOperation : NSOperation <NSURLSessionDelegate>
 
 @property BOOL isBackgroundEnabled;
 
