@@ -226,14 +226,48 @@ NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
             req.HTTPBody = json;
           }
           else {
-              NSString *bodyString = [NSString stringWithFormat:@"q=%@", parameters[@"q"]];
-              req.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+              req.HTTPBody = [[self urlEncodedKeyValueStringForDictionary:parameters] dataUsingEncoding:NSUTF8StringEncoding];
           }
       }
   }
 
   return req;
 }
+
++ (NSString *)urlEncodedKeyValueStringForDictionary:(NSDictionary *)dictionary {
+    
+    NSMutableString *string = [NSMutableString string];
+    for (NSString *key in dictionary) {
+        
+        NSObject *value = [dictionary valueForKey:key];
+        if([value isKindOfClass:[NSString class]])
+            [string appendFormat:@"%@=%@&", [self urlEncodedStringForKey:key], [self urlEncodedStringForKey:(NSString *)value]];
+        else
+            [string appendFormat:@"%@=%@&", [self urlEncodedStringForKey:key], value];
+    }
+    
+    if([string length] > 0)
+        [string deleteCharactersInRange:NSMakeRange([string length] - 1, 1)];
+    
+    return string;
+}
+
++ (NSString *)urlEncodedStringForKey:(NSString *)key {
+    
+    CFStringRef encodedCFString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                          (__bridge CFStringRef)key,
+                                                                          nil,
+                                                                          CFSTR("?!@#$^&%*+,:;='\"`<>()[]{}/\\| "),
+                                                                          kCFStringEncodingUTF8);
+    
+    NSString *encodedString = [[NSString alloc] initWithString:(__bridge_transfer NSString*) encodedCFString];
+    
+    if(!encodedString)
+        encodedString = @"";
+    
+    return encodedString;
+}
+
 
 + (FNFuture *)performRequest:(NSURLRequest *)request inBackground:(BOOL)inBackground {
   FNRequestOperation *op = [[FNRequestOperation alloc] initWithRequest:request];
