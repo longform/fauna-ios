@@ -151,8 +151,10 @@
         }
     } else if (code == 401) {
         self.error = FNUnauthorized();
-    } else {
+    } else if (code == 500) {
         self.error = FNInternalServerError();
+    } else {
+        self.error = error;
     }
     
     [self finish];
