@@ -128,7 +128,7 @@ FNTimestamp FNTimestampFromNSNumber(NSNumber *number);
 /*!
  (references) The custom references dictionary for the resource.
  */
-@property (nonatomic) NSDictionary *references;
+@property (nonatomic, retain) NSDictionary *references;
 
 /*!
  (isDeleted) A BOOL indicating whether the resource is deleted or not.
