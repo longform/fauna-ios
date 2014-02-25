@@ -114,8 +114,6 @@
 
 - (NSArray *)events;
 
-@property (nonatomic, retain) NSArray *resources;
-
 @end
 
 

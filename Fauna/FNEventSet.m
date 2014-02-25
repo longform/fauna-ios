@@ -109,8 +109,8 @@
 
     id (^responseBlock)(id value) = ^(FNResponse *res) {
         FNEventSetPage *eventSet = (FNEventSetPage *)[FNEventSetPage resourceWithDictionary:res.resource];
-        if ([eventSet respondsToSelector:@selector(setResources:)]) {
-            eventSet.resources = [res.references allValues];
+        if ([eventSet respondsToSelector:@selector(setReferences:)]) {
+            eventSet.references = res.references;
         }
         return eventSet;
     };

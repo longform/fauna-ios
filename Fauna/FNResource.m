@@ -227,7 +227,7 @@ static void FNInitClassRegistry() {
   return references;
 }
 
-- (void)setReferences:(NSMutableDictionary *)references {
+- (void)setReferences:(NSDictionary *)references {
   self.dictionary[@"references"] = references;
 }
 

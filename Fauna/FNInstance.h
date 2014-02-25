@@ -39,11 +39,6 @@
 @property (nonatomic) NSMutableDictionary *data;
 
 /*!
- (references) The custom references dictionary for the resource.
- */
-@property (nonatomic) NSMutableDictionary *references;
-
-/*!
  Returns a custom event set for the resource
  */
 - (FNCustomEventSet *)eventSet:(NSString *)name;
