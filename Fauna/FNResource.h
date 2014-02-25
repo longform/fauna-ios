@@ -101,6 +101,11 @@ FNTimestamp FNTimestampFromNSNumber(NSNumber *number);
 @property (nonatomic, readonly) NSString *ref;
 
 /*!
+ (resources) Resources array for the resource.
+ */
+@property (nonatomic, readonly) NSArray *resources;
+
+/*!
  (faunaClass) Fauna class name for the resource
  */
 @property (nonatomic, readonly) NSString *faunaClass;

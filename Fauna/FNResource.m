@@ -179,6 +179,10 @@ static void FNInitClassRegistry() {
   return self.dictionary[@"ref"];
 }
 
+- (NSString *)resources {
+  return self.dictionary[@"resources"];
+}
+
 - (NSString *)faunaClass {
   return self.dictionary[@"class"];
 }
