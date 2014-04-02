@@ -68,6 +68,17 @@
 
 - (FNFuture *)updatesAfter:(NSString *)after count:(NSInteger)count;
 
+- (FNFuture *)eventsWithBefore:(NSString *)before
+                         after:(NSString *)after
+                         count:(NSInteger)count
+                        filter:(NSString *)filter;
+
+- (FNFuture *)eventsWithBefore:(NSString *)before
+                         after:(NSString *)after
+                         count:(NSInteger)count
+                        filter:(NSString *)filter
+                        params:(NSDictionary *)params;
+
 @property (nonatomic) BOOL resourcesOnly;
 
 @end

@@ -93,7 +93,23 @@
   return [NSMutableDictionary new];
 }
 
-- (FNFuture *)eventsWithBefore:(NSString *)before after:(NSString *)after count:(NSInteger)count filter:(NSString *)filter {
+- (FNFuture *)eventsWithBefore:(NSString *)before
+                         after:(NSString *)after
+                         count:(NSInteger)count
+                        filter:(NSString *)filter {
+    return [self eventsWithBefore:before
+                            after:after
+                            count:count
+                           filter:filter
+                           params:self.baseParams];
+}
+
+- (FNFuture *)eventsWithBefore:(NSString *)before
+                         after:(NSString *)after
+                         count:(NSInteger)count
+                        filter:(NSString *)filter
+                        params:(NSDictionary *)params {
+
     NSString *fullRef = self.resourcesOnly ? self.ref : [NSString stringWithFormat:@"%@/events", self.ref];
     if ([self.ref rangeOfString:@"queries?"].location != NSNotFound) {
         fullRef = @"queries";
@@ -101,11 +117,14 @@
     else if (filter) {
         fullRef = [self.ref stringByAppendingFormat:@"/%@", filter];
     }
-    NSMutableDictionary *params = self.baseParams;
+    NSMutableDictionary *mutableParams = [params mutableCopy];
+    if (nil == params) {
+        mutableParams = [self baseParams];
+    }
 
-    if (before) params[@"before"] = before;
-    if (after) params[@"after"] = after;
-    if (count > -1) params[@"size"] = @(count);
+    if (before) mutableParams[@"before"] = before;
+    if (after) mutableParams[@"after"] = after;
+    if (count > -1) mutableParams[@"size"] = @(count);
 
     id (^responseBlock)(id value) = ^(FNResponse *res) {
         FNEventSetPage *eventSet = (FNEventSetPage *)[FNEventSetPage resourceWithDictionary:res.resource];
@@ -114,14 +133,14 @@
         }
         return eventSet;
     };
-    if ([self.ref rangeOfString:@"queries?"].location != NSNotFound && [params[@"q"] length] > 2048) {
+    if ([self.ref rangeOfString:@"queries?"].location != NSNotFound && [mutableParams[@"q"] length] > 2048) {
         return [[FNContext post:fullRef
-                    parameters:params
+                    parameters:mutableParams
                    rawResponse:YES] map:responseBlock];
     }
     else {
         return [[FNContext get:fullRef
-                    parameters:params
+                    parameters:mutableParams
                    rawResponse:YES] map:responseBlock];
     }
 }
