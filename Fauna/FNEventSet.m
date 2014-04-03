@@ -117,9 +117,11 @@
     else if (filter) {
         fullRef = [self.ref stringByAppendingFormat:@"/%@", filter];
     }
-    NSMutableDictionary *mutableParams = [params mutableCopy];
-    if (nil == params) {
-        mutableParams = [self baseParams];
+    NSMutableDictionary *mutableParams = [self baseParams];
+    if (nil != params) {
+        for (NSString *key in [params allKeys]) {
+            mutableParams[key] = params[key];
+        }
     }
 
     if (before) mutableParams[@"before"] = before;
