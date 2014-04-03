@@ -273,7 +273,8 @@
   if (self) {
     _action = dictionary[@"action"];
     _ref = dictionary[@"resource"];
-    _eventSetRef = dictionary[@"set"];
+      NSString *refString = [NSString stringWithFormat:@"/%@", _ref];
+    _eventSetRef = [dictionary[@"set"] stringByReplacingOccurrencesOfString:refString withString:@""];
     _timestamp = FNTimestampFromNSNumber(dictionary[@"ts"]);
   }
   return self;
