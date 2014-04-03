@@ -145,9 +145,9 @@
         if (json) {
             NSString *desc = ((NSDictionary *)json)[@"error"];
             NSDictionary *paramErrors = ((NSDictionary *)json)[@"param_errors"];
-            self.error = FNBadRequest(desc, paramErrors);
+            self.error = FNBadRequest(desc, paramErrors, response.URL);
         } else {
-            self.error = FNBadRequest(@"Bad Request", @{});
+            self.error = FNBadRequest(@"Bad Request", @{}, response.URL);
         }
     } else if (code == 401) {
         self.error = FNUnauthorized();

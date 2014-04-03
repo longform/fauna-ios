@@ -38,10 +38,10 @@ NSError * FNRequestTimeout() {
                          userInfo:@{}];
 }
 
-NSError * FNBadRequest(NSString *error, NSDictionary *paramErrors) {
+NSError * FNBadRequest(NSString *error, NSDictionary *paramErrors, NSURL *URL) {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorBadRequestCode
-                         userInfo:@{ @"description": error, @"parameter_errors": (paramErrors ? paramErrors : @{}) }];
+                         userInfo:@{ @"description": error, @"parameter_errors": (paramErrors ? paramErrors : @{}), @"url" : [URL absoluteString] }];
 }
 
 NSError * FNUnauthorized() {

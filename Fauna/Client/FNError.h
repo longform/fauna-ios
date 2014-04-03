@@ -31,7 +31,7 @@ NSError * FNOperationCancelled();
 
 NSError * FNRequestTimeout();
 
-NSError * FNBadRequest(NSString *error, NSDictionary *paramErrors);
+NSError * FNBadRequest(NSString *error, NSDictionary *paramErrors, NSURL *URL);
 
 NSError * FNUnauthorized();
 
