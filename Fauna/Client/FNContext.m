@@ -195,6 +195,22 @@ static FNContext* _defaultContext;
   return [self put:path parameters:nil];
 }
 
++ (FNFuture *)patch:(NSString *)path
+       parameters:(NSDictionary *)parameters {
+    FNContext *context = self.currentOrRaise;
+    
+    return [[context.client patch:path parameters:parameters] flatMap:^(FNResponse *res) {
+        return [[context cacheResource:res.resource references:res.references] map_:^{
+            return res.resource;
+        }];
+    }];
+}
+
++ (FNFuture *)patch:(NSString *)path {
+    return [self patch:path parameters:nil];
+}
+
+
 + (FNFuture *)delete:(NSString *)path
           parameters:(NSDictionary *)parameters {
   FNContext *context = self.currentOrRaise;

@@ -117,6 +117,14 @@ NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
   return [self put:path parameters:nil];
 }
 
+- (FNFuture *)patch:(NSString *)path parameters:(NSDictionary *)parameters {
+  return [self performRequestWithMethod:@"PATCH" path:path parameters:parameters];
+}
+
+- (FNFuture *)patch:(NSString *)path {
+  return [self put:path parameters:nil];
+}
+
 - (FNFuture *)delete:(NSString *)path parameters:(NSDictionary *)parameters {
   return [self performRequestWithMethod:@"DELETE" path:path parameters:parameters];
 }

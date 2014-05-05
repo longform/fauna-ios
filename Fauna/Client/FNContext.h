@@ -134,6 +134,11 @@
 
 + (FNFuture *)put:(NSString *)path;
 
++ (FNFuture *)patch:(NSString *)path
+         parameters:(NSDictionary *)parameters;
+
++ (FNFuture *)patch:(NSString *)path;
+
 + (FNFuture *)delete:(NSString *)path
           parameters:(NSDictionary *)parameters;
 

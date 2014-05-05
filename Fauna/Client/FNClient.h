@@ -105,6 +105,19 @@ FOUNDATION_EXPORT NSString * const FaunaAPIVersion;
 - (FNFuture *)put:(NSString *)path;
 
 /*!
+ Perform a PATCH request with the specified resource.
+ @param path the path of the resource
+ @param parameters a Dictionary of parameters to send with the request.
+ */
+- (FNFuture *)patch:(NSString *)path parameters:(NSDictionary *)parameters;
+
+/*!
+ Perform a PATCH request with the specified resource.
+ @param path the path of the resource
+ */
+- (FNFuture *)patch:(NSString *)path;
+
+/*!
  Perform a DELETE request with the specified resource.
  @param path the path of the resource
  @param parameters a Dictionary of parameters to send with the request.
