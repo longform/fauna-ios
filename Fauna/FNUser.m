@@ -53,9 +53,9 @@
   }];
 }
 
-+ (FNFuture *)tokenForUniqueID:(NSString *)uniqueID password:(NSString *)password {
++ (FNFuture *)tokenForConstraintWithName:(NSString *)name value:(NSString *)value password:(NSString *)password {
   return [[FNContext post:@"tokens"
-               parameters:@{@"unique_id": uniqueID, @"password": password}]
+               parameters:@{@"constraint": @{ name : value }, @"password": password}]
           map:^(NSDictionary *resource) {
             return resource[@"secret"];
           }];
@@ -67,8 +67,8 @@
           }];
 }
 
-+ (FNFuture *)contextForUniqueID:(NSString *)uniqueID password:(NSString *)password {
-  return [[self tokenForUniqueID:uniqueID password:password] map:^(NSString *token) {
++ (FNFuture *)contextForConstraintWithName:(NSString *)name value:(NSString *)value password:(NSString *)password {
+  return [[self tokenForConstraintWithName:name value:value password:password] map:^(NSString *token) {
             return [FNContext contextWithKey:token];
           }];
 }

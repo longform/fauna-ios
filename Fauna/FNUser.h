@@ -44,11 +44,12 @@
 + (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password;
 
 /*!
- Returns an authentication token for a user identified by a unique_id and password. The token may be used to construct an an FNContext to make requests on behalf of the user.
- @param uniqueID the user's unique_id
+ Returns an authentication token for a user identified by an arbitrary constraint and password. The token may be used to construct an an FNContext to make requests on behalf of the user.
+ @param name the name of a constraint on the user
+ @param value the value of the constraint
  @param password the user's password
  */
-+ (FNFuture *)tokenForUniqueID:(NSString *)uniqueID password:(NSString *)password;
++ (FNFuture *)tokenForConstraintWithName:(NSString *)name value:(NSString *)value password:(NSString *)password;
 
 /*!
  Returns an authentication context for a user identified by email and password.
@@ -59,10 +60,11 @@
 
 /*!
  Returns an authentication token for a user identified by a unique_id and password.
- @param uniqueID the user's unique_id
+ @param name the name of a constraint on the user
+ @param value the value of the constraint
  @param password the user's password
  */
-+ (FNFuture *)contextForUniqueID:(NSString *)uniqueID password:(NSString *)password;
++ (FNFuture *)contextForConstraintWithName:(NSString *)name value:(NSString *)value password:(NSString *)password;
 
 /*!
  Returns a future containing @YES if no user exists with the given email, or @NO otherwise.
