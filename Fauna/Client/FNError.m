@@ -35,31 +35,39 @@ NSError * FNOperationCancelled() {
 NSError * FNRequestTimeout() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorRequestTimeoutCode
-                         userInfo:@{}];
+                         userInfo:@{ NSLocalizedDescriptionKey: @"Request Timed Out",
+                                     NSLocalizedRecoverySuggestionErrorKey : @"Please check your internet connection and try again." }];
 }
 
 NSError * FNBadRequest(NSString *error, NSDictionary *paramErrors, NSURL *URL) {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorBadRequestCode
-                         userInfo:@{ @"description": error, @"parameter_errors": (paramErrors ? paramErrors : @{}), @"url" : [URL absoluteString] }];
+                         userInfo:@{ @"description": error,
+                                     @"parameter_errors": (paramErrors ? paramErrors : @{}),
+                                     @"url" : [URL absoluteString],
+                                     NSLocalizedDescriptionKey: @"Bad Request",
+                                     NSLocalizedRecoverySuggestionErrorKey : @"The server was unable to complete your request." }];
 }
 
 NSError * FNUnauthorized() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorUnauthorizedCode
-                         userInfo:@{}];
+                         userInfo:@{NSLocalizedDescriptionKey: @"Unauthorized",
+                                    NSLocalizedRecoverySuggestionErrorKey : @"You are not authorized to perform the requested action."}];
 }
 
 NSError * FNNotFound() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorNotFoundCode
-                         userInfo:@{}];
+                         userInfo:@{NSLocalizedDescriptionKey: @"Not Found",
+                                    NSLocalizedRecoverySuggestionErrorKey : @"The server was unable to complete your request."}];
 }
 
 NSError * FNInternalServerError() {
   return [NSError errorWithDomain:FNErrorDomain
                              code:FNErrorInternalServerErrorCode
-                         userInfo:@{}];
+                         userInfo:@{NSLocalizedDescriptionKey: @"Server Error",
+                                    NSLocalizedRecoverySuggestionErrorKey : @"The server was unable to complete your request at this time. Please try again shortly."}];
 }
 
 NSException * FNContextNotDefined() {
