@@ -29,7 +29,7 @@
 /*!
  Retrieve the current user's configuration resource, if applicable to the current context.
  */
-+ (FNFuture *)getSelfConfig;
++ (FNFuture *)getSettings;
 
 /*!
  Change the current user's password.

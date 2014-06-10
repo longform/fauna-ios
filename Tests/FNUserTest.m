@@ -74,7 +74,7 @@
       return [FNUser contextForEmail:email password:@"sekrit"];
     }] flatMap:^(FNContext *ctx) {
       return [ctx inContext:^{
-        return [FNUser getSelfConfig];
+        return [FNUser getSettings];
       }];
     }] onSuccess:^(FNResource *config) {
       if ([config.dictionary[@"email"] isEqualToString:email]) {

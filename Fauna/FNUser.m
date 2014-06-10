@@ -31,8 +31,8 @@
   return [FNResource get:@"users/self"];
 }
 
-+ (FNFuture *)getSelfConfig {
-  return [FNResource get:@"users/self/config"];
++ (FNFuture *)getSettings {
+  return [FNResource get:@"settings/self"];
 }
 
 + (FNFuture *)changeSelfPassword:(NSString *)password newPassword:(NSString *)newPassword confirmation:(NSString *)confirmation {
