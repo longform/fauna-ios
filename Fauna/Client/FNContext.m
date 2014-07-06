@@ -257,6 +257,11 @@ static FNContext* _defaultContext;
     self.client.isBackgroundEnabled = isBackgroundEnabled;
 }
 
+- (void)setTimeoutIntervalForResource:(BOOL)timeoutIntervalForResource {
+    _timeoutIntervalForResource = timeoutIntervalForResource;
+    self.client.timeoutIntervalForResource = timeoutIntervalForResource;
+}
+
 # pragma mark Private cache methods
 
 - (FNFuture *)cachedResourceForRef:(NSString *)ref {

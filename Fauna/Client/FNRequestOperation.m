@@ -79,6 +79,9 @@
     else {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.allowsCellularAccess = YES;
+        if (self.timeoutIntervalForResource) {
+            configuration.timeoutIntervalForResource = self.timeoutIntervalForResource;
+        }
         configuration.requestCachePolicy = NSURLRequestReloadRevalidatingCacheData;
         self.URLSession = [NSURLSession sessionWithConfiguration:configuration];
         self.task = [self.URLSession dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -104,6 +107,7 @@
         NSString *bundleIDString = [NSBundle mainBundle].infoDictionary[@"CFBundleIdentifier"];
         NSString *sessionName = [NSString stringWithFormat:@"%@.Fauna.BackgroundSession", bundleIDString];
 		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:sessionName];
+        configuration.timeoutIntervalForResource = 20;
 		session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
 	});
 	return session;

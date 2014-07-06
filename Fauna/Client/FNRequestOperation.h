@@ -22,6 +22,7 @@
 @interface FNRequestOperation : NSOperation <NSURLSessionDelegate>
 
 @property BOOL isBackgroundEnabled;
+@property (nonatomic) NSTimeInterval timeoutIntervalForResource;
 
 @property (readonly) BOOL isExecuting;
 @property (readonly) BOOL isFinished;

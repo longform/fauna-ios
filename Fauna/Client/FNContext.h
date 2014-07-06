@@ -29,6 +29,12 @@
  */
 @property (nonatomic) BOOL isBackgroundEnabled;
 
+/*!
+ Enables timeout on resources
+ */
+
+@property (nonatomic) NSTimeInterval timeoutIntervalForResource;
+
 
 #pragma mark lifecycle
 

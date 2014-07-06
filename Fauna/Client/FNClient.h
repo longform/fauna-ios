@@ -37,6 +37,8 @@ FOUNDATION_EXPORT NSString * const FaunaAPIVersion;
 
 @property (nonatomic) BOOL isBackgroundEnabled;
 
+@property (nonatomic) NSTimeInterval timeoutIntervalForResource;
+
 /*!
  Initializes the Client with the given key or user token.
  @param keyString key or user token
