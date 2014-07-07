@@ -257,7 +257,7 @@ static FNContext* _defaultContext;
     self.client.isBackgroundEnabled = isBackgroundEnabled;
 }
 
-- (void)setTimeoutIntervalForResource:(BOOL)timeoutIntervalForResource {
+- (void)setTimeoutIntervalForResource:(NSTimeInterval)timeoutIntervalForResource {
     _timeoutIntervalForResource = timeoutIntervalForResource;
     self.client.timeoutIntervalForResource = timeoutIntervalForResource;
 }
