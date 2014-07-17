@@ -165,7 +165,7 @@ NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
   [req setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
   if (self.traceID) [req setValue:self.traceID forHTTPHeaderField:@"X-TRACE-ID"];
 
-  return [[self.class performRequest:req inBackground:self.isBackgroundEnabled]
+  return [[self.class performRequest:req inBackground:self.isBackgroundEnabled timeoutInterval:self.timeoutIntervalForResource]
           transform:^FNFuture *(FNFuture *f) {
 
     if (self.logHTTPTraffic) {
@@ -260,8 +260,9 @@ NSString * const FaunaAPIBaseURL = @"https://rest1.fauna.org";
     return string;
 }
 
-+ (FNFuture *)performRequest:(NSURLRequest *)request inBackground:(BOOL)inBackground {
++ (FNFuture *)performRequest:(NSURLRequest *)request inBackground:(BOOL)inBackground timeoutInterval:(NSTimeInterval)timeoutInterval {
   FNRequestOperation *op = [[FNRequestOperation alloc] initWithRequest:request];
+  op.timeoutIntervalForResource = timeoutInterval;
   op.isBackgroundEnabled = inBackground;
   [self.sharedOperationQueue addOperation:op];
   return op.future;
