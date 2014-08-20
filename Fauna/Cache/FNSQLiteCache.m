@@ -108,12 +108,12 @@ static int const kCreatedAtColumnOrdinal = 3;
 - (FNFuture*)valueForKey:(NSString *)key {
   // TODO: Assert???
   NSString *query = @"SELECT ROWID, REF, DATA FROM RESOURCES WHERE REF = ?";
-  return [self withStatement:query perform:^(sqlite3_stmt* stmt) {
+  return [self withStatement:query perform:^id(sqlite3_stmt* stmt) {
     SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind key to statement."}];
     }
-    return (id)[[self executeNextStep:stmt] map:^(NSNumber* statusNum) {
+    return (id)[[self executeNextStep:stmt] map:^id(NSNumber* statusNum) {
       int status = [statusNum integerValue];
       if (status == SQLITE_ROW) {
         int bytes = sqlite3_column_bytes(stmt, kDataColumnOrdinal);
@@ -129,7 +129,7 @@ static int const kCreatedAtColumnOrdinal = 3;
 
 - (FNFuture *)setObject:(NSDictionary *)dict forKey:(NSString *)key {
   // TOOD: Assert?
-  return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)" perform:^(sqlite3_stmt* stmt) {
+  return [self withStatement:@"INSERT OR REPLACE INTO RESOURCES (REF, DATA, CREATED_AT) VALUES (?, ?, ?)" perform:^id(sqlite3_stmt* stmt) {
     SQLITE_STATUS status = sqlite3_bind_text(stmt, kRefColumnOrdinal, [key UTF8String], -1, SQLITE_TRANSIENT);
     if (status != SQLITE_OK) {
       return [NSError errorWithDomain:@"FNCache" code:1 userInfo:@{@"msg":@"Unable to bind key to statement."}];
