@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>308E6C71-3D49-458A-8C28-FBC23652D1C4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Fauna</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>360A224F8C76A1A0649E3CAA22AFF1C80D132F47</key>
+		<string>https://github.com/longform/Longform-iOS.git</string>
+		<key>ED59D1FFCE5A1DC845EF98E9C109558303EC6C6A</key>
+		<string>github.com:longform/fauna-ios.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Fauna.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>360A224F8C76A1A0649E3CAA22AFF1C80D132F47</key>
+		<string>../../../..</string>
+		<key>ED59D1FFCE5A1DC845EF98E9C109558303EC6C6A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:longform/fauna-ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>ED59D1FFCE5A1DC845EF98E9C109558303EC6C6A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>360A224F8C76A1A0649E3CAA22AFF1C80D132F47</string>
+			<key>IDESourceControlWCCName</key>
+			<string>..</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>ED59D1FFCE5A1DC845EF98E9C109558303EC6C6A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>longform-fauna-ios</string>
+		</dict>
+	</array>
+</dict>
+</plist>
