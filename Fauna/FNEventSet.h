@@ -35,6 +35,7 @@
 @interface FNEventSet : NSObject
 
 @property (nonatomic, readonly) NSString *ref;
+@property (nonatomic, retain) NSDictionary *userInfo;
 
 #pragma mark lifecycle
 
