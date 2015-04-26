@@ -46,16 +46,24 @@
 }
 
 + (FNFuture *)tokenForEmail:(NSString *)email password:(NSString *)password {
+    NSMutableDictionary *params = [@{@"email": email } mutableCopy];
+    if ([password length]) {
+        params[@"password"] = password;
+    }
   return [[FNContext post:@"tokens"
-               parameters:@{@"email": email, @"password": password}]
+               parameters:params]
           map:^(NSDictionary *resource) {
     return resource[@"secret"];
   }];
 }
 
 + (FNFuture *)tokenForConstraintWithName:(NSString *)name value:(NSString *)value password:(NSString *)password {
+    NSMutableDictionary *params = [@{@"constraint": @{ name : value } } mutableCopy];
+    if ([password length]) {
+        params[@"password"] = password;
+    }
   return [[FNContext post:@"tokens"
-               parameters:@{@"constraint": @{ name : value }, @"password": password}]
+               parameters:params]
           map:^(NSDictionary *resource) {
             return resource[@"secret"];
           }];
