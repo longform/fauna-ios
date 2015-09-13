@@ -12,7 +12,6 @@
 		075959F916C167FD00426133 /* FNContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 075959F816C167FD00426133 /* FNContext.m */; };
 		075959FA16C16A1300426133 /* FNContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 075959F716C167FD00426133 /* FNContext.h */; };
 		0786693816A8CEC000B3639C /* FaunaCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0786693716A8CEC000B3639C /* FaunaCache.m */; };
-		0786693A16A8D74900B3639C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
 		0786693B16A8D94600B3639C /* FaunaCache.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0786693616A8CEC000B3639C /* FaunaCache.h */; };
 		07D9FFAA16DF34E100D6173F /* FNUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D9FFA916DF34E100D6173F /* FNUser.m */; };
 		07D9FFAB16DF376400D6173F /* FNUser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07D9FFA816DF34E100D6173F /* FNUser.h */; };
@@ -59,7 +58,6 @@
 		AC903B6116FBB5F500D7A08B /* FNRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AC903B6016FBB5F500D7A08B /* FNRequestOperation.m */; };
 		ACAA44A316FD7C2500E00929 /* FNCache.m in Sources */ = {isa = PBXBuildFile; fileRef = ACAA44A216FD7C2500E00929 /* FNCache.m */; };
 		ACADB88116FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.m in Sources */ = {isa = PBXBuildFile; fileRef = ACADB88016FA3D6B006CD4CA /* NSArray+FNFunctionalEnumeration.m */; };
-		ACB0B4A916E92A6800B6E7AA /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786693916A8D74900B3639C /* libsqlite3.dylib */; };
 		ACBA467516F8D8B6000F2A3B /* FNTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBA467416F8D8B6000F2A3B /* FNTestHelper.m */; };
 		ACDEDB6A16E80DC7005B2B73 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDEDB6916E80DC7005B2B73 /* UIKit.framework */; };
 		ACDEDB6B16E80DC7005B2B73 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074CF7931678713F00686606 /* Foundation.framework */; };
@@ -121,7 +119,6 @@
 		075959F816C167FD00426133 /* FNContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNContext.m; sourceTree = "<group>"; };
 		0786693616A8CEC000B3639C /* FaunaCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaunaCache.h; sourceTree = "<group>"; };
 		0786693716A8CEC000B3639C /* FaunaCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaunaCache.m; sourceTree = "<group>"; };
-		0786693916A8D74900B3639C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		07D9FFA816DF34E100D6173F /* FNUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNUser.h; sourceTree = "<group>"; };
 		07D9FFA916DF34E100D6173F /* FNUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNUser.m; sourceTree = "<group>"; };
 		07F28A6416C36FEF006EE2A8 /* FNInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNInstance.h; sourceTree = "<group>"; };
@@ -194,7 +191,6 @@
 			files = (
 				074CF7941678713F00686606 /* Foundation.framework in Frameworks */,
 				AC87EEE516FCF19700A0A198 /* SystemConfiguration.framework in Frameworks */,
-				0786693A16A8D74900B3639C /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,7 +200,6 @@
 			files = (
 				AC87EEE816FCF53000A0A198 /* SystemConfiguration.framework in Frameworks */,
 				AC6C5FE216E937DB003A17DD /* libFauna.a in Frameworks */,
-				ACB0B4A916E92A6800B6E7AA /* libsqlite3.dylib in Frameworks */,
 				ACDEDB8216E80F57005B2B73 /* QuartzCore.framework in Frameworks */,
 				ACDEDB6A16E80DC7005B2B73 /* UIKit.framework in Frameworks */,
 				ACDEDB6B16E80DC7005B2B73 /* Foundation.framework in Frameworks */,
@@ -241,7 +236,6 @@
 				AC87EEE416FCF19700A0A198 /* SystemConfiguration.framework */,
 				AC6C5FE016E937D3003A17DD /* GHUnitIOS.framework */,
 				ACDEDB8116E80F57005B2B73 /* QuartzCore.framework */,
-				0786693916A8D74900B3639C /* libsqlite3.dylib */,
 				074CF7931678713F00686606 /* Foundation.framework */,
 				ACDEDB6916E80DC7005B2B73 /* UIKit.framework */,
 				ACDEDB6C16E80DC7005B2B73 /* CoreGraphics.framework */,
